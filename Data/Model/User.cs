@@ -11,10 +11,9 @@ namespace BE_Shop.Data
     {
         [Key] public Guid Id { get; set; } = Guid.Empty;
         [Required][StringLength(50)] public string Name { get; set; } = string.Empty;
-        [Required] public bool Role { get; set; } = false;
+        [Required] public string Role { get; set; } = string.Empty;
         [Required]public string UserName { get; set; } = string.Empty;
         [Required]public string Password { get; set; } = string.Empty;
-		[Required] public string Email { get; set; } = string.Empty;
 		public List<Address> AddressList { get; set; } = new List<Address>();
     }
     /// <summary>

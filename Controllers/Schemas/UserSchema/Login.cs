@@ -20,7 +20,7 @@ namespace BE_Shop.Controllers
         [Required]
         public string Password { get; set; } = string.Empty;
     }
-    public class Output_Login : Output
+	public class OutputLogin : Output
     {
         public string Token { get; set; } = string.Empty;
         internal override void Query_DataInput(object? ip)
@@ -28,23 +28,28 @@ namespace BE_Shop.Controllers
             Login input = (Login)ip;
             using (var db = new DatabaseConnection())
             {
-                User user = db._User.Where(b => b.UserName == input.Username && b.Password == input.Password).Take(1).ToList()[1] ?? throw new Exception("Đăng nhập không hợp lệ!");
-                var key = Encoding.ASCII.GetBytes(UserController.key);
-                string id = user.Id.ToString();
-                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+                var i = Converter.MD5Convert(input.Password);
+
+				var users = db._User.Where(b => b.UserName == input.Username && b.Password == i).Take(1).ToList();
+                if (!users.Any())
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("id", id)
-                    }),
-                    Expires = DateTime.Now.AddMinutes(5),
-                    SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(key),
-                        SecurityAlgorithms.HmacSha256Signature)
-                };
-                SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-                Token = tokenHandler.WriteToken(token);
+					throw new HttpException("Dữ liệu không hợp lệ", 403);
+				}
+                var user = users[0];
+				JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                SecurityToken token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+				{
+					Subject = new ClaimsIdentity(new Claim[]
+					{
+						new Claim(ClaimTypes.Name, user.Id.ToString()),
+						new Claim(ClaimTypes.Role, user.Role.ToString()),
+					}),
+					Expires = DateTime.Now.AddMinutes(5),
+					SigningCredentials = new SigningCredentials(
+						new SymmetricSecurityKey(Encoding.ASCII.GetBytes(UserController.key)),
+						SecurityAlgorithms.HmacSha256Signature)
+				});
+                Token = "Bearer " + tokenHandler.WriteToken(token);
             }
         }
     }

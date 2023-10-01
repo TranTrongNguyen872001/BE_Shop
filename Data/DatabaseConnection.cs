@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,7 +10,6 @@ namespace BE_Shop.Data
 		public DbSet<User> _User { get; set; }
 		public DbSet<Address> _Address { get; set; }
 		public DbSet<Product> _Product { get; set; }
-		public DbSet<ProductDetail> _ProductDetail { get; set; }
 		public DbSet<Order> _Order { get; set; }
 		public DbSet<OrderDetail> _OrderDetail { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -51,36 +51,23 @@ namespace BE_Shop.Data
 			return sb.ToString();
 		}
 	}
-	public class Output_base<T> where T : Output
+	public abstract class Output
 	{
-		/// <summary>
-		/// Xác nhận thành công
-		/// </summary>
-		public bool Success { get; set; } = true;
-		/// <summary>
-		/// Tin nhắn từ hệ thống
-		/// </summary>
-		public string Message { get; set; } = string.Empty;
-		/// <summary>
-		/// Dữ liệu đầu ra
-		/// </summary>
-		public T? Data { get; set; }
-		internal Output_base(object? input)
+		internal void Query_Check(object? input)
 		{
 			try
 			{
-				Data = Activator.CreateInstance(typeof(T)) as T;
-				Data?.Query_DataInput(input);
+				Query_DataInput(input);
 			}
-			catch (Exception e)
+			catch (HttpException ex)
 			{
-				Success = false;
-				Message = e.Message/* + e.StackTrace*/;
-			}	
+				throw ex;
+			}
+			catch (Exception ex)
+			{
+				throw new HttpException(ex.Message, 400);
+			}
 		}
-	}
-	public abstract class Output
-	{
 		internal abstract void Query_DataInput(object? input);
 	}
 }

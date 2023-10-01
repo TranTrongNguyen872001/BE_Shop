@@ -11,7 +11,7 @@ namespace BE_Shop.Controllers
 	[ApiController]
 	[Route("/api/order")]
 	[Produces("application/json")]
-	public class OrderController : ControllerBase
+	public class OrderController : BaseController
 	{
 		/// <summary>
 		/// Thêm hóa đơn
@@ -20,12 +20,10 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpPost]
-		public async Task<Output_base<OutputAddOrder>> Add([FromBody] AddOrder input)
+		public async Task<IActionResult> Add([FromBody] AddOrder input)
 		{
-			return await Task.Run(() =>
-			{
-				return new Output_base<OutputAddOrder>(input);
-			});
+
+			return await QueryCheck<OutputAddOrder>(input);
 		}
 		/// <summary>
 		/// Sửa hóa đơn
@@ -34,12 +32,9 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpPut]
-		public async Task<Output_base<OutputUpdateOrder>> Update([FromBody] UpdateOrder input)
+		public async Task<IActionResult> Update([FromBody] UpdateOrder input)
 		{
-			return await Task.Run(() =>
-			{
-				return new Output_base<OutputUpdateOrder>(input);
-			});
+			return await QueryCheck<OutputUpdateOrder>(input);
 		}
 		/// <summary>
 		/// Xóa hóa đơn
@@ -48,12 +43,9 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpDelete("{Id}")]
-		public async Task<Output_base<OutputDeleteOrder>> Delete(string input)
+		public async Task<IActionResult> Delete(string Id)
 		{
-			return await Task.Run(() =>
-			{
-				return new Output_base<OutputDeleteOrder>(input);
-			});
+			return await QueryCheck<OutputDeleteOrder>(Id);
 		}
 		/// <summary>
 		/// Lấy danh sách hóa đơn
@@ -62,12 +54,9 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpGet]
-		public async Task<Output_base<OutputGetAllOrder>> GetAll([FromBody] GetAllOrder input)
+		public async Task<IActionResult> GetAll([FromBody] GetAllOrder input)
 		{
-			return await Task.Run(() =>
-			{
-				return new Output_base<OutputGetAllOrder>(input);
-			});
+			return await QueryCheck<OutputGetAllOrder>(input);
 		}
 		/// <summary>
 		/// Lấy thông tin hóa đơn
@@ -76,12 +65,9 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpGet("{Id}")]
-		public async Task<Output_base<OutputGetOneOrder>> GetOne(string input)
+		public async Task<IActionResult> GetOne(string Id)
 		{
-			return await Task.Run(() =>
-			{
-				return new Output_base<OutputGetOneOrder>(input);
-			});
+			return await QueryCheck<OutputGetOneOrder>(Id);
 		}
 	}
 }

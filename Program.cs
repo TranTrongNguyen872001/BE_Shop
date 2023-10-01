@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
+using System.Reflection.Metadata;
+using System.Security.Cryptography.Xml;
 using System.Text;
 
 //Cập nhật CSDL
@@ -31,10 +33,26 @@ builder.Services.AddSwaggerGen(options =>
 		Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
 		Name = "Authorization",
 		In = ParameterLocation.Header,
-		Type = SecuritySchemeType.ApiKey
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = "Bearer",
 	});
-	//var security = new Dictionary<string, IEnumerable<string>>{{"Bearer", new string[] { }},};
-	//options.AddSecurityRequirement(new OpenApiSecurityRequirement());
+	options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+	{
+		{
+			new OpenApiSecurityScheme()
+			{
+				Reference = new OpenApiReference()
+				{
+					Type = ReferenceType.SecurityScheme,
+					Id = "Bearer"
+				},
+				Scheme = "oauth2",
+				Name = "Bearer",
+				In = ParameterLocation.Header,
+			},
+			new List<string>()
+		}
+	});
 });
 
 //Add login token.
@@ -68,7 +86,11 @@ if (app.Environment.IsDevelopment())
 	});
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+
+app.UseDefaultFiles();
+
+app.UseStaticFiles();
 
 app.UseAuthentication();
 
