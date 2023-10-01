@@ -54,7 +54,7 @@ namespace BE_Shop.Controllers
 		/// <param name="input"></param>
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
-		[HttpPost("get")]
+		[HttpPost("list")]
 		public async Task<IActionResult> GetAllUser([FromBody] GetAllUser input)
 		{
 			return await QueryCheck<OutputGetAllUser>(input);
@@ -66,7 +66,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpGet("{Id}")]
-		public async Task<IActionResult> UserById(string Id)
+		public async Task<IActionResult> UserById(Guid Id)
 		{
 			return await QueryCheck<OutputGetOneUser>(Id);
 		}
@@ -79,7 +79,7 @@ namespace BE_Shop.Controllers
 		[HttpGet("pro")]
 		public async Task<IActionResult> GetProfile()
 		{
-			return await QueryCheck<OutputGetOneUser>(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			return await QueryCheck<OutputGetOneUser>(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value));
 		}
 		/// <summary>
 		/// Xóa tài khoản
@@ -88,7 +88,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpDelete("{Id}")]
-		public async Task<IActionResult> DeleteUser(string Id)
+		public async Task<IActionResult> DeleteUser(Guid Id)
 		{
 			return await QueryCheck<OutputDeleteUser>(Id);
 		}

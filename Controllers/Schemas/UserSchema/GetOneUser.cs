@@ -8,7 +8,7 @@ namespace BE_Shop.Controllers
 
 		internal override void Query_DataInput(object? ip)
 		{
-			Guid Id = Guid.Parse(ip.ToString());
+			Guid Id = (Guid)ip;
 			using (var db = new DatabaseConnection())
 			{
 				User = db._User.Where(e => e.Id == Id).ToList().FirstOrDefault();

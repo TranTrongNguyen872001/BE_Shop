@@ -15,7 +15,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin")]
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] AddProduct input)
 		{
@@ -26,7 +26,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin")]
 		[HttpPut]
 		public async Task<IActionResult> Update([FromBody] UpdateProduct input)
 		{
@@ -37,7 +37,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin")]
 		[HttpDelete("{Id}")]
 		public async Task<IActionResult> Delete(string Id)
 		{
@@ -49,7 +49,7 @@ namespace BE_Shop.Controllers
 		/// <param name="input"></param>
 		/// <returns></returns>
 		[Authorize]
-		[HttpGet]
+		[HttpPost("list")]
 		public async Task<IActionResult> GetAll([FromBody] GetAllProduct input)
 		{
 			return await QueryCheck<OutputGetAllProduct>(input);

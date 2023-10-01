@@ -4,9 +4,14 @@ namespace BE_Shop.Controllers
 {
 	public class OutputGetOneAddress : Output
 	{
+		public Address Address { get; set; }
 		internal override void Query_DataInput(object? ip)
 		{
-
+			Guid Id = (Guid)ip;
+			using(var db = new DatabaseConnection())
+			{
+				Address = db._Address.Where(e => e.Id == Id).FirstOrDefault() ?? throw new HttpException("Id không tìm thấy", 404);
+			}
 		}
 	}
 }
