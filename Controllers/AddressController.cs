@@ -18,7 +18,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpPost]
-		public async Task<IActionResult> Add([FromBody] List<string> Address)
+		public async Task<IActionResult> Add([FromBody] string Address)
 		{
 			return await QueryCheck<OutputAddAddress>((Address, Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)));
 		}

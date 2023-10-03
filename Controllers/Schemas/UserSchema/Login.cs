@@ -33,7 +33,7 @@ namespace BE_Shop.Controllers
 				var users = db._User.Where(b => b.UserName == input.Username && b.Password == i).Take(1).ToList();
                 if (!users.Any())
                 {
-					throw new HttpException("Dữ liệu không hợp lệ", 403);
+					throw new HttpException(string.Empty, 403);
 				}
                 var user = users[0];
 				JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

@@ -10,7 +10,10 @@ namespace BE_Shop.Controllers
 			Guid Id = (Guid)ip;
 			using (var db = new DatabaseConnection())
 			{
-				db._User.Remove(db._User.Where(b => b.Id == Id).FirstOrDefault() ?? throw new HttpException("Id không tìm thấy", 404));
+				var user = db._User.Where(b => b.Id == Id).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
+				//var address = db._Address.Where(b => b.UserId == Id).ToList();
+				//db._Address.RemoveRange(address);
+				db._User.Remove(user);
 				db.SaveChanges();
 			}
 		}

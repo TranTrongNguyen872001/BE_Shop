@@ -18,12 +18,12 @@ namespace BE_Shop.Controllers
 			UpdateUser input = (UpdateUser)ip;
 			using (var db = new DatabaseConnection())
 			{
-				var i = db._User.Where(e => e.Id == input.Id).ToList().FirstOrDefault() ?? throw new HttpException("Id không tồn tại!", 404);
+				var i = db._User.Where(e => e.Id == input.Id).ToList().FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 				if (i.Password == Converter.MD5Convert(input.OldPassword))
 				{
-					if (input.Name != string.Empty) { i.Name = input.Name; }
-					if (input.UserName != string.Empty) { i.UserName = input.UserName; }
-					if (input.Password != string.Empty) { i.Password = Converter.MD5Convert(input.Password); }
+					i.Name = input.Name;
+					i.UserName = input.UserName;
+					i.Password = Converter.MD5Convert(input.Password);
 					db.SaveChanges();
 				}
 				else

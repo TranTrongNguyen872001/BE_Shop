@@ -10,7 +10,7 @@ namespace BE_Shop.Controllers
 			Guid Id = (Guid)ip;
 			using(var db = new DatabaseConnection())
 			{
-				Address = db._Address.Where(e => e.Id == Id).FirstOrDefault() ?? throw new HttpException("Id không tìm thấy", 404);
+				Address = db._Address.Where(e => e.Id == Id).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 			}
 		}
 	}

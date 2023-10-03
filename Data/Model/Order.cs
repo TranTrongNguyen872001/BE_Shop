@@ -14,8 +14,8 @@ namespace BE_Shop.Data
         [Required] public string Address { get; set; } = string.Empty;
         [Required] public DateTime CreatedDate { get; set; } = DateTime.MinValue;
         [Required] public int Status { get; set; } = 0;
-		[Required] public long Tax { get; set; } = 0;
-		[Required] public long TotalPrice { get; set; } = 0;
+		[Required] public float Tax { get; set; } = 0.06F;
+
 		public List<OrderDetail> OrderDetail = new List<OrderDetail>();
 
 	}
@@ -26,9 +26,8 @@ namespace BE_Shop.Data
     public class OrderDetail
     {
 		[Required] public Guid OrderId { get; set; } = Guid.Empty;
-		[Required] public Guid ProductDetailId { get; set; } = Guid.Empty;
-		[Required] public int ItemCount { get; set; } = 0;
+		[Required] public Guid ProductId { get; set; } = Guid.Empty;
+		[Required] public long ItemCount { get; set; } = 0;
 		[Required] public long UnitPrice { get; set; } = 0;
-		[Required] public long TotalPrice { get; set; } = 0;
 	}
 }

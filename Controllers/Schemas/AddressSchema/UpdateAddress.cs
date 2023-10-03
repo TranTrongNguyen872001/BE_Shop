@@ -18,10 +18,10 @@ namespace BE_Shop.Controllers
 			UpdateAddress input = i.Address;
 			using (var db = new DatabaseConnection())
 			{
-				var Address = db._Address.Where(e => e.Id == input.Id).ToList().FirstOrDefault() ?? throw new HttpException("Id không tồn tại", 404);
+				var Address = db._Address.Where(e => e.Id == input.Id).ToList().FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 				if (Address.UserId != i.UserId)
 				{
-					throw new HttpException("Bạn không có quyền", 403);
+					throw new HttpException(string.Empty, 403);
 				}
 				if (input.Decription != string.Empty)
 				{

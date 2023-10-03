@@ -39,7 +39,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpDelete("{Id}")]
-		public async Task<IActionResult> Delete(string Id)
+		public async Task<IActionResult> Delete(Guid Id)
 		{
 			return await QueryCheck<OutputDeleteProduct>(Id);
 		}
@@ -61,7 +61,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize]
 		[HttpGet("{Id}")]
-		public async Task<IActionResult> GetOne(string Id)
+		public async Task<IActionResult> GetOne(Guid Id)
 		{
 
 			return await QueryCheck<OutputGetOneProduct>(Id);

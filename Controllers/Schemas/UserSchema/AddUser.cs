@@ -30,16 +30,16 @@ namespace BE_Shop.Controllers
 	}
     public class OutputAddUser : Output
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Token { get; set; } = string.Empty;
         internal override void Query_DataInput(object? ip)
         {
 			AddUser input = (AddUser)ip;
-            Guid Userid;
 			using (var db = new DatabaseConnection())
             {
                 if(db._User.Where(b => b.UserName == input.UserName).ToList().Count != 0)
                 {
-                    throw new HttpException("Dữ liệu đã tồn tại", 409);
+                    throw new HttpException(string.Empty, 409);
                 }
 				List<Address> addresses = new List<Address>();
                 foreach (var address in input.AddressList)
@@ -50,10 +50,9 @@ namespace BE_Shop.Controllers
                         Description = address,
 					});
 				}
-				Userid = Guid.NewGuid();
                 db._User.Add(new User()
 				{
-					Id = Userid,
+					Id = Id,
 					Name = input.Name,
 					AddressList = addresses,
 					UserName = input.UserName,
@@ -67,7 +66,7 @@ namespace BE_Shop.Controllers
 			{
 				Subject = new ClaimsIdentity(new Claim[]
 				{
-					new Claim(ClaimTypes.Name, Userid.ToString()),
+					new Claim(ClaimTypes.Name, Id.ToString()),
 					new Claim(ClaimTypes.Role, "Member"),
 				}),
 				Expires = DateTime.Now.AddMinutes(5),

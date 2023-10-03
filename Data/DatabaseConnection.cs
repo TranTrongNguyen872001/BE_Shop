@@ -21,7 +21,7 @@ namespace BE_Shop.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<OrderDetail>()
-				.HasKey(nameof(OrderDetail.ProductDetailId), nameof(OrderDetail.OrderId));
+				.HasKey(nameof(OrderDetail.ProductId), nameof(OrderDetail.OrderId));
 		}
 		//xóa database và tạo lại :) đỡ tốn thời gian :( mệt quá!
 		public static async Task CreateDatabase()

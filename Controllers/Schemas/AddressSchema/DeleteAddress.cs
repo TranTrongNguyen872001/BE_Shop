@@ -14,7 +14,7 @@ namespace BE_Shop.Controllers
 				var Address = db._Address.Where(e => e.Id == input.AddressId).FirstOrDefault() ?? throw new HttpException("Id không tìm thấy", 404);
 				if (Address.UserId != input.UserId)
 				{
-					throw new HttpException("Bạn không có quyền", 403);
+					throw new HttpException(string.Empty, 403);
 				}
 				db._Address.Remove(Address);
 				db.SaveChanges();
