@@ -18,7 +18,8 @@ namespace BE_Shop.Data
 		{
 			base.OnConfiguring(optionsBuilder);
 			optionsBuilder.UseSqlServer(
-				@"Data Source=KAITOKIDS872001;Initial Catalog=Shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+				//@"Data Source=KAITOKIDS872001;Initial Catalog=Shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+				@"Data Source=mssql-148631-0.cloudclusters.net,10010;Initial Catalog=Shop;User ID=admin;Password=Nguyen872001;Encrypt=True;Trust Server Certificate=True");
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
