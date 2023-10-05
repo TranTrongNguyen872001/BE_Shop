@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BE_Shop.Data.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,6 +13,7 @@ namespace BE_Shop.Data
 		public DbSet<Product> _Product { get; set; }
 		public DbSet<Order> _Order { get; set; }
 		public DbSet<OrderDetail> _OrderDetail { get; set; }
+		public DbSet<FileManager> _FileManager { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);

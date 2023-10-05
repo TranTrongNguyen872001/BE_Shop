@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace BE_Shop.Data
 {
@@ -11,6 +12,7 @@ namespace BE_Shop.Data
     {
         [Key] public Guid Id { get; set; } = Guid.Empty;
         [Required] public string Name { get; set; } = string.Empty;
+		string Picture { get; set; }
         public string Decription { get; set; } = string.Empty;
         public int Rating { get; set; } = 0;
 		public long UnitPrice { get; set; } = 0;

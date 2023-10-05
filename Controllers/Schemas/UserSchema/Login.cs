@@ -23,7 +23,8 @@ namespace BE_Shop.Controllers
 	public class OutputLogin : Output
     {
         public string Token { get; set; } = string.Empty;
-        internal override void Query_DataInput(object? ip)
+		public string Role { get; set; } = string.Empty;
+		internal override void Query_DataInput(object? ip)
         {
             Login input = (Login)ip;
             using (var db = new DatabaseConnection())
@@ -42,7 +43,7 @@ namespace BE_Shop.Controllers
 					Subject = new ClaimsIdentity(new Claim[]
 					{
 						new Claim(ClaimTypes.Name, user.Id.ToString()),
-						new Claim(ClaimTypes.Role, user.Role.ToString()),
+						new Claim(ClaimTypes.Role, user.Role),
 					}),
 					Expires = DateTime.Now.AddMinutes(5),
 					SigningCredentials = new SigningCredentials(
@@ -50,7 +51,8 @@ namespace BE_Shop.Controllers
 						SecurityAlgorithms.HmacSha256Signature)
 				});
                 Token = "Bearer " + tokenHandler.WriteToken(token);
-            }
+                Role = user.Role;
+			}
         }
     }
 }
