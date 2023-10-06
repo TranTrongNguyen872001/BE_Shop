@@ -19,7 +19,7 @@ namespace BE_Shop.Data
 			base.OnConfiguring(optionsBuilder);
 			optionsBuilder.UseSqlServer(
 				//@"Data Source=KAITOKIDS872001;Initial Catalog=Shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-				@"Data Source=mssql-148631-0.cloudclusters.net,10010;Initial Catalog=Shop;User ID=admin;Password=Nguyen872001;Encrypt=True;Trust Server Certificate=True");
+				@"Data Source=112.78.2.40,1433;Initial Catalog=dre56342_Shop;User ID=dre56342_Admin;Password=Kaitokids872001");
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -31,7 +31,7 @@ namespace BE_Shop.Data
 		{
 			using (var dbcontext = new DatabaseConnection())
 			{
-				await dbcontext.Database.EnsureDeletedAsync();
+				//await dbcontext.Database.EnsureDeletedAsync();
 				Console.WriteLine($"CSDL {dbcontext.Database.GetDbConnection().Database} : {(await dbcontext.Database.EnsureCreatedAsync() ? "Success" : "Fail")}");
 			}
 		}
