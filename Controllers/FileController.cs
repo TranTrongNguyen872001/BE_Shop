@@ -30,7 +30,7 @@ namespace BE_Shop.Controllers
 			return await QueryCheck<OutputDeleteFileManager>(Id);
 		}
 		/// <summary>
-		/// Xóa file
+		/// Lấy danh sách tất cả file đã lưu (chưa rõ mục đích sử dụng)
 		/// </summary>
 		[Authorize(Roles = "Admin")]
 		[HttpGet]
