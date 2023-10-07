@@ -10,6 +10,8 @@ namespace BE_Shop.Controllers
 		public int Rating { get; set; } = 0;
 		public long UnitPrice { get; set; } = 0;
 		public int TotalItem { get; set; } = 0;
+		public Guid MainFile { get; set; } = Guid.Empty;
+		public List<Guid> files { get; set; } = new List<Guid>();
 	}
 	public class OutputUpdateProduct : Output
 	{
@@ -18,12 +20,21 @@ namespace BE_Shop.Controllers
 			UpdateProduct input = (UpdateProduct)ip;
 			using (var db = new DatabaseConnection())
 			{
-				var Product = db._Product.Where(x => x.Id == input.Id).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
+				var Product = db._Product.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
+				foreach (var file in input.files)
+				{
+					var f = db._FileManager.Find(file);
+					if (f != null)
+					{
+						f.OwnerId = Product.Id;
+					}
+				}
 				Product.Name = input.Name;
 				Product.Decription = input.Decription;
 				Product.Rating = input.Rating;
 				Product.UnitPrice = input.UnitPrice;
 				Product.TotalItem = input.TotalItem;
+				Product.MainFile = input.MainFile;
 				db.SaveChanges();
 			}
 		}

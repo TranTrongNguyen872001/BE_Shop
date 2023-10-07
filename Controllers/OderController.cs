@@ -23,8 +23,8 @@ namespace BE_Shop.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] AddOrder input)
 		{
-
-			return await QueryCheck<OutputAddOrder>((input, Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)));
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			return await QueryCheck<OutputAddOrder>(input);
 		}
 		/// <summary>
 		/// Sửa hóa đơn
@@ -68,7 +68,8 @@ namespace BE_Shop.Controllers
 		[HttpPost("listmine")]
 		public async Task<IActionResult> GetAllMine([FromBody] GetAllOrder input)
 		{
-			return await QueryCheck<OutputGetAllOrderMine>((input, Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)));
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			return await QueryCheck<OutputGetAllOrderMine>(input);
 		}
 		/// <summary>
 		/// Lấy thông tin hóa đơn

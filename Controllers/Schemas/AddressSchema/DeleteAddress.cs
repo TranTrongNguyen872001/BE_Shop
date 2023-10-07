@@ -3,15 +3,19 @@ using Newtonsoft.Json;
 
 namespace BE_Shop.Controllers
 {
+	public class DeleteAddress
+	{
+		internal Guid UserId { get; set; } = Guid.Empty;
+		internal Guid AddressId { get; set; } = Guid.Empty;
+	}
 	public class OutputDeleteAddress : Output
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			var json = JsonConvert.SerializeObject(ip);
-			(Guid AddressId, Guid UserId) input = JsonConvert.DeserializeObject<(Guid , Guid)>(json);
+			DeleteAddress input = (DeleteAddress)ip;
 			using (var db = new DatabaseConnection())
 			{
-				var Address = db._Address.Where(e => e.Id == input.AddressId).FirstOrDefault() ?? throw new HttpException("Id không tìm thấy", 404);
+				var Address = db._Address.Find(input.AddressId) ?? throw new HttpException("Id không tìm thấy", 404);
 				if (Address.UserId != input.UserId)
 				{
 					throw new HttpException(string.Empty, 403);

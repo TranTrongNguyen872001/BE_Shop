@@ -29,7 +29,7 @@ namespace BE_Shop.Controllers
 	
 	public class OutputGetAllProduct : Output
 	{
-		public List<Product> ProductList { get; set; }
+		public object ProductList { get; set; }
 		public int TotalItemCount { get; set; }
 		public int TotalItemPage { get; set; }
 
@@ -40,6 +40,14 @@ namespace BE_Shop.Controllers
 			{
 				ProductList = input.Desc ?
 						db._Product
+						.Select(e => new 
+						{
+							e.Id,
+							e.Name,
+							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+							e.Rating,
+							e.UnitPrice,
+						})
 						.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name"))
 						.Where(e => input.Search == string.Empty
 							|| input.Search.Contains(e.Name))
@@ -47,6 +55,14 @@ namespace BE_Shop.Controllers
 						.Take(input.Index)
 						.ToList() :
 						db._Product
+						.Select(e => new
+						{
+							e.Id,
+							e.Name,
+							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+							e.Rating,
+							e.UnitPrice,
+						})
 						.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"))
 						.Where(e => input.Search == string.Empty
 							|| input.Search.Contains(e.Name))

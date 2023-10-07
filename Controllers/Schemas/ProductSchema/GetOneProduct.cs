@@ -1,16 +1,33 @@
 ﻿using BE_Shop.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace BE_Shop.Controllers
 {
 	public class OutputGetOneProduct : Output
 	{
-		public Product Product { get; set; }
+		public Guid Id { get; set; } = Guid.Empty;
+		public string Name { get; set; } = string.Empty;
+		public string Decription { get; set; } = string.Empty;
+		public int Rating { get; set; } = 0;
+		public long UnitPrice { get; set; } = 0;
+		public int TotalItem { get; set; } = 0;
+		public List<Guid> Files { get; set; } = new List<Guid>();
 		internal override void Query_DataInput(object? ip)
 		{
 			Guid id = (Guid)ip;
 			using (var db = new DatabaseConnection())
 			{
-				Product = db._Product.Where(e => e.Id == id).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
+				var Product = db._Product.Find(id) ?? throw new HttpException(string.Empty, 404);
+				this.Id = Product.Id;
+				this.Name = Product.Name;
+				this.Decription = Product.Decription;
+				this.Rating = Product.Rating;
+				this.UnitPrice = Product.UnitPrice;
+				this.TotalItem = Product.TotalItem;
+				this.Files = db._FileManager
+					.Where(f => f.OwnerId == id)
+					.Select(e => new Guid(e.Id.ToString()))
+					.ToList();
 			}
 		}
 	}

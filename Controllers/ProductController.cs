@@ -1,6 +1,7 @@
 ﻿using BE_Shop.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BE_Shop.Controllers
@@ -63,7 +64,6 @@ namespace BE_Shop.Controllers
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{
-
 			return await QueryCheck<OutputGetOneProduct>(Id);
 		}
 	}

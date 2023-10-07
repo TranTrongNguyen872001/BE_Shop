@@ -10,12 +10,16 @@ namespace BE_Shop.Controllers
 			try
 			{
 				T? a = Activator.CreateInstance(typeof(T)) as T;
-				a.Query_Check(input);
+				a.Query_DataInput(input);
 				return Ok(a);
 			}
 			catch (HttpException ex)
 			{
 				return StatusCode(ex.StatusCode, ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(400, ex.Message);
 			}
 		}
 	}

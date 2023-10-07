@@ -7,19 +7,17 @@ namespace BE_Shop.Controllers
 	{
 		public Guid Id { get; set; } = Guid.NewGuid();
 		public string Decription { get; set; } = string.Empty;
+		internal Guid UserId { get; set; } = Guid.Empty;
 	}
 	public class OutputUpdateAddress : Output
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			var json = JsonConvert.SerializeObject(ip);
-			(UpdateAddress Address, Guid UserId) i = JsonConvert.DeserializeObject<(UpdateAddress, Guid)>(json);
-
-			UpdateAddress input = i.Address;
+			UpdateAddress input = (UpdateAddress)ip;
 			using (var db = new DatabaseConnection())
 			{
-				var Address = db._Address.Where(e => e.Id == input.Id).ToList().FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
-				if (Address.UserId != i.UserId)
+				var Address = db._Address.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
+				if (Address.UserId != input.UserId)
 				{
 					throw new HttpException(string.Empty, 403);
 				}

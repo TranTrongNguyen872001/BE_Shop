@@ -11,7 +11,7 @@ namespace BE_Shop.Controllers
 			Guid Id = (Guid)ip;
 			using (var db = new DatabaseConnection())
 			{
-				User = db._User.Where(e => e.Id == Id).ToList().FirstOrDefault();
+				User = db._User.Find(Id) ?? throw new HttpException(string.Empty, 404);
 				User.AddressList = db._Address.Where(e => e.UserId == Id).ToList();
 			}
 		}

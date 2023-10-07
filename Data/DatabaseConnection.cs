@@ -1,6 +1,4 @@
-﻿using BE_Shop.Data.Model;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -56,21 +54,6 @@ namespace BE_Shop.Data
 	}
 	public abstract class Output
 	{
-		internal void Query_Check(object? input)
-		{
-			try
-			{
-				Query_DataInput(input);
-			}
-			catch (HttpException ex)
-			{
-				throw ex;
-			}
-			catch (Exception ex)
-			{
-				throw new HttpException(ex.Message, 400);
-			}
-		}
 		internal abstract void Query_DataInput(object? input);
 	}
 }

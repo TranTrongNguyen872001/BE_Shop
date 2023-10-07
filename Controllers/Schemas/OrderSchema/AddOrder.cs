@@ -9,6 +9,7 @@ namespace BE_Shop.Controllers
 		//public Guid UserId { get; set; } = Guid.Empty;
 		public string Address { get; set; } = string.Empty;
 		public List<AddOrderDetail> OrderDetail { get; set; } = new List<AddOrderDetail>();
+		internal Guid UserId { get; set; } = Guid.Empty;
 	}
 	public class AddOrderDetail
 	{
@@ -20,16 +21,14 @@ namespace BE_Shop.Controllers
 		public Guid Id { get; set; } = Guid.NewGuid();
 		internal override void Query_DataInput(object? ip)
 		{
-			var json = JsonConvert.SerializeObject(ip);
-			(AddOrder, Guid UserId) a = JsonConvert.DeserializeObject<(AddOrder, Guid)>(json);
-			AddOrder input = a.Item1;
+			AddOrder input = (AddOrder)ip;
 			List<OrderDetail> OrderDetail = new List<OrderDetail>();
 			using (var db = new DatabaseConnection())
 			{
 				db._Order.Add(new Order()
 				{
 					Id = Id,
-					UserId = a.UserId,
+					UserId = input.UserId,
 					Address = input.Address,
 					CreatedDate = DateTime.Now,
 				});

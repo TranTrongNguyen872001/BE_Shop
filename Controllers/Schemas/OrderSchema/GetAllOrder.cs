@@ -16,6 +16,7 @@ namespace BE_Shop.Controllers
 		/// Số trang
 		/// </summary>
 		public int Page { get; set; } = 0;
+		internal Guid UserId { get; set; } = Guid.Empty;
 	}
 	public class OutputGetAllOrder : Output
 	{
@@ -60,9 +61,7 @@ namespace BE_Shop.Controllers
 
 		internal override void Query_DataInput(object? ip)
 		{
-			var json = JsonConvert.SerializeObject(ip);
-			(GetAllOrder, Guid UserId) a = JsonConvert.DeserializeObject<(GetAllOrder, Guid)>(json);
-			GetAllOrder input = a.Item1;
+			GetAllOrder input = (GetAllOrder)ip;
 			using (var db = new DatabaseConnection())
 			{
 				OrderList = db._Order.Join(db._OrderDetail, x => x.Id, y => y.OrderId, (x, y) => new
@@ -76,7 +75,7 @@ namespace BE_Shop.Controllers
 					y.ItemCount,
 					y.UnitPrice
 				})
-				.Where(e => e.UserId == a.UserId)
+				.Where(e => e.UserId == input.UserId)
 				.OrderByDescending(e => e.CreatedDate)
 				.GroupBy(e => new { e.Id, e.Address, e.Status, e.CreatedDate, e.Tax })
 				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)), TotalTax = e.Key.Tax * e.Sum(x => (x.ItemCount * x.UnitPrice)) })

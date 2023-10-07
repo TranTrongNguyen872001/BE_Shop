@@ -9,8 +9,8 @@ namespace BE_Shop.Controllers
 			Guid Id =(Guid)ip;
 			using (var db = new DatabaseConnection())
 			{
-				var Product = db._Product.Where(e =>  e.Id == Id).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
-				db._Product.Remove(Product);
+				db._Product.Remove(db._Product.Find(Id) ?? throw new HttpException(string.Empty, 404));
+				db._FileManager.RemoveRange(db._FileManager.Where(e => e.OwnerId == Id).ToList());
 				db.SaveChanges();
 			}
 		}

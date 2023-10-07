@@ -20,7 +20,12 @@ namespace BE_Shop.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] string Address)
 		{
-			return await QueryCheck<OutputAddAddress>((Address, Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)));
+			return await QueryCheck<OutputAddAddress>(
+				new AddAddress()
+				{
+					Address = Address, 
+					UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)
+				});
 		}
 		/// <summary>
 		/// Sửa địa chỉ
@@ -31,7 +36,8 @@ namespace BE_Shop.Controllers
 		[HttpPut]
 		public async Task<IActionResult> Update([FromBody] UpdateAddress input)
 		{
-			return await QueryCheck<OutputUpdateAddress>((input, Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)));
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			return await QueryCheck<OutputUpdateAddress>(input);
 		}
 		/// <summary>
 		/// Xóa địa chỉ
@@ -42,7 +48,12 @@ namespace BE_Shop.Controllers
 		[HttpDelete("{Id}")]
 		public async Task<IActionResult> Delete(Guid Id)
 		{
-			return await QueryCheck<OutputDeleteAddress>((Id, Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)));
+			return await QueryCheck<OutputDeleteAddress>(
+				new DeleteAddress() 
+				{
+					UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value),
+					AddressId = Id
+				});
 		}
 		/// <summary>
 		/// Lấy danh sách địa chỉ
