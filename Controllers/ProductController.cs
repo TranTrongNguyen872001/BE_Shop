@@ -49,7 +49,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[AllowAnonymous]
 		[HttpPost("list")]
 		public async Task<IActionResult> GetAll([FromBody] GetAllProduct input)
 		{

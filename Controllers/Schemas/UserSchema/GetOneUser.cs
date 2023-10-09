@@ -13,6 +13,7 @@ namespace BE_Shop.Controllers
 			{
 				User = db._User.Find(Id) ?? throw new HttpException(string.Empty, 404);
 				User.AddressList = db._Address.Where(e => e.UserId == Id).ToList();
+				User.OrderList = db._Order.Where(e => e.UserId == Id).ToList();
 			}
 		}
 	}

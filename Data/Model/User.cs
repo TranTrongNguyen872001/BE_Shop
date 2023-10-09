@@ -15,6 +15,7 @@ namespace BE_Shop.Data
         [Required]public string UserName { get; set; } = string.Empty;
         [Required]public string Password { get; set; } = string.Empty;
 		public List<Address> AddressList { get; set; } = new List<Address>();
+        public List<Order> OrderList { get; set; } = new List<Order>();
     }
     /// <summary>
     /// Địa chỉ

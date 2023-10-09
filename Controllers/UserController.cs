@@ -66,7 +66,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpGet("{Id}")]
-		public async Task<IActionResult> UserById(Guid Id)
+		public async Task<IActionResult> UserOne(Guid Id)
 		{
 			return await QueryCheck<OutputGetOneUser>(Id);
 		}

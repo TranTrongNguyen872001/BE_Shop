@@ -15,6 +15,7 @@ namespace BE_Shop.Controllers
 		/// Thêm File
 		/// </summary>
 		[Authorize]
+		[DisableRequestSizeLimit]
 		[HttpPost]
 		public async Task<IActionResult> Add([FromForm] List<IFormFile> files)
 		{
