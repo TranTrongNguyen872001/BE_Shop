@@ -45,7 +45,7 @@ namespace BE_Shop.Controllers
 							e.Id,
 							e.Name,
 							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
-							e.Rating,
+							Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
 							e.UnitPrice,
 						})
 						.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name"))
@@ -60,7 +60,7 @@ namespace BE_Shop.Controllers
 							e.Id,
 							e.Name,
 							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
-							e.Rating,
+							Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
 							e.UnitPrice,
 						})
 						.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"))

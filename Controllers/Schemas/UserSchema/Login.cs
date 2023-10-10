@@ -23,7 +23,7 @@ namespace BE_Shop.Controllers
 	public class OutputLogin : Output
     {
         public string Token { get; set; } = string.Empty;
-		public string Role { get; set; } = string.Empty;
+		public OutputGetOneUser User { get; set; } = new OutputGetOneUser();
 		internal override void Query_DataInput(object? ip)
         {
             Login input = (Login)ip;
@@ -31,12 +31,9 @@ namespace BE_Shop.Controllers
             {
                 var i = Converter.MD5Convert(input.Password);
 
-				var users = db._User.Where(b => b.UserName == input.Username && b.Password == i).Take(1).ToList();
-                if (!users.Any())
-                {
-					throw new HttpException(string.Empty, 403);
-				}
-                var user = users[0];
+                var user = db._User.Where(b => b.UserName == input.Username && b.Password == i).FirstOrDefault() ?? throw new HttpException(string.Empty, 403);
+                user.TokenKey = Converter.RamdomByte(32);
+                db.SaveChanges();
 				JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
                 SecurityToken token = tokenHandler.CreateToken(new SecurityTokenDescriptor
 				{
@@ -44,6 +41,7 @@ namespace BE_Shop.Controllers
 					{
 						new Claim(ClaimTypes.Name, user.Id.ToString()),
 						new Claim(ClaimTypes.Role, user.Role),
+						new Claim("Key", user.TokenKey),
 					}),
 					Expires = DateTime.Now.AddMinutes(5),
 					SigningCredentials = new SigningCredentials(
@@ -51,7 +49,7 @@ namespace BE_Shop.Controllers
 						SecurityAlgorithms.HmacSha256Signature)
 				});
                 Token = "Bearer " + tokenHandler.WriteToken(token);
-                Role = user.Role;
+				User.Query_DataInput(user.Id);
 			}
         }
     }

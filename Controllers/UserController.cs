@@ -92,5 +92,55 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputDeleteUser>(Id);
 		}
+		/// <summary>
+		/// Upload ảnh đại diện
+		/// </summary>
+		/// <param name="files"></param>
+		/// <returns></returns>
+		[Authorize]
+		[DisableRequestSizeLimit]
+		[HttpPost("pro/pic")]
+		public async Task<IActionResult> AddProfilePicture(IFormFile file)
+		{
+			try
+			{
+				using (var db = new DatabaseConnection())
+				{
+					var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)) ?? throw new HttpException(string.Empty, 404);
+					using (var ms = new MemoryStream())
+					{
+						file.CopyTo(ms);
+						user.ProPic = ms.ToArray();
+						user.ProPicType = file.ContentType;
+						db.SaveChanges();
+					}
+					return Ok();
+				}
+			}
+			catch (HttpException ex)
+			{
+				return StatusCode(ex.StatusCode, ex.Message);
+			}
+		}
+		/// <summary>
+		/// Lấy ảnh đại diện
+		/// </summary>
+		[Authorize]
+		[HttpGet("pro/pic")]
+		public async Task<IActionResult> GetProfilePicture()
+		{
+			try
+			{
+				using (var db = new DatabaseConnection())
+				{
+					var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)) ?? throw new HttpException(string.Empty, 404);
+					return File(user.ProPic ?? throw new HttpException(string.Empty, 404), user.ProPicType);
+				}
+			}
+			catch (HttpException ex)
+			{
+				return StatusCode(ex.StatusCode, ex.Message);
+			}
+		}
 	}
 }

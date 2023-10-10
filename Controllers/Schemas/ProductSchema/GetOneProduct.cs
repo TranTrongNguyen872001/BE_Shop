@@ -8,7 +8,7 @@ namespace BE_Shop.Controllers
 		public Guid Id { get; set; } = Guid.Empty;
 		public string Name { get; set; } = string.Empty;
 		public string Decription { get; set; } = string.Empty;
-		public int Rating { get; set; } = 0;
+		public double Rating { get; set; } = 0;
 		public long UnitPrice { get; set; } = 0;
 		public int TotalItem { get; set; } = 0;
 		public List<Guid> Files { get; set; } = new List<Guid>();
@@ -21,7 +21,7 @@ namespace BE_Shop.Controllers
 				this.Id = Product.Id;
 				this.Name = Product.Name;
 				this.Decription = Product.Decription;
-				this.Rating = Product.Rating;
+				this.Rating = Math.Round((db._Comment.Where(y => y.ProductId == Product.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2;
 				this.UnitPrice = Product.UnitPrice;
 				this.TotalItem = Product.TotalItem;
 				this.Files = db._FileManager

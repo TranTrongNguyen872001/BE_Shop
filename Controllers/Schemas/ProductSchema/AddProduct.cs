@@ -11,7 +11,6 @@ namespace BE_Shop.Controllers
 	{
 		public string Name { get; set; } = string.Empty;
 		public string Decription { get; set; } = string.Empty;
-		public int Rating { get; set; } = 0;
 		public long UnitPrice { get; set; } = 0;
 		public int TotalItem { get; set; } = 0;
 		public Guid MainFile { get; set; } = Guid.Empty;
@@ -40,7 +39,6 @@ namespace BE_Shop.Controllers
 					Decription = input.Decription,
 					UnitPrice = input.UnitPrice,
 					TotalItem = input.TotalItem,
-					Rating = input.Rating,
 					MainFile = input.MainFile,
 				});
 				db.SaveChanges();

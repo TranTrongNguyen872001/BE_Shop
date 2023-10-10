@@ -7,7 +7,6 @@ namespace BE_Shop.Controllers
 		public Guid Id { get; set; } = Guid.Empty;
 		public string Name { get; set; } = string.Empty;
 		public string Decription { get; set; } = string.Empty;
-		public int Rating { get; set; } = 0;
 		public long UnitPrice { get; set; } = 0;
 		public int TotalItem { get; set; } = 0;
 		public Guid MainFile { get; set; } = Guid.Empty;
@@ -31,7 +30,6 @@ namespace BE_Shop.Controllers
 				}
 				Product.Name = input.Name;
 				Product.Decription = input.Decription;
-				Product.Rating = input.Rating;
 				Product.UnitPrice = input.UnitPrice;
 				Product.TotalItem = input.TotalItem;
 				Product.MainFile = input.MainFile;

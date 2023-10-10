@@ -12,6 +12,7 @@ namespace BE_Shop.Data
 		public DbSet<Order> _Order { get; set; }
 		public DbSet<OrderDetail> _OrderDetail { get; set; }
 		public DbSet<FileManager> _FileManager { get; set; }
+		public DbSet<Comment> _Comment { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
@@ -23,6 +24,8 @@ namespace BE_Shop.Data
 		{
 			modelBuilder.Entity<OrderDetail>()
 				.HasKey(nameof(OrderDetail.ProductId), nameof(OrderDetail.OrderId));
+			modelBuilder.Entity<Comment>()
+				.HasKey(nameof(Comment.TT), nameof(Comment.ProductId));
 		}
 		//xóa database và tạo lại :) đỡ tốn thời gian :( mệt quá!
 		public static async Task CreateDatabase()
@@ -50,6 +53,15 @@ namespace BE_Shop.Data
 				sb.Append(hash[i].ToString("X2"));
 			}
 			return sb.ToString();
+		}
+		static public string RamdomByte(int i)
+		{
+			var randomNumber = new byte[i];
+			using (var rng = RandomNumberGenerator.Create())
+			{
+				rng.GetBytes(randomNumber);
+				return Convert.ToBase64String(randomNumber);
+			}
 		}
 	}
 	public abstract class Output
