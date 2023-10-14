@@ -16,6 +16,7 @@ namespace BE_Shop.Controllers
 			try
 			{
 				T a = Activator.CreateInstance(typeof(T)) as T;
+				a.Query_DataInput(input);
 				string ResetToken = string.Empty;
 				using (var db = new DatabaseConnection())
 				{
@@ -48,8 +49,24 @@ namespace BE_Shop.Controllers
 						}
 					}
 				}
-				a.Query_DataInput(input);
 				return Ok(new { ResetToken = ResetToken, Data = a });
+			}
+			catch (HttpException ex)
+			{
+				return StatusCode(ex.StatusCode, ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, ex.Message);
+			}
+		}
+		internal async Task<IActionResult> QueryCheck_NonToken<T>(object? input) where T : Output
+		{
+			try
+			{
+				T a = Activator.CreateInstance(typeof(T)) as T;
+				a.Query_DataInput(input);
+				return Ok(a);
 			}
 			catch (HttpException ex)
 			{

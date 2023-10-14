@@ -1,14 +1,11 @@
 ﻿using BE_Shop.Controllers;
-using BE_Shop.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
-using System.Reflection.Metadata;
-using System.Security.Cryptography.Xml;
 using System.Text;
+using BE_Shop.Data.Service;
 
 //Cập nhật CSDL
 //await DatabaseConnection.CreateDatabase();
@@ -54,6 +51,7 @@ builder.Services.AddSwaggerGen(options =>
 		}
 	});
 });
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 //Add login token.
 builder.Services.AddAuthentication(x =>

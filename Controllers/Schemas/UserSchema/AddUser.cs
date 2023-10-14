@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BE_Shop.Controllers
 {
@@ -26,7 +27,7 @@ namespace BE_Shop.Controllers
         /// <summary>
         /// Mật khẩu
         /// </summary>
-        [Required] public string Password { get; set; } = string.Empty;
+        //[Required] public string Password { get; set; } = string.Empty;
 	}
     public class OutputAddUser : Output
     {
@@ -35,46 +36,53 @@ namespace BE_Shop.Controllers
         internal override void Query_DataInput(object? ip)
         {
 			AddUser input = (AddUser)ip;
+            if(!Regex.Match(input.UserName, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", RegexOptions.IgnoreCase).Success)
+            {
+				throw new HttpException("Email không hợp lệ", 400);
+			}
+			string TokenKey = Converter.RamdomByte(32);
 			using (var db = new DatabaseConnection())
             {
-                if(db._User.Where(b => b.UserName == input.UserName).ToList().Count != 0)
+                if(db._User.Where(b => b.UserName == input.UserName).Count() != 0)
                 {
                     throw new HttpException(string.Empty, 409);
                 }
-				List<Address> addresses = new List<Address>();
+                List<Address> addresses = new List<Address>();
                 foreach (var address in input.AddressList)
                 {
                     addresses.Add(new Address()
                     {
                         Id = Guid.NewGuid(),
                         Description = address,
-					});
-				}
-                db._User.Add(new User()
-				{
-					Id = Id,
-					Name = input.Name,
-					AddressList = addresses,
-					UserName = input.UserName,
-					Password = Converter.MD5Convert(input.Password),
-                    Role = "Member",
-				});
+                    });
+                }
+				db._User.Add(new User()
+                {
+                    Id = Id,
+                    Name = input.Name,
+                    AddressList = addresses,
+                    UserName = input.UserName,
+                    //Password = Converter.MD5Convert(input.Password),
+                    Role = "NotValid",
+                    TokenKey = TokenKey,
+                });
                 db.SaveChanges();
-			}
-			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-			SecurityToken token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-			{
-				Subject = new ClaimsIdentity(new Claim[]
-				{
-					new Claim(ClaimTypes.Name, Id.ToString()),
-					new Claim(ClaimTypes.Role, "Member"),
-				}),
-				Expires = DateTime.Now.AddMinutes(5),
-				SigningCredentials = new SigningCredentials(
-					new SymmetricSecurityKey(Encoding.ASCII.GetBytes(UserController.key)),
-					SecurityAlgorithms.HmacSha256Signature)
-			});
-			Token = "Bearer " + tokenHandler.WriteToken(token);
-		}
+            }
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, Id.ToString()),
+                    new Claim(ClaimTypes.Role, "NotValid"),
+                    new Claim("Key", TokenKey),
+                }),
+                Expires = DateTime.Now.AddMinutes(5),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(UserController.key)),
+                    SecurityAlgorithms.HmacSha256Signature)
+            });
+            Token = "Bearer " + tokenHandler.WriteToken(token);
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin,Member")]
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] string Address)
 		{
@@ -32,7 +32,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin,Member")]
 		[HttpPut]
 		public async Task<IActionResult> Update([FromBody] UpdateAddress input)
 		{
@@ -44,7 +44,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin,Member")]
 		[HttpDelete("{Id}")]
 		public async Task<IActionResult> Delete(Guid Id)
 		{
@@ -71,7 +71,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin,Member")]
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{

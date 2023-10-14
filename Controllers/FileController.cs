@@ -14,7 +14,7 @@ namespace BE_Shop.Controllers
 		/// <summary>
 		/// Thêm File
 		/// </summary>
-		[Authorize]
+		[Authorize(Roles = "Admin,Member")]
 		[DisableRequestSizeLimit]
 		[HttpPost]
 		public async Task<IActionResult> Add([FromForm] List<IFormFile> files)
@@ -24,7 +24,7 @@ namespace BE_Shop.Controllers
 		/// <summary>
 		/// Xóa file
 		/// </summary>
-		[Authorize]
+		[Authorize(Roles = "Admin,Member")]
 		[HttpDelete("{Id}")]
 		public async Task<IActionResult> Delete(Guid Id)
 		{

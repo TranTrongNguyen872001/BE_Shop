@@ -31,7 +31,7 @@ namespace BE_Shop.Controllers
             {
                 var i = Converter.MD5Convert(input.Password);
 
-                var user = db._User.Where(b => b.UserName == input.Username && b.Password == i).FirstOrDefault() ?? throw new HttpException(string.Empty, 403);
+                var user = db._User.Where(b => b.UserName == input.Username && (b.Role == "NotValid" || b.Password == i)).FirstOrDefault() ?? throw new HttpException(string.Empty, 403);
                 user.TokenKey = Converter.RamdomByte(32);
                 db.SaveChanges();
 				JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

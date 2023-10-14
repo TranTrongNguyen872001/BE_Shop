@@ -16,7 +16,8 @@ namespace BE_Shop.Data
         [Required]public string Password { get; set; } = string.Empty;
         public byte[]? ProPic { get; set; }
         public string? ProPicType { get; set; }
-        public string? TokenKey { get; set; }
+        public string TokenKey { get; set; }
+        public int? ValidCode { get; set; }
 		public List<Address> AddressList { get; set; } = new List<Address>();
         public List<Order> OrderList { get; set; } = new List<Order>();
     }

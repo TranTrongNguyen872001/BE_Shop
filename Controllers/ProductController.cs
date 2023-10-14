@@ -60,7 +60,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize]
+		[Authorize(Roles = "Admin,Member")]
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{
