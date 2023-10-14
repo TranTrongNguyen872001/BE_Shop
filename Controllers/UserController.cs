@@ -93,6 +93,7 @@ namespace BE_Shop.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateUser([FromBody] UpdateUser input)
 		{
+			input.Id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? Guid.Empty.ToString());
 			return await QueryCheck<OutputUpdateUser>(input);
 		}
 		/// <summary>

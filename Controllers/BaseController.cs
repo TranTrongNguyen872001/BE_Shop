@@ -16,7 +16,6 @@ namespace BE_Shop.Controllers
 			try
 			{
 				T a = Activator.CreateInstance(typeof(T)) as T;
-				a.Query_DataInput(input);
 				string ResetToken = string.Empty;
 				using (var db = new DatabaseConnection())
 				{
@@ -25,6 +24,7 @@ namespace BE_Shop.Controllers
 						var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value));
 						if (user.TokenKey == User.Claims.FirstOrDefault(c => c.Type == "Key")?.Value)
 						{
+							a.Query_DataInput(input);
 							user.TokenKey = Converter.RamdomByte(32);
 							db.SaveChanges();
 							JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -32,9 +32,9 @@ namespace BE_Shop.Controllers
 							{
 								Subject = new ClaimsIdentity(new Claim[]
 								{
-						new Claim(ClaimTypes.Name, user.Id.ToString()),
-						new Claim(ClaimTypes.Role, user.Role),
-						new Claim("Key", user.TokenKey),
+									new Claim(ClaimTypes.Name, user.Id.ToString()),
+									new Claim(ClaimTypes.Role, user.Role),
+									new Claim("Key", user.TokenKey),
 								}),
 								Expires = DateTime.Now.AddMinutes(5),
 								SigningCredentials = new SigningCredentials(
