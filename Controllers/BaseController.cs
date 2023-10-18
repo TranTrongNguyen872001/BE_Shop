@@ -45,7 +45,7 @@ namespace BE_Shop.Controllers
 						}
 						else
 						{
-							//throw new HttpException(string.Empty, 403);
+							throw new HttpException(string.Empty, 403);
 						}
 					}
 				}

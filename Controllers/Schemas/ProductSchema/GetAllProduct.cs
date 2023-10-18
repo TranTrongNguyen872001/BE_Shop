@@ -42,11 +42,13 @@ namespace BE_Shop.Controllers
 						db._Product
 						.Select(e => new 
 						{
+							e.Code,
 							e.Id,
 							e.Name,
 							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
 							Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
 							e.UnitPrice,
+							e.TotalItem,
 						})
 						.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name"))
 						.Where(e => input.Search == string.Empty
@@ -57,11 +59,13 @@ namespace BE_Shop.Controllers
 						db._Product
 						.Select(e => new
 						{
+							e.Code,
 							e.Id,
 							e.Name,
 							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
 							Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
 							e.UnitPrice,
+							e.TotalItem,
 						})
 						.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"))
 						.Where(e => input.Search == string.Empty

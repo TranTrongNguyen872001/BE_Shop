@@ -10,6 +10,7 @@ namespace BE_Shop.Controllers
 		public long UnitPrice { get; set; } = 0;
 		public int TotalItem { get; set; } = 0;
 		public Guid MainFile { get; set; } = Guid.Empty;
+		public float Discount { get; set; } = 0;
 		public List<Guid> files { get; set; } = new List<Guid>();
 	}
 	public class OutputUpdateProduct : Output
@@ -33,6 +34,7 @@ namespace BE_Shop.Controllers
 				Product.UnitPrice = input.UnitPrice;
 				Product.TotalItem = input.TotalItem;
 				Product.MainFile = input.MainFile;
+				Product.Discount = input.Discount;
 				db.SaveChanges();
 			}
 		}
