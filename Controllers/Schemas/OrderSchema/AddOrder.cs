@@ -13,7 +13,7 @@ namespace BE_Shop.Controllers
 	}
 	public class AddOrderDetail
 	{
-		public Guid ProductDetailId { get; set; } = Guid.Empty;
+		public Guid ProductId { get; set; } = Guid.Empty;
 		public int ItemCount { get; set; } = 0;
 	}
 	public class OutputAddOrder : Output
@@ -37,9 +37,9 @@ namespace BE_Shop.Controllers
 					db._OrderDetail.Add(new OrderDetail()
 					{
 						OrderId = Id,
-						ProductId = detail.ProductDetailId,
+						ProductId = detail.ProductId,
 						ItemCount = detail.ItemCount,
-						UnitPrice = db._Product.Where(e => e.Id == detail.ProductDetailId).FirstOrDefault()?.UnitPrice ?? throw new HttpException(detail.ProductDetailId.ToString(), 404),
+						UnitPrice = db._Product.Where(e => e.Id == detail.ProductId).FirstOrDefault()?.UnitPrice ?? throw new HttpException(detail.ProductId.ToString(), 404),
 					});
 				}
 				db.SaveChanges();

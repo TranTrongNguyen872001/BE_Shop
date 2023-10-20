@@ -31,18 +31,30 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = "Admin,Member")]
 		[HttpPut]
 		public async Task<IActionResult> Update([FromBody] UpdateOrder input)
 		{
 			return await QueryCheck<OutputUpdateOrder>(input);
 		}
-		/// <summary>
-		/// Xóa hóa đơn
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Thực hiện quy trình thanh toán hóa đơn
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
+        [HttpPut("wf")]
+        public async Task<IActionResult> Workflow([FromBody] WorkflowOrder input)
+        {
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+            return await QueryCheck<OutputWorkflowOrder>(input);
+        }
+        /// <summary>
+        /// Xóa hóa đơn
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
 		[HttpDelete("{Id}")]
 		public async Task<IActionResult> Delete(Guid Id)
 		{

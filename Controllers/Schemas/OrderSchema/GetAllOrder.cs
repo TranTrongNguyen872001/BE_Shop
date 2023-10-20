@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
+using System.Data;
 using System.Runtime.CompilerServices;
 
 namespace BE_Shop.Controllers
@@ -33,18 +34,24 @@ namespace BE_Shop.Controllers
 				{
 					x.Id,
 					x.Address,
-					UserId = db._User.Where(e => e.Id == x.UserId).Select(i => i.Id).FirstOrDefault(),
-					UserName = db._User.Where(e => e.Id == x.UserId).Select(i => i.Name).FirstOrDefault(),
-					UserRole = db._User.Where(e => e.Id == x.UserId).Select(i => i.Role).FirstOrDefault(),
-					x.Status,
+					User = new
+					{
+                        Id = x.UserId,
+						Name = db._User.Where(e => e.Id == x.UserId).Select(i => i.Name).FirstOrDefault(),
+						Role = db._User.Where(e => e.Id == x.UserId).Select(i => i.Role).FirstOrDefault()
+					},
+					Status =	(x.Status == 0) ? "Khởi tạo" :
+								(x.Status == 1) ? "Xác nhận" :
+								(x.Status == 2) ? "Thanh toán" :
+								(x.Status == 3) ? "Hoàn tất" :
+                                (x.Status == 4) ? "Hủy" : x.Status.ToString(),
 					x.CreatedDate,
-					x.Tax,
 					y.ItemCount,
-					y.UnitPrice
+					y.UnitPrice,
 				})
 				.OrderByDescending(e => e.CreatedDate)
-				.GroupBy(e => new { e.Id, e.Address, e.UserId, e.UserName, e.UserRole, e.Status, e.CreatedDate, e.Tax })
-				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)), TotalTax = e.Key.Tax * e.Sum(x => (x.ItemCount * x.UnitPrice)) })
+				.GroupBy(e => new { e.Id, e.Address, e.User, e.Status, e.CreatedDate })
+				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)) })
 				.Skip((input.Page - 1) * input.Index)
 				.Take(input.Index)
 				.ToList();
@@ -69,16 +76,19 @@ namespace BE_Shop.Controllers
 					x.Id,
 					x.Address,
 					x.UserId,
-					x.Status,
+                    Status =	(x.Status == 0) ? "Khởi tạo" :
+                                (x.Status == 1) ? "Xác nhận" :
+                                (x.Status == 2) ? "Thanh toán" :
+                                (x.Status == 3) ? "Hoàn tất" :
+                                (x.Status == 4) ? "Hủy" : x.Status.ToString(),
 					x.CreatedDate,
-					x.Tax,
 					y.ItemCount,
 					y.UnitPrice
 				})
 				.Where(e => e.UserId == input.UserId)
 				.OrderByDescending(e => e.CreatedDate)
-				.GroupBy(e => new { e.Id, e.Address, e.Status, e.CreatedDate, e.Tax })
-				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)), TotalTax = e.Key.Tax * e.Sum(x => (x.ItemCount * x.UnitPrice)) })
+				.GroupBy(e => new { e.Id, e.Address, e.Status, e.CreatedDate})
+				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)) })
 				.Skip((input.Page - 1) * input.Index)
 				.Take(input.Index)
 				.ToList();
