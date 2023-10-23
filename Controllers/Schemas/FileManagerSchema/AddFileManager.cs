@@ -9,7 +9,7 @@ namespace BE_Shop.Controllers
 		public int TotalSuccess { get; set; } = 0;
 		internal override void Query_DataInput(object? ip)
 		{
-			List<IFormFile> input = (List<IFormFile>)ip;
+			List<IFormFile> input = (List<IFormFile>)ip!;
 			TotalUpload = input.Count;
 			using (var db = new DatabaseConnection())
 			{

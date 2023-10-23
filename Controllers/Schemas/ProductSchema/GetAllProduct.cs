@@ -35,7 +35,7 @@ namespace BE_Shop.Controllers
 
 		internal override void Query_DataInput(object? ip)
 		{
-			GetAllProduct input = (GetAllProduct)ip;
+			GetAllProduct input = (GetAllProduct)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				ProductList = input.Desc ?

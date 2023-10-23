@@ -12,7 +12,7 @@ namespace BE_Shop.Controllers
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			DeleteAddress input = (DeleteAddress)ip;
+			DeleteAddress input = (DeleteAddress)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var Address = db._Address.Find(input.AddressId) ?? throw new HttpException("Id không tìm thấy", 404);

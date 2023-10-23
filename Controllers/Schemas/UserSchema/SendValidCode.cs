@@ -16,7 +16,7 @@ namespace BE_Shop.Controllers
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			SendValidCode input = (SendValidCode)ip;
+			SendValidCode input = (SendValidCode)ip!;
 			int ValidCode = new Random().Next(0, 1000000);
 			using (var db = new DatabaseConnection())
 			{
@@ -55,7 +55,7 @@ namespace BE_Shop.Controllers
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			var input = (ValidUser)ip;
+			var input = (ValidUser)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var user = db._User.Find(input.UserId) ?? throw new HttpException(string.Empty, 404);

@@ -13,7 +13,7 @@ namespace BE_Shop.Controllers
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			UpdateAddress input = (UpdateAddress)ip;
+			UpdateAddress input = (UpdateAddress)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var Address = db._Address.Find(input.Id) ?? throw new HttpException(string.Empty, 404);

@@ -24,10 +24,6 @@ namespace BE_Shop.Controllers
         /// Tên đăng nhập
         /// </summary>
         [Required] public string UserName { get; set; } = string.Empty;
-        /// <summary>
-        /// Mật khẩu
-        /// </summary>
-        //[Required] public string Password { get; set; } = string.Empty;
 	}
     public class OutputAddUser : Output
     {
@@ -35,7 +31,7 @@ namespace BE_Shop.Controllers
         public string Token { get; set; } = string.Empty;
         internal override void Query_DataInput(object? ip)
         {
-			AddUser input = (AddUser)ip;
+			AddUser input = (AddUser)ip!;
             if(!Regex.Match(input.UserName, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", RegexOptions.IgnoreCase).Success)
             {
 				throw new HttpException("Email không hợp lệ", 400);

@@ -1,33 +1,35 @@
 ﻿using BE_Shop.Data;
-using System.ComponentModel.DataAnnotations;
 
 namespace BE_Shop.Controllers
 {
 	public class OutputGetOneProduct : Output
 	{
-		public Guid Id { get; set; } = Guid.Empty;
-		public string Name { get; set; } = string.Empty;
-		public string Decription { get; set; } = string.Empty;
-		public double Rating { get; set; } = 0;
-		public long UnitPrice { get; set; } = 0;
-		public int TotalItem { get; set; } = 0;
-		public List<Guid> Files { get; set; } = new List<Guid>();
+        public object Product { get; set; }
 		internal override void Query_DataInput(object? ip)
 		{
-			Guid id = (Guid)ip;
+			Guid id = (Guid)ip!;
 			using (var db = new DatabaseConnection())
 			{
-				var Product = db._Product.Find(id) ?? throw new HttpException(string.Empty, 404);
-				this.Id = Product.Id;
-				this.Name = Product.Name;
-				this.Decription = Product.Decription;
-				this.Rating = Math.Round((db._Comment.Where(y => y.ProductId == Product.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2;
-				this.UnitPrice = Product.UnitPrice;
-				this.TotalItem = Product.TotalItem;
-				this.Files = db._FileManager
-					.Where(f => f.OwnerId == id)
-					.Select(e => new Guid(e.Id.ToString()))
-					.ToList();
+                //var Product = db._Product.Find(id) ?? throw new HttpException(string.Empty, 404);
+                Product = db._Product
+					.Where(e => e.Id == id)
+					.Select(e => new
+					{
+						e.Id,
+						e.Name,
+						e.Decription,
+						Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
+						e.UnitPrice,
+						e.TotalItem,
+						Category = db._ProductCategory
+							.Where(y => e.Category != null && e.Category.Contains(y.Id.ToString()))
+							.ToList(),
+						Files = db._FileManager
+							.Where(f => f.OwnerId == id)
+							.Select(e => new Guid(e.Id.ToString()))
+							.ToList(),
+                        e.Status,
+					}).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 			}
 		}
 	}

@@ -15,42 +15,45 @@ namespace BE_Shop.Controllers
 		{
 			try
 			{
-				T a = Activator.CreateInstance(typeof(T)) as T;
-				string ResetToken = string.Empty;
-				using (var db = new DatabaseConnection())
+                T a = Activator.CreateInstance(typeof(T)) as T ?? throw new HttpException("không thể tạo thực thể", 500);
+                string ResetToken = string.Empty;
+                await Task.Run(() =>
 				{
-					if (User.Claims.Any())
-					{
-						var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value));
-						if (user.TokenKey == User.Claims.FirstOrDefault(c => c.Type == "Key")?.Value)
-						{
-							a.Query_DataInput(input);
-							user.TokenKey = Converter.RamdomByte(32);
-							db.SaveChanges();
-							JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-							SecurityToken token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-							{
-								Subject = new ClaimsIdentity(new Claim[]
-								{
-									new Claim(ClaimTypes.Name, user.Id.ToString()),
-									new Claim(ClaimTypes.Role, user.Role),
-									new Claim("Key", user.TokenKey),
-								}),
-								Expires = DateTime.Now.AddMinutes(5),
-								SigningCredentials = new SigningCredentials(
-									new SymmetricSecurityKey(Encoding.ASCII.GetBytes(UserController.key)),
-									SecurityAlgorithms.HmacSha256Signature)
-							});
-							ResetToken = "Bearer " + tokenHandler.WriteToken(token);
-						}
-						else
-						{
-							throw new HttpException(string.Empty, 403);
-						}
-					}
-				}
-				return Ok(new { ResetToken = ResetToken, Data = a });
-			}
+                    using (var db = new DatabaseConnection())
+                    {
+                        if (User.Claims.Any())
+                        {
+                            var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value ?? throw new HttpException(string.Empty, 401)));
+                            if (user.TokenKey == User.Claims.FirstOrDefault(c => c.Type == "Key")?.Value)
+                            {
+                                a.Query_DataInput(input);
+                                user.TokenKey = Converter.RamdomByte(32);
+                                db.SaveChanges();
+                                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                                SecurityToken token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+                                {
+                                    Subject = new ClaimsIdentity(new Claim[]
+                                    {
+                                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                                    new Claim(ClaimTypes.Role, user.Role),
+                                    new Claim("Key", user.TokenKey),
+                                    }),
+                                    Expires = DateTime.Now.AddMinutes(5),
+                                    SigningCredentials = new SigningCredentials(
+                                        new SymmetricSecurityKey(Encoding.ASCII.GetBytes(UserController.key)),
+                                        SecurityAlgorithms.HmacSha256Signature)
+                                });
+                                ResetToken = "Bearer " + tokenHandler.WriteToken(token);
+                            }
+                            else
+                            {
+                                throw new HttpException(string.Empty, 403);
+                            }
+                        }
+                    }
+                });
+                return Ok(new { ResetToken = ResetToken, Data = a });
+            }
 			catch (HttpException ex)
 			{
 				return StatusCode(ex.StatusCode, ex.Message);
@@ -64,8 +67,11 @@ namespace BE_Shop.Controllers
 		{
 			try
 			{
-				T a = Activator.CreateInstance(typeof(T)) as T;
-				a.Query_DataInput(input);
+                T a = Activator.CreateInstance(typeof(T)) as T ?? throw new HttpException("không thể tạo thực thể", 500);
+                await Task.Run(() =>
+                {
+                    a.Query_DataInput(input);
+                });
 				return Ok(a);
 			}
 			catch (HttpException ex)

@@ -12,12 +12,15 @@ namespace BE_Shop.Controllers
 		public Guid MainFile { get; set; } = Guid.Empty;
 		public float Discount { get; set; } = 0;
 		public List<Guid> files { get; set; } = new List<Guid>();
-	}
-	public class OutputUpdateProduct : Output
+        public int Status { get; set; } = 0;
+        public string? Category { get; set; } = String.Empty;
+
+    }
+    public class OutputUpdateProduct : Output
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			UpdateProduct input = (UpdateProduct)ip;
+			UpdateProduct input = (UpdateProduct)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var Product = db._Product.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
@@ -35,6 +38,8 @@ namespace BE_Shop.Controllers
 				Product.TotalItem = input.TotalItem;
 				Product.MainFile = input.MainFile;
 				Product.Discount = input.Discount;
+				Product.Status = input.Status;
+				Product.Category = input.Category;
 				db.SaveChanges();
 			}
 		}

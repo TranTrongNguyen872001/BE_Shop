@@ -42,7 +42,7 @@ namespace BE_Shop.Controllers
 
 		internal override void Query_DataInput(object? ip)
         {
-			GetAllUser input = (GetAllUser)ip;
+			GetAllUser input = (GetAllUser)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				UserList = input.Desc ?

@@ -1,6 +1,5 @@
 ﻿using BE_Shop.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -11,20 +10,20 @@ namespace BE_Shop.Controllers
 	[Produces("application/json")]
 	public class AddressController : BaseController
 	{
-		/// <summary>
-		/// Thêm địa chỉ
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Thêm địa chỉ
+        /// </summary>
+        /// <param name="Address"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] string Address)
 		{
-			return await QueryCheck<OutputAddAddress>(
+            return await QueryCheck<OutputAddAddress>(
 				new AddAddress()
 				{
 					Address = Address, 
-					UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)
+					UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401))
 				});
 		}
 		/// <summary>
@@ -36,22 +35,22 @@ namespace BE_Shop.Controllers
 		[HttpPut]
 		public async Task<IActionResult> Update([FromBody] UpdateAddress input)
 		{
-			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
 			return await QueryCheck<OutputUpdateAddress>(input);
 		}
-		/// <summary>
-		/// Xóa địa chỉ
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Xóa địa chỉ
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
 		[HttpDelete("{Id}")]
 		public async Task<IActionResult> Delete(Guid Id)
 		{
 			return await QueryCheck<OutputDeleteAddress>(
 				new DeleteAddress() 
 				{
-					UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value),
+					UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)),
 					AddressId = Id
 				});
 		}
@@ -66,12 +65,12 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputGetAllAddress>(input);
 		}
-		/// <summary>
-		/// Lấy thông tin địa chỉ
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Lấy thông tin địa chỉ
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{

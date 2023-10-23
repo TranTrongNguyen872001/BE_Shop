@@ -7,7 +7,7 @@ namespace BE_Shop.Controllers
     {
         internal override void Query_DataInput(object? ip)
         {
-			Guid Id = (Guid)ip;
+			Guid Id = (Guid)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var user = db._User.Find(Id) ?? throw new HttpException(string.Empty, 404);

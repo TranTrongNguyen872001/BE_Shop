@@ -33,12 +33,12 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputUpdateProduct>(input);
 		}
-		/// <summary>
-		/// Xóa sản phẩm
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin")]
+        /// <summary>
+        /// Xóa sản phẩm
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
 		[HttpDelete("{Id}")]
 		public async Task<IActionResult> Delete(Guid Id)
 		{
@@ -55,12 +55,23 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputGetAllProduct>(input);
 		}
-		/// <summary>
-		/// Lấy thông tin sản phẩm
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Lấy danh sách sản phẩm dành cho admin
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        [HttpPost("la")]
+        public async Task<IActionResult> GetAllAdmin([FromBody] GetAllProduct input)
+        {
+            return await QueryCheck<OutputGetAllProduct>(input);
+        }
+        /// <summary>
+        /// Lấy thông tin sản phẩm
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{

@@ -13,7 +13,9 @@ namespace BE_Shop.Data
 		public DbSet<OrderDetail> _OrderDetail { get; set; }
 		public DbSet<FileManager> _FileManager { get; set; }
 		public DbSet<Comment> _Comment { get; set; }
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public DbSet<ProductCategory> _ProductCategory { get; set; }
+        public DbSet<ChatLine> _ChatLine { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
 			optionsBuilder.UseSqlServer(
@@ -28,14 +30,6 @@ namespace BE_Shop.Data
 				.HasKey(nameof(Comment.TT), nameof(Comment.ProductId));
 		}
 		//xóa database và tạo lại :) đỡ tốn thời gian :( mệt quá!
-		public static async Task CreateDatabase()
-		{
-			using (var dbcontext = new DatabaseConnection())
-			{
-				//await dbcontext.Database.EnsureDeletedAsync();
-				Console.WriteLine($"CSDL {dbcontext.Database.GetDbConnection().Database} : {(await dbcontext.Database.EnsureCreatedAsync() ? "Success" : "Fail")}");
-			}
-		}
 	}
 	internal class Converter
 	{
@@ -66,6 +60,6 @@ namespace BE_Shop.Data
 	}
 	public abstract class Output
 	{
-		internal abstract void Query_DataInput(object? input);
+		internal abstract void Query_DataInput(object? ip);
 	}
 }

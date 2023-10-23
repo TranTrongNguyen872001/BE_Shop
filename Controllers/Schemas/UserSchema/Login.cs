@@ -26,7 +26,7 @@ namespace BE_Shop.Controllers
 		public OutputGetOneUser User { get; set; } = new OutputGetOneUser();
 		internal override void Query_DataInput(object? ip)
         {
-            Login input = (Login)ip;
+            Login input = (Login)ip!;
             using (var db = new DatabaseConnection())
             {
                 var i = Converter.MD5Convert(input.Password);

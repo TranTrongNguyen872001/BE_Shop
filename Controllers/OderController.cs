@@ -23,7 +23,7 @@ namespace BE_Shop.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] AddOrder input)
 		{
-			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
 			return await QueryCheck<OutputAddOrder>(input);
 		}
 		/// <summary>
@@ -46,13 +46,13 @@ namespace BE_Shop.Controllers
         [HttpPut("wf")]
         public async Task<IActionResult> Workflow([FromBody] WorkflowOrder input)
         {
-			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
             return await QueryCheck<OutputWorkflowOrder>(input);
         }
         /// <summary>
         /// Xóa hóa đơn
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="Id"></param>
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
 		[HttpDelete("{Id}")]
@@ -80,15 +80,15 @@ namespace BE_Shop.Controllers
 		[HttpPost("listmine")]
 		public async Task<IActionResult> GetAllMine([FromBody] GetAllOrder input)
 		{
-			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value);
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
 			return await QueryCheck<OutputGetAllOrderMine>(input);
 		}
-		/// <summary>
-		/// Lấy thông tin hóa đơn
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Lấy thông tin hóa đơn
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{

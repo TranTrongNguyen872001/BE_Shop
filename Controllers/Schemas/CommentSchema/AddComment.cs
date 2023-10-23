@@ -13,7 +13,7 @@ namespace BE_Shop.Controllers
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			AddComment input = (AddComment)ip;
+			AddComment input = (AddComment)ip!;
 			using(var db = new DatabaseConnection())
 			{
 				db._Comment.Add(new Comment()

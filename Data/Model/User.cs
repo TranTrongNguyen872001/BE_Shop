@@ -31,4 +31,13 @@ namespace BE_Shop.Data
         public Guid UserId { get; set; } = Guid.Empty;
         [Required] public string Description { get; set; } = string.Empty;
     }
+    [Table("ChatLine")]
+    public class ChatLine
+    {
+        [Key] public Guid Id { get; set; } = Guid.Empty;
+        [Required] public Guid UserId { get; set; } = Guid.Empty;
+        [Required] public Guid SendedUser { get; set; } = Guid.Empty;
+        [Required] public DateTime CreatedDate { get; set; } = DateTime.Now;
+        [Required] public string Description { get; set; } = string.Empty;
+    }
 }

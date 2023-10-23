@@ -30,9 +30,7 @@ namespace BE_Shop.Controllers
 		public int TotalItemPage { get; set; }
 		internal override void Query_DataInput(object? ip)
 		{
-			//var json = JsonConvert.SerializeObject(ip);
-			//(GetAllAddress, Guid UserId) i = JsonConvert.DeserializeObject<(GetAllAddress, Guid)>(json);
-			GetAllAddress input = (GetAllAddress)ip;
+			GetAllAddress input = (GetAllAddress)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				AddressList = input.Desc ?

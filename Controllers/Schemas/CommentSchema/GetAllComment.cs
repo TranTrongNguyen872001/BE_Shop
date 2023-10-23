@@ -16,7 +16,7 @@ namespace BE_Shop.Controllers
 		public int TotalItemPage { get; set; }
 		internal override void Query_DataInput(object? ip)
 		{
-			GetAllComment input = (GetAllComment)ip;
+			GetAllComment input = (GetAllComment)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				CommentList = db._Comment

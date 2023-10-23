@@ -17,6 +17,8 @@ namespace BE_Shop.Data
         public Guid MainFile { get; set; } = Guid.Empty;
 		[Required] public int TotalItem { get; set; } = 0;
         [Required] public float Discount { get; set; } = 0;
+        public int Status { get; set; } = 0;
+        public string? Category { get; set; } = string.Empty;
 		public List<Comment> CommentList { get; set; }
     }
 	[Table("Comment")]
@@ -29,4 +31,11 @@ namespace BE_Shop.Data
         public double Rating { get; set; } = 0;
         public string Description { get; set; } = string.Empty;
 	}
+    [Table("ProductCategory")]
+    public class ProductCategory
+    {
+        [Required] public Guid Id { get; set; } = Guid.Empty;
+        [Required] public string Name { get; set; } = string.Empty;
+        [Required] public Guid Icon { get; set; } = Guid.Empty;
+    }
 }

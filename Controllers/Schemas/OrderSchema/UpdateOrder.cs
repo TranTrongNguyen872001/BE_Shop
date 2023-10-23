@@ -12,7 +12,7 @@ namespace BE_Shop.Controllers
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			UpdateOrder input = (UpdateOrder)ip;
+			UpdateOrder input = (UpdateOrder)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var Order = db._Order.Where(e => e.Id == input.Id && e.Status == 0).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);

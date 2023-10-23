@@ -15,7 +15,7 @@ namespace BE_Shop.Controllers
     {
         internal override void Query_DataInput(object? ip)
         {
-			UpdateUser input = (UpdateUser)ip;
+			UpdateUser input = (UpdateUser)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var user = db._User.Find(input.Id) ?? throw new HttpException(string.Empty, 404);

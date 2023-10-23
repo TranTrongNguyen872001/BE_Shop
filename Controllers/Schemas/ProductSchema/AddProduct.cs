@@ -1,9 +1,4 @@
 ﻿using BE_Shop.Data;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Mime;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace BE_Shop.Controllers
 {
@@ -17,13 +12,16 @@ namespace BE_Shop.Controllers
 		public int TotalItem { get; set; } = 0;
 		public Guid MainFile { get; set; } = Guid.Empty;
 		public List<Guid> files {  get; set; } = new List<Guid>();
-	}
-	public class OutputAddProduct : Output
+        public int Status { get; set; } = 0;
+        public string? Category { get; set; } = string.Empty;
+
+    }
+    public class OutputAddProduct : Output
 	{
 		public Guid Id { get; set; } = Guid.NewGuid();
 		internal override void Query_DataInput(object? ip)
 		{
-			AddProduct input = (AddProduct)ip;
+			AddProduct input = (AddProduct)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				foreach(var file in input.files)
@@ -44,6 +42,8 @@ namespace BE_Shop.Controllers
 					MainFile = input.MainFile,
 					Code = input.Code,
 					Discount = input.Discount,
+					Status = input.Status,
+					Category = input.Category,
 				});
 				db.SaveChanges();
 			}

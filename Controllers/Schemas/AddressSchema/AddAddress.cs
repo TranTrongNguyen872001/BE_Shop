@@ -15,7 +15,7 @@ namespace BE_Shop.Controllers
 		public Guid Id { get; set; } = Guid.NewGuid();
 		internal override void Query_DataInput(object? ip)
 		{
-			AddAddress input = (AddAddress)ip;
+			AddAddress input = (AddAddress)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var i = db._User.Find(input.UserId) ?? throw new HttpException(string.Empty, 401);

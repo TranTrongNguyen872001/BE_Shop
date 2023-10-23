@@ -27,7 +27,7 @@ namespace BE_Shop.Controllers
 
 		internal override void Query_DataInput(object? ip)
 		{
-			GetAllOrder input = (GetAllOrder)ip;
+			GetAllOrder input = (GetAllOrder)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				OrderList = db._Order.Join(db._OrderDetail, x => x.Id, y => y.OrderId, (x, y) => new
@@ -68,7 +68,7 @@ namespace BE_Shop.Controllers
 
 		internal override void Query_DataInput(object? ip)
 		{
-			GetAllOrder input = (GetAllOrder)ip;
+			GetAllOrder input = (GetAllOrder)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				OrderList = db._Order.Join(db._OrderDetail, x => x.Id, y => y.OrderId, (x, y) => new

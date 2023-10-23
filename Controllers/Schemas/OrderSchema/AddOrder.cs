@@ -21,7 +21,7 @@ namespace BE_Shop.Controllers
 		public Guid Id { get; set; } = Guid.NewGuid();
 		internal override void Query_DataInput(object? ip)
 		{
-			AddOrder input = (AddOrder)ip;
+			AddOrder input = (AddOrder)ip!;
 			List<OrderDetail> OrderDetail = new List<OrderDetail>();
 			using (var db = new DatabaseConnection())
 			{

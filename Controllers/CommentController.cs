@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BE_Shop.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -18,7 +19,7 @@ namespace BE_Shop.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Add([FromBody] AddComment input)
 		{
-			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name).Value);
+			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name).Value ?? throw new HttpException(string.Empty, 401));
 			return await QueryCheck<OutputAddComment>(input);
 		}
 		/// <summary>

@@ -13,7 +13,7 @@ namespace BE_Shop.Controllers
 		public object OrderDetail { get; set; }
 		internal override void Query_DataInput(object? ip)
 		{
-			Guid Id = (Guid)ip;
+			Guid Id = (Guid)ip!;
 			using (var db = new DatabaseConnection())
 			{
                 Data = db._Order.Join(db._OrderDetail, x => x.Id, y => y.OrderId, (x, y) => new

@@ -54,12 +54,12 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputGetAllUser>(input);
 		}
-		/// <summary>
-		/// Upload ảnh đại diện
-		/// </summary>
-		/// <param name="files"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Upload ảnh đại diện
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
 		[DisableRequestSizeLimit]
 		[HttpPost("pro/pic")]
 		public async Task<IActionResult> AddProfilePicture(IFormFile file)
@@ -68,7 +68,7 @@ namespace BE_Shop.Controllers
 			{
 				using (var db = new DatabaseConnection())
 				{
-					var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value)) ?? throw new HttpException(string.Empty, 404);
+					var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)));
 					using (var ms = new MemoryStream())
 					{
 						file.CopyTo(ms);
@@ -93,21 +93,21 @@ namespace BE_Shop.Controllers
 		[HttpPut]
 		public async Task<IActionResult> UpdateUser([FromBody] UpdateUser input)
 		{
-			input.Id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? Guid.Empty.ToString());
+			input.Id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
 			return await QueryCheck<OutputUpdateUser>(input);
 		}
-		/// <summary>
-		/// Xác thực tài khoản
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[Authorize(Roles = "NotValid")]
+        /// <summary>
+        /// Xác thực tài khoản
+        /// </summary>
+        /// <param name="ValidCode"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "NotValid")]
 		[HttpPut("{ValidCode}")]
 		public async Task<IActionResult> ValidUser(string ValidCode)
 		{
 			return await QueryCheck<OutputValidUser>(new ValidUser()
 			{
-				UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? Guid.Empty.ToString()),
+				UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)),
 				ValidCode = int.Parse(ValidCode),
 				EmailService = this.emailService
 			});
@@ -123,7 +123,7 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputSendValidCode>(new SendValidCode()
 			{
-				UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? Guid.Empty.ToString()),
+				UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)),
 				EmailService = this.emailService
 			});
 		}
@@ -147,7 +147,7 @@ namespace BE_Shop.Controllers
 		[HttpGet("pro")]
 		public async Task<IActionResult> GetProfile()
 		{
-			return await QueryCheck<OutputGetOneUser>(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 404)));
+			return await QueryCheck<OutputGetOneUser>(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)));
 		}
 		/// <summary>
 		/// Lấy ảnh đại diện
@@ -160,7 +160,7 @@ namespace BE_Shop.Controllers
 			{
 				using (var db = new DatabaseConnection())
 				{
-					var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 404))) ?? throw new HttpException(string.Empty, 404);
+					var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401))) ?? throw new HttpException(string.Empty, 404);
 					return File(user.ProPic ?? throw new HttpException(string.Empty, 404), user.ProPicType ?? "image/jpg");
 				}
 			}

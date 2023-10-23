@@ -6,7 +6,7 @@ namespace BE_Shop.Controllers
 	{
 		internal override void Query_DataInput(object? ip)
 		{
-			Guid Id = (Guid)ip;
+			Guid Id = (Guid)ip!;
 			using (var db = new DatabaseConnection())
 			{
 				var order = db._Order.Where(e => e.Id == Id && e.Status == 0).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
