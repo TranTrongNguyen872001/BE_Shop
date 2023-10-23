@@ -1,7 +1,6 @@
 ﻿using BE_Shop.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using System.Security.Claims;
 
 namespace BE_Shop.Controllers
@@ -51,7 +50,7 @@ namespace BE_Shop.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [Authorize(Roles = "Member")]
-        [HttpPost("message")]
+        [HttpPost("mine")]
         public async Task<IActionResult> GetAllChatlineMine([FromBody] GetallChatline input)
         {
             input.Id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
