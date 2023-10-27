@@ -4,9 +4,7 @@ using System.Data;
 
 namespace BE_Shop.Controllers
 {
-    [ApiController]
     [Route("/api/category")]
-    [Produces("application/json")]
     public class ProductCategoryController : BaseController
     {
         /// <summary>

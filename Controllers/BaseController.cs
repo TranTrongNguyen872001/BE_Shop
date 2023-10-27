@@ -1,4 +1,5 @@
 ﻿using BE_Shop.Data;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
@@ -9,7 +10,10 @@ using System.Text;
 
 namespace BE_Shop.Controllers
 {
-	public class BaseController : ControllerBase
+    [ApiController]
+    [Produces("application/json")]
+    [EnableCors("MyPolicy")]
+    public class BaseController : ControllerBase
 	{
 		internal async Task<IActionResult> QueryCheck<T>(object? input) where T : Output
 		{

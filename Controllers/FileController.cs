@@ -6,9 +6,7 @@ using System.Security.Claims;
 
 namespace BE_Shop.Controllers
 {
-	[ApiController]
 	[Route("/api/file")]
-	[Produces("application/json")]
 	public class FileController : BaseController
 	{
 		/// <summary>

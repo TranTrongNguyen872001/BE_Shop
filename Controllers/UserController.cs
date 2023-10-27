@@ -9,9 +9,7 @@ namespace BE_Shop.Controllers
     /// <summary>
     /// Đăng ký / đăng nhập
     /// </summary>
-    [ApiController]
     [Route("/api/user")]
-	[Produces("application/json")]
 	public class UserController : BaseController
     {
 		static internal string key = "MisaProject1412NguyenTran872001Kaitokids";

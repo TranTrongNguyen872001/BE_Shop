@@ -6,12 +6,7 @@ using System.Security.Claims;
 
 namespace BE_Shop.Controllers
 {
-	/// <summary>
-	/// Thông in địa chỉ
-	/// </summary>
-	[ApiController]
 	[Route("/api/order")]
-	[Produces("application/json")]
 	public class OrderController : BaseController
 	{
 		/// <summary>

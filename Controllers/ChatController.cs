@@ -5,9 +5,7 @@ using System.Security.Claims;
 
 namespace BE_Shop.Controllers
 {
-    [ApiController]
     [Route("/api/chat")]
-    [Produces("application/json")]
     public class ChatController : BaseController
     {
         /// <summary>

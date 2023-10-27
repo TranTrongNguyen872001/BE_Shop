@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BE_Shop.Controllers
 {
-	[ApiController]
 	[Route("/api/product")]
-	[Produces("application/json")]
 	public class ProductController : BaseController
 	{
 		/// <summary>
