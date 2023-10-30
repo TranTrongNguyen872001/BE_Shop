@@ -35,7 +35,7 @@ namespace BE_Shop.Data
     public class ProductCategory
     {
         [Required] public Guid Id { get; set; } = Guid.Empty;
-        [Required] public string Name { get; set; } = string.Empty;
+        [Required] public string? Name { get; set; } = string.Empty;
         [Required] public Guid Icon { get; set; } = Guid.Empty;
     }
 }

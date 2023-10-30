@@ -29,7 +29,7 @@ namespace BE_Shop.Controllers
 		[HttpPost("list")]
 		public async Task<IActionResult> GetAll([FromBody] GetAllComment input)
 		{
-			return await QueryCheck<OutputGetAllComment>(input);
+			return await QueryCheck_NonToken<OutputGetAllComment>(input);
 		}
 	}
 }

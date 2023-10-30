@@ -1,5 +1,5 @@
 ﻿using BE_Shop.Data;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BE_Shop.Controllers
 {
@@ -36,9 +36,8 @@ namespace BE_Shop.Controllers
                                         b.Category
                                     })
                                 .Where(y => y.Category != null && y.Category.Contains(e.Id.ToString()))
-                                .GroupBy(y => 1)
-                                .Select(y => new { Total = y.Sum(x => x.UnitPrice * x.ItemCount) })
-                                .FirstOrDefault().Total
+                                .Select(y => y.UnitPrice * y.ItemCount)
+                                .Sum()
                         })
                         .Skip((input.Page - 1) * input.Index)
                         .Take(input.Index)

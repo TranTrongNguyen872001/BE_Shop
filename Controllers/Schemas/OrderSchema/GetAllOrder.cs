@@ -51,7 +51,7 @@ namespace BE_Shop.Controllers
 				})
 				.OrderByDescending(e => e.CreatedDate)
 				.GroupBy(e => new { e.Id, e.Address, e.User, e.Status, e.CreatedDate })
-				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)) })
+                .Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)) })
 				.Skip((input.Page - 1) * input.Index)
 				.Take(input.Index)
 				.ToList();
