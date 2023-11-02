@@ -13,7 +13,7 @@ namespace BE_Shop.Controllers
 		public float Discount { get; set; } = 0;
 		public List<Guid> files { get; set; } = new List<Guid>();
         public int Status { get; set; } = 0;
-        public string? Category { get; set; } = String.Empty;
+        public List<string> Category { get; set; } = new List<string>();
 
     }
     public class OutputUpdateProduct : Output
@@ -39,7 +39,7 @@ namespace BE_Shop.Controllers
 				Product.MainFile = input.MainFile;
 				Product.Discount = input.Discount;
 				Product.Status = input.Status;
-				Product.Category = input.Category;
+				Product.Category = string.Join(";", input.Category);
 				db.SaveChanges();
 			}
 		}

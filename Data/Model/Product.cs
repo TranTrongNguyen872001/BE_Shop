@@ -16,7 +16,7 @@ namespace BE_Shop.Data
 		public long UnitPrice { get; set; } = 0;
         public Guid MainFile { get; set; } = Guid.Empty;
 		[Required] public int TotalItem { get; set; } = 0;
-        [Required] public float Discount { get; set; } = 0;
+        [Required] public double Discount { get; set; } = 0;
         public int Status { get; set; } = 0;
         public string? Category { get; set; } = string.Empty;
 		public List<Comment> CommentList { get; set; }
