@@ -60,7 +60,7 @@ namespace BE_Shop.Controllers
         [HttpPost("la")]
         public async Task<IActionResult> GetAllAdmin([FromBody] GetallProductCategory input)
         {
-            return await QueryCheck<OutputGetallProductCategory>(input);
+            return await QueryCheck<OutputGetallAdminProductCategory>(input);
         }
         /// <summary>
         /// Lấy thông tin danh mục sản phẩm

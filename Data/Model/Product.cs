@@ -17,7 +17,7 @@ namespace BE_Shop.Data
         public Guid MainFile { get; set; } = Guid.Empty;
 		[Required] public int TotalItem { get; set; } = 0;
         [Required] public double Discount { get; set; } = 0;
-        public int Status { get; set; } = 0;
+        public bool Active { get; set; } = false; // 1: Active, 0: Unactive
         public string? Category { get; set; } = string.Empty;
 		public List<Comment> CommentList { get; set; }
     }
@@ -37,5 +37,6 @@ namespace BE_Shop.Data
         [Required] public Guid Id { get; set; } = Guid.Empty;
         [Required] public string? Name { get; set; } = string.Empty;
         [Required] public Guid Icon { get; set; } = Guid.Empty;
+        [Required] public bool Active { get; set; } = false;
     }
 }

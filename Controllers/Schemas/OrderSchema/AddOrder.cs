@@ -6,9 +6,7 @@ namespace BE_Shop.Controllers
 {
 	public class AddOrder
 	{
-		//public Guid UserId { get; set; } = Guid.Empty;
-		public string Address { get; set; } = string.Empty;
-		public List<AddOrderDetail> OrderDetail { get; set; } = new List<AddOrderDetail>();
+        public List<AddOrderDetail> OrderDetail { get; set; } = new List<AddOrderDetail>();
 		internal Guid UserId { get; set; } = Guid.Empty;
 	}
 	public class AddOrderDetail
@@ -27,16 +25,15 @@ namespace BE_Shop.Controllers
 			{
                 db._Order.Add(new Order()
 				{
-					Id = Id,
+					Id = this.Id,
 					UserId = input.UserId,
-					Address = input.Address,
-					CreatedDate = DateTime.Now,
+					Status = 0,
 				});
 				foreach (var detail in input.OrderDetail)
 				{
 					db._OrderDetail.Add(new OrderDetail()
 					{
-						OrderId = Id,
+						OrderId = this.Id,
 						ProductId = detail.ProductId,
 						ItemCount = detail.ItemCount,
 						UnitPrice = db._Product.Where(e => e.Id == detail.ProductId).Select(e => new { e.UnitPrice }).FirstOrDefault()?.UnitPrice ?? throw new HttpException(detail.ProductId.ToString(), 404),

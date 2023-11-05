@@ -33,22 +33,14 @@ namespace BE_Shop.Controllers
 			GetAllAddress input = (GetAllAddress)ip!;
 			using (var db = new DatabaseConnection())
 			{
-				AddressList = input.Desc ?
-						db._Address
-						.OrderBy(e => e.Description)
-						.Where(e => input.Search == string.Empty
-							|| input.Search.Contains(e.Description))
-						.Skip((input.Page - 1) * input.Index)
-						.Take(input.Index)
-						.ToList() :
-						db._Address
-						.OrderByDescending(e => e.Description)
-						.Where(e => input.Search == string.Empty
-							|| input.Search.Contains(e.Description))
-						.Skip((input.Page - 1) * input.Index)
-						.Take(input.Index)
-						.ToList();
-				TotalItemCount = db._Address
+				var temp = input.Desc ? db._Address.OrderBy(e => e.Description) : db._Address.OrderByDescending(e => e.Description);
+				AddressList = temp
+					.Where(e => input.Search == string.Empty
+						|| input.Search.Contains(e.Description))
+					.Skip((input.Page - 1) * input.Index)
+					.Take(input.Index)
+					.ToList();
+                TotalItemCount = db._Address
 						.Where(e => input.Search == string.Empty
 							|| input.Search.Contains(e.Description)).Count();
 				TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);

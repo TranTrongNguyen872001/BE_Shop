@@ -1,11 +1,12 @@
 ﻿using BE_Shop.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace BE_Shop.Controllers
 {
 	public class UpdateOrder
 	{
-		public Guid Id { get; set; }
-        public string Address { get; set; } = string.Empty;
+        internal Guid Id { get; set; } = Guid.Empty;
+        internal Guid UserId { get; set; } = Guid.Empty;
         public List<AddOrderDetail> OrderDetail { get; set; } = new List<AddOrderDetail>();
     }
 	public class OutputUpdateOrder : Output
@@ -15,20 +16,22 @@ namespace BE_Shop.Controllers
 			UpdateOrder input = (UpdateOrder)ip!;
 			using (var db = new DatabaseConnection())
 			{
-				var Order = db._Order.Where(e => e.Id == input.Id && e.Status == 0).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
-				Order.Address = input.Address;
-                db.SaveChanges();
+				var Order = db._Order.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
+				if(Order.Status != 0 || Order.UserId != input.UserId)
+				{
+					throw new HttpException(string.Empty, 403);
+                }
                 db.RemoveRange(db._OrderDetail.Where(e => e.OrderId == input.Id));
                 db.SaveChanges();
-                foreach (var dt in input.OrderDetail)
+                foreach (var detail in input.OrderDetail)
 				{
 					db._OrderDetail.Add(new OrderDetail()
 					{
 						OrderId = input.Id,
-						ProductId = dt.ProductId,
-						ItemCount = dt.ItemCount,
-						UnitPrice = db._Product.Find(dt.ProductId)?.UnitPrice ?? 0,
-					});
+						ProductId = detail.ProductId,
+						ItemCount = detail.ItemCount,
+						UnitPrice = db._Product.Where(e => e.Id == detail.ProductId).Select(e => new { e.UnitPrice }).FirstOrDefault()?.UnitPrice ?? throw new HttpException(detail.ProductId.ToString(), 404),
+                    });
 				}
 				db.SaveChanges();
 			}

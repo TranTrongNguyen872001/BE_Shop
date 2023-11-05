@@ -9,48 +9,49 @@ namespace BE_Shop.Controllers
 {
 	public class OutputGetOneOrder : Output
 	{
-		public object Data { get; set; }
-		public object OrderDetail { get; set; }
+		public object Order { get; set; }
 		internal override void Query_DataInput(object? ip)
 		{
 			Guid Id = (Guid)ip!;
 			using (var db = new DatabaseConnection())
 			{
-                Data = db._Order.Join(db._OrderDetail, x => x.Id, y => y.OrderId, (x, y) => new
-				{
-					x.Id,
-					x.Address,
-                    User = new
-                    {
-                        Id = x.UserId,
-                        Name = db._User.Where(e => e.Id == x.UserId).Select(i => i.Name).FirstOrDefault(),
-                        Role = db._User.Where(e => e.Id == x.UserId).Select(i => i.Role).FirstOrDefault()
-                    },
-                    Status =	(x.Status == 0) ? "Khởi tạo" :
-                                (x.Status == 1) ? "Xác nhận" :
-                                (x.Status == 2) ? "Thanh toán" :
-                                (x.Status == 3) ? "Hoàn tất" :
-                                (x.Status == 4) ? "Hủy" : x.Status.ToString(),
-                    x.CreatedDate,
-					y.ItemCount,
-					y.UnitPrice,
-				})
-				.Where(e => e.Id == Id)
-				.OrderByDescending(e => e.CreatedDate)
-				.GroupBy(e => new { e.Id, e.Address, e.Status, e.CreatedDate, e.User})//e.OrderDetail, e.User})
-				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)) })
-				.FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
-				this.OrderDetail = db._OrderDetail
-				.Where(e => e.OrderId == Id)
-				.Select(e => new
-				{
-					e.ProductId,
-					ProductName = db._Product.Where(x => x.Id == e.ProductId).Select(x => x.Name).FirstOrDefault(),
-					e.UnitPrice,
-					e.ItemCount,
-					TotalPrice = e.UnitPrice * e.ItemCount,
-				})
-				.ToList();
+                Order = db._Order
+					.OrderByDescending(e => e.CreatedDate)
+					.Where(e => e.Id == Id)
+					.Select(e => new
+					{
+						e.Id,
+						e.Address,
+						e.CreatedDate,
+						MethodPayment = e.MethodPayment ? "Online" : "Offline",
+						Status =	(e.Status == 0) ? "Khởi tạo" :
+									(e.Status == 1) ? "Xác nhận" :
+									(e.Status == 2) ? "Thanh toán" :
+									(e.Status == 3) ? "Hoàn tất" :
+									(e.Status == 4) ? "Hủy" : e.Status.ToString(),
+						User = new
+						{
+							Id = e.UserId,
+							Name = db._User.Where(y => y.Id == e.UserId).Select(y => y.Name).FirstOrDefault(),
+							Role = db._User.Where(y => y.Id == e.UserId).Select(y => y.Role).FirstOrDefault()
+						},
+						TotalPrice = db._OrderDetail
+							.Where(y => y.OrderId == e.Id)
+							.Select(y => y.UnitPrice * y.ItemCount)
+							.Sum(),
+						Detail = db._OrderDetail
+							.Where(y => y.OrderId == Id)
+							.Select(y => new
+							{
+								y.ProductId,
+								ProductName = db._Product.Where(x => x.Id == y.ProductId).Select(x => x.Name).FirstOrDefault(),
+								y.UnitPrice,
+								y.ItemCount,
+								TotalPrice = y.UnitPrice * y.ItemCount,
+							})
+							.ToList(),
+                    })
+					.FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 			}
 		}
 	}

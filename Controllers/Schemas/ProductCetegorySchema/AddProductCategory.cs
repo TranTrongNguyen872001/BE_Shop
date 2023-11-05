@@ -6,6 +6,7 @@ namespace BE_Shop.Controllers
     {
         public string Name { get; set; } = string.Empty;
         public Guid Icon { get; set; } = Guid.Empty;
+        public bool Active { get; set; } = false;
     }
     public class OutputAddProductCategory : Output
     {
@@ -20,6 +21,7 @@ namespace BE_Shop.Controllers
                     Id = this.Id,
                     Name = input.Name,
                     Icon = input.Icon,
+                    Active = input.Active,
                 });
                 db.SaveChanges();
             }

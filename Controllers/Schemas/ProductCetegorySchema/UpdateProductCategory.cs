@@ -7,6 +7,7 @@ namespace BE_Shop.Controllers
         public Guid Id { get; set; } = Guid.Empty;
         public string Name { get; set; } = string.Empty;
         public Guid Icon { get; set; } = Guid.Empty;
+        public bool Active { get; set; } = false;
     }
     public class OutputUpdateProductCategory : Output
     {
@@ -18,6 +19,7 @@ namespace BE_Shop.Controllers
                 var temp = db._ProductCategory.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
                 temp.Name = input.Name;
                 temp.Icon = input.Icon;
+                temp.Active = input.Active;
                 db.SaveChanges();
             }
         }

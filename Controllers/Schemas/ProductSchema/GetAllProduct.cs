@@ -32,52 +32,75 @@ namespace BE_Shop.Controllers
 		public object ProductList { get; set; }
 		public int TotalItemCount { get; set; }
 		public int TotalItemPage { get; set; }
-
 		internal override void Query_DataInput(object? ip)
 		{
 			GetAllProduct input = (GetAllProduct)ip!;
 			using (var db = new DatabaseConnection())
 			{
-				ProductList = input.Desc ?
-						db._Product
-						.Select(e => new 
-						{
-							e.Code,
-							e.Id,
-							e.Name,
-							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
-							Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
-							e.UnitPrice,
-							e.TotalItem,
-						})
-						.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name"))
-						.Where(e => input.Search == string.Empty
-							|| input.Search.Contains(e.Name))
-						.Skip((input.Page - 1) * input.Index)
-						.Take(input.Index)
-						.ToList() :
-						db._Product
-						.Select(e => new
-						{
-							e.Code,
-							e.Id,
-							e.Name,
-							MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
-							Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
-							e.UnitPrice,
-							e.TotalItem,
-						})
-						.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"))
-						.Where(e => input.Search == string.Empty
-							|| input.Search.Contains(e.Name))
-						.Skip((input.Page - 1) * input.Index)
-						.Take(input.Index)
-						.ToList();
-				TotalItemCount = db._Product
+				var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
+				ProductList = temp
+					.Where(e => e.Active == true)
+					.Select(e => new
+					{
+						e.Code,
+						e.Id,
+						e.Name,
+						MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+						Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
+						e.UnitPrice,
+						e.TotalItem,
+                        Category = db._ProductCategory
+                            .Where(y => e.Category != null && e.Category.Contains(y.Id.ToString()))
+                            .ToList(),
+                    })
+					.Where(e => input.Search == string.Empty
+						|| input.Search.Contains(e.Name))
+					.Skip((input.Page - 1) * input.Index)
+					.Take(input.Index)
+					.ToList();
+                TotalItemCount = db._Product
 						.Where(e => input.Search == string.Empty
 							|| input.Search.Contains(e.Name)).Count();
 				TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
 			}
 		}
 	}
+    public class OutputGetAllAdminProduct : Output
+    {
+        public object ProductList { get; set; }
+        public int TotalItemCount { get; set; }
+        public int TotalItemPage { get; set; }
+        internal override void Query_DataInput(object? ip)
+        {
+            GetAllProduct input = (GetAllProduct)ip!;
+            using (var db = new DatabaseConnection())
+            {
+                var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
+                ProductList = temp
+                    .Select(e => new
+                    {
+                        e.Code,
+                        e.Id,
+                        e.Name,
+                        Status = e.Active ? "Active" : "Unactive",
+                        MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+                        Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
+                        e.UnitPrice,
+                        e.TotalItem,
+                        Category = db._ProductCategory
+                            .Where(y => e.Category != null && e.Category.Contains(y.Id.ToString()))
+                            .ToList(),
+                    })
+                    .Where(e => input.Search == string.Empty
+                        || input.Search.Contains(e.Name))
+                    .Skip((input.Page - 1) * input.Index)
+                    .Take(input.Index)
+                    .ToList();
+                TotalItemCount = db._Product
+                        .Where(e => input.Search == string.Empty
+                            || input.Search.Contains(e.Name)).Count();
+                TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
+            }
+        }
+    }
 }

@@ -19,11 +19,36 @@ namespace BE_Shop.Controllers
             using (var db = new DatabaseConnection())
             {
                 ProductCategory = db._ProductCategory
+                        .Where(e => e.Active == true)
                         .Select(e => new
                         {
                             e.Id,
                             e.Name,
                             e.Icon,
+                            TotalProduct = db._Product.Where(y => y.Category != null && y.Category.Contains(e.Id.ToString())).Count()
+                        })
+                        .Skip((input.Page - 1) * input.Index)
+                        .Take(input.Index)
+                        .ToList();
+                TotalItemCount = db._ProductCategory.Count();
+                TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
+            }
+        }
+    }
+    public class OutputGetallAdminProductCategory : Output
+    {
+        public object ProductCategory { get; set; }
+        public int TotalItemCount { get; set; }
+        public int TotalItemPage { get; set; }
+        internal override void Query_DataInput(object? ip)
+        {
+            GetallProductCategory input = (GetallProductCategory)ip!;
+            using (var db = new DatabaseConnection())
+            {
+                ProductCategory = db._ProductCategory
+                        .Select(e => new
+                        {
+                            e.Id,e.Name,e.Icon,e.Active,
                             TotalProduct = db._Product.Where(y => y.Category != null && y.Category.Contains(e.Id.ToString())).Count(),
                             TotalProfit = db._OrderDetail
                                 .Join(db._Product,

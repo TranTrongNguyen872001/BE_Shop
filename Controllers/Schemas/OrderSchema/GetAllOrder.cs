@@ -30,28 +30,29 @@ namespace BE_Shop.Controllers
 			GetAllOrder input = (GetAllOrder)ip!;
 			using (var db = new DatabaseConnection())
 			{
-				OrderList = db._Order.Join(db._OrderDetail, x => x.Id, y => y.OrderId, (x, y) => new
-				{
-					x.Id,
-					x.Address,
-					User = new
-					{
-                        Id = x.UserId,
-						Name = db._User.Where(e => e.Id == x.UserId).Select(i => i.Name).FirstOrDefault(),
-						Role = db._User.Where(e => e.Id == x.UserId).Select(i => i.Role).FirstOrDefault()
-					},
-					Status =	(x.Status == 0) ? "Khởi tạo" :
-								(x.Status == 1) ? "Xác nhận" :
-								(x.Status == 2) ? "Thanh toán" :
-								(x.Status == 3) ? "Hoàn tất" :
-                                (x.Status == 4) ? "Hủy" : x.Status.ToString(),
-					x.CreatedDate,
-					y.ItemCount,
-					y.UnitPrice,
+				OrderList = db._Order
+                .OrderByDescending(e => e.CreatedDate)
+                .Select(e => new {
+                    e.Id,
+                    e.Address,
+                    e.CreatedDate,
+                    MethodPayment = e.MethodPayment ? "Online" : "Offline",
+                    Status =	(e.Status == 0) ? "Khởi tạo" :
+                                (e.Status == 1) ? "Xác nhận" :
+                                (e.Status == 2) ? "Thanh toán" :
+                                (e.Status == 3) ? "Hoàn tất" :
+                                (e.Status == 4) ? "Hủy" : e.Status.ToString(),
+                    User = new
+                    {
+                        Id = e.UserId,
+                        Name = db._User.Where(y => y.Id == e.UserId).Select(y => y.Name).FirstOrDefault(),
+                        Role = db._User.Where(y => y.Id == e.UserId).Select(y => y.Role).FirstOrDefault()
+                    },
+                    TotalPrice = db._OrderDetail
+                        .Where(y => y.OrderId == e.Id)
+                        .Select(y => y.UnitPrice * y.ItemCount)
+                        .Sum(),
 				})
-				.OrderByDescending(e => e.CreatedDate)
-				.GroupBy(e => new { e.Id, e.Address, e.User, e.Status, e.CreatedDate })
-                .Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)) })
 				.Skip((input.Page - 1) * input.Index)
 				.Take(input.Index)
 				.ToList();
@@ -60,7 +61,7 @@ namespace BE_Shop.Controllers
 			}
 		}
 	}
-	public class OutputGetAllOrderMine : Output
+	public class OutputGetAllByIdOrder : Output
 	{
 		public object OrderList { get; set; }
 		public int TotalItemCount { get; set; }
@@ -71,24 +72,32 @@ namespace BE_Shop.Controllers
 			GetAllOrder input = (GetAllOrder)ip!;
 			using (var db = new DatabaseConnection())
 			{
-				OrderList = db._Order.Join(db._OrderDetail, x => x.Id, y => y.OrderId, (x, y) => new
-				{
-					x.Id,
-					x.Address,
-					x.UserId,
-                    Status =	(x.Status == 0) ? "Khởi tạo" :
-                                (x.Status == 1) ? "Xác nhận" :
-                                (x.Status == 2) ? "Thanh toán" :
-                                (x.Status == 3) ? "Hoàn tất" :
-                                (x.Status == 4) ? "Hủy" : x.Status.ToString(),
-					x.CreatedDate,
-					y.ItemCount,
-					y.UnitPrice
-				})
+				OrderList = db._Order
+                .OrderByDescending(e => e.CreatedDate)
+                .Select(e => new {
+                    e.Id,
+                    e.Address,
+                    e.CreatedDate,
+					e.UserId,
+					MethodPayment = e.MethodPayment ? "Online" : "Offline",
+                    Status = (e.Status == 0) ? "Khởi tạo" :
+                                (e.Status == 1) ? "Xác nhận" :
+                                (e.Status == 2) ? "Thanh toán" :
+                                (e.Status == 3) ? "Hoàn tất" :
+                                (e.Status == 4) ? "Hủy" : e.Status.ToString(),
+                    User = new
+                    {
+                        Id = e.UserId,
+                        Name = db._User.Where(y => y.Id == e.UserId).Select(y => y.Name).FirstOrDefault(),
+						Email = db._User.Where(y => y.Id == e.UserId).Select(y => y.UserName).FirstOrDefault(),
+                        Role = db._User.Where(y => y.Id == e.UserId).Select(y => y.Role).FirstOrDefault()
+                    },
+                    TotalPrice = db._OrderDetail
+                        .Where(y => y.OrderId == e.Id)
+                        .Select(y => y.UnitPrice * y.ItemCount)
+                        .Sum(),
+                })
 				.Where(e => e.UserId == input.UserId)
-				.OrderByDescending(e => e.CreatedDate)
-				.GroupBy(e => new { e.Id, e.Address, e.Status, e.CreatedDate})
-				.Select(e => new { e.Key, TotalPrice = e.Sum(x => (x.ItemCount * x.UnitPrice)) })
 				.Skip((input.Page - 1) * input.Index)
 				.Take(input.Index)
 				.ToList();

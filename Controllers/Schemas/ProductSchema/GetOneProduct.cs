@@ -28,8 +28,8 @@ namespace BE_Shop.Controllers
 							.Where(f => f.OwnerId == id)
 							.Select(e => new Guid(e.Id.ToString()))
 							.ToList(),
-                        e.Status,
-					}).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
+                        Status = e.Active ? "Active" : "Unactive",
+                    }).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 			}
 		}
 	}

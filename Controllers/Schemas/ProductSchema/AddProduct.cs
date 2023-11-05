@@ -12,7 +12,7 @@ namespace BE_Shop.Controllers
 		public int TotalItem { get; set; } = 0;
 		public Guid MainFile { get; set; } = Guid.Empty;
 		public List<Guid> files {  get; set; } = new List<Guid>();
-        public int Status { get; set; } = 0;
+        public bool Status { get; set; } = false;
         public List<string> Category { get; set; } = new List<string>();
 
     }
@@ -42,7 +42,7 @@ namespace BE_Shop.Controllers
 					MainFile = input.MainFile,
 					Code = input.Code,
 					Discount = input.Discount,
-					Status = input.Status,
+					Active = input.Status,
 					Category = string.Join(";", input.Category),
 				});
 				db.SaveChanges();

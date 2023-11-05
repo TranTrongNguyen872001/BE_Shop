@@ -147,10 +147,34 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputGetOneUser>(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)));
 		}
-		/// <summary>
-		/// Lấy ảnh đại diện
-		/// </summary>
-		[Authorize(Roles = "Admin,Member")]
+        /// <summary>
+        /// Lấy ảnh đại diện theo Id
+        /// </summary>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("pro/pic/{Id}")]
+        public IActionResult GetProfilePicture(Guid Id)
+        {
+            try
+            {
+                using (var db = new DatabaseConnection())
+                {
+                    var user = db._User.Find(Id) ?? throw new HttpException(string.Empty, 404);
+                    return File(user.ProPic ?? throw new HttpException(string.Empty, 404), user.ProPicType ?? "image/jpg");
+                }
+            }
+            catch (HttpException ex)
+            {
+                return StatusCode(ex.StatusCode, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        /// <summary>
+        /// Lấy ảnh đại diện
+        /// </summary>
+        [Authorize(Roles = "Admin,Member")]
 		[HttpGet("pro/pic")]
 		public IActionResult GetProfilePicture()
 		{

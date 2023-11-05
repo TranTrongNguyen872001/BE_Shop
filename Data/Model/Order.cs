@@ -12,9 +12,12 @@ namespace BE_Shop.Data
         [Key] public Guid Id { get; set; } = Guid.Empty;
         [Required] public Guid UserId { get; set; } = Guid.Empty;
         [Required] public string Address { get; set; } = string.Empty;
-        [Required] public DateTime CreatedDate { get; set; } = DateTime.MinValue;
+        public DateTime? CreatedDate { get; set; } = null;
         [Required] public int Status { get; set; } = 0; //0: Khởi tạo; 1: Xác nhận; 2: Thanh toán; 3: Hoàn tất; 4: Hủy
-		public List<OrderDetail> OrderDetail = new List<OrderDetail>();
+        [Required] public bool MethodPayment { get; set; } = false; // true: online; false: offline
+        [Required] public string ReceiveName { get; set; } = string.Empty;
+        [Required] public string ReceiveContact { get; set; } = string.Empty;
+        public List<OrderDetail> OrderDetail = new List<OrderDetail>();
 	}
     /// <summary>
     /// Chi tiết đơn hàng

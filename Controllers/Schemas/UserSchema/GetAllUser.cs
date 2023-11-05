@@ -45,26 +45,37 @@ namespace BE_Shop.Controllers
 			GetAllUser input = (GetAllUser)ip!;
 			using (var db = new DatabaseConnection())
 			{
-				UserList = input.Desc ?
-						db._User.Select(e => new { e.Id, e.Name, e.UserName, e.Role })
-						.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name"))
-						.Where(e => input.Search == string.Empty
+				var temp = input.Desc ? db._User.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._User.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
+				UserList = temp
+					.Select(e => new
+					{
+						e.Id,
+						e.Name,
+						e.UserName,
+						e.Role,
+						e.Gender,
+						e.Birthday,
+						TotalOrder = db._Order.Where(y => y.UserId == e.Id).Count(),
+                        TotalSpent = db._Order
+							.Join(db._OrderDetail, x => x.Id, y => y.OrderId, 
+								(x,y)=> new
+								{
+									x.UserId,
+									y.ItemCount,
+									y.UnitPrice
+								})
+							.Where(y => y.UserId == e.Id)
+							.Select(y => y.ItemCount * y.UnitPrice)
+							.Sum()
+                    })
+					.Where(e => input.Search == string.Empty
 							|| input.Search.Contains(e.Name)
 							|| input.Search.Contains(e.Role)
 							|| input.Search.Contains(e.UserName))
-						.Skip((input.Page - 1) * input.Index)
-						.Take(input.Index)
-						.ToList() :
-						db._User.Select(e => new { e.Id, e.Name, e.UserName, e.Role })
-						.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"))
-						.Where(e => input.Search == string.Empty
-							|| input.Search.Contains(e.Name)
-							|| input.Search.Contains(e.Role)
-							|| input.Search.Contains(e.UserName))
-						.Skip((input.Page - 1) * input.Index)
-						.Take(input.Index)
-						.ToList();
-				TotalItemCount = db._User
+					.Skip((input.Page - 1) * input.Index)
+					.Take(input.Index)
+					.ToList();
+                TotalItemCount = db._User
 					.Where(e => input.Search.Contains(e.Name)
 						|| input.Search.Contains(e.Role)
 						|| input.Search.Contains(e.UserName)).Count();

@@ -14,11 +14,14 @@ namespace BE_Shop.Data
         [Required] public string Role { get; set; } = string.Empty;
         [Required]public string UserName { get; set; } = string.Empty;
         [Required]public string Password { get; set; } = string.Empty;
-        public byte[]? ProPic { get; set; }
-        public string? ProPicType { get; set; }
-        public string TokenKey { get; set; }
-        public int? ValidCode { get; set; }
-		public List<Address> AddressList { get; set; } = new List<Address>();
+        public string? Contact { get; set; } = null;
+        public byte[]? ProPic { get; set; } = null;
+        public string? ProPicType { get; set; } = null;
+        public string TokenKey { get; set; } = string.Empty;
+        public int? ValidCode { get; set; } = null;
+        public bool? Gender { get; set; } = null;
+        public DateOnly? Birthday { get; set; } = null;
+        public List<Address> AddressList { get; set; } = new List<Address>();
         public List<Order> OrderList { get; set; } = new List<Order>();
     }
     /// <summary>
