@@ -35,7 +35,7 @@ namespace BE_Shop.Controllers
                 user.Password = Converter.MD5Convert(input.Password);
 				user.Contact = input.Contact;
 				user.Gender = input.Gender;
-				user.Birthday = input.Birthday;
+				user.Birthday = input.Birthday == null ? null : new DateTime(input.Birthday.Value.Year, input.Birthday.Value.Month, input.Birthday.Value.Day);
                 db.SaveChanges();
 			}
 		}

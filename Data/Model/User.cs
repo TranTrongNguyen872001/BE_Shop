@@ -20,7 +20,7 @@ namespace BE_Shop.Data
         public string TokenKey { get; set; } = string.Empty;
         public int? ValidCode { get; set; } = null;
         public bool? Gender { get; set; } = null;
-        public DateOnly? Birthday { get; set; } = null;
+        public DateTime? Birthday { get; set; } = null;
         public List<Address> AddressList { get; set; } = new List<Address>();
         public List<Order> OrderList { get; set; } = new List<Order>();
     }
