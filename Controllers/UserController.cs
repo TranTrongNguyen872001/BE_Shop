@@ -160,7 +160,6 @@ namespace BE_Shop.Controllers
         /// </summary>
         [Authorize(Roles = "Admin")]
         [HttpGet("pro/pic/{Id}")]
-		[ProducesResponseType(typeof(Stream), 200)]
         public IActionResult GetProfilePicture(Guid Id)
         {
             try
@@ -185,7 +184,6 @@ namespace BE_Shop.Controllers
         /// </summary>
         [Authorize(Roles = "Admin,Member")]
 		[HttpGet("pro/pic")]
-		[ProducesResponseType(typeof(Stream), 200)]
 		public IActionResult GetProfilePicture()
 		{
 			try

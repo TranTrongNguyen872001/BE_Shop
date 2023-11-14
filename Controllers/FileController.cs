@@ -44,7 +44,6 @@ namespace BE_Shop.Controllers
 		/// Lấy file
 		/// </summary>
 		[HttpGet("{Id}")]
-		[ProducesResponseType(typeof(Stream), 200)]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{
 			try

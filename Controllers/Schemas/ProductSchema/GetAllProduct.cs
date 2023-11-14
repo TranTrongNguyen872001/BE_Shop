@@ -25,6 +25,7 @@ namespace BE_Shop.Controllers
 		/// Nhập giá trị tìm kiếm
 		/// </summary>
 		public string Search { get; set; } = string.Empty;
+		public Guid Category { get; set; } = Guid.Empty;
 	}
 	public class OutputGetAllProductData1
 	{
@@ -52,7 +53,9 @@ namespace BE_Shop.Controllers
 				ProductList = temp
 					.Where(e => (e.Active == true) 
 						&& (input.Search == string.Empty
-						|| e.Name.Contains(input.Search)))
+						|| e.Name.Contains(input.Search))
+						&& (input.Category == Guid.Empty
+						|| e.Category.Contains(input.Category.ToString())))
 					.Select(e => new OutputGetAllProductData1
 					{
 						Code = e.Code,
@@ -89,6 +92,10 @@ namespace BE_Shop.Controllers
             {
                 var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
                 ProductList = temp
+                    .Where(e => input.Search == string.Empty
+                        || e.Name.Contains(input.Search)
+						&& (input.Category == Guid.Empty
+						|| e.Category.Contains(input.Category.ToString())))
                     .Select(e => new OutputGetAllProductData1
 					{
 						Code = e.Code,
@@ -103,8 +110,6 @@ namespace BE_Shop.Controllers
                             .Where(y => e.Category != null && e.Category.Contains(y.Id.ToString()))
                             .ToList(),
                     })
-                    .Where(e => input.Search == string.Empty
-                        || e.Name.Contains(input.Search))
                     .Skip((input.Page - 1) * input.Index)
                     .Take(input.Index)
                     .ToList();
