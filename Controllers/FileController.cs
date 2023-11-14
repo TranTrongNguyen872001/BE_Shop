@@ -15,6 +15,7 @@ namespace BE_Shop.Controllers
 		[Authorize(Roles = "Admin,Member")]
 		[DisableRequestSizeLimit]
 		[HttpPost]
+		[ProducesResponseType(typeof(OutputAddFileManager), 200)]
 		public async Task<IActionResult> Add([FromForm] List<IFormFile> files)
 		{
 			return await QueryCheck<OutputAddFileManager>(files);
@@ -24,6 +25,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		[Authorize(Roles = "Admin,Member")]
 		[HttpDelete("{Id}")]
+		[ProducesResponseType(typeof(OutputDeleteFileManager), 200)]
 		public async Task<IActionResult> Delete(Guid Id)
 		{
 			return await QueryCheck<OutputDeleteFileManager>(Id);
@@ -33,6 +35,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		[Authorize(Roles = "Admin")]
 		[HttpGet]
+		[ProducesResponseType(typeof(OutputGetAllFileManager), 200)]
 		public async Task<IActionResult> GetAll()
 		{
 			return await QueryCheck<OutputGetAllFileManager>(null);
@@ -41,6 +44,7 @@ namespace BE_Shop.Controllers
 		/// Lấy file
 		/// </summary>
 		[HttpGet("{Id}")]
+		[ProducesResponseType(typeof(Stream), 200)]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{
 			try

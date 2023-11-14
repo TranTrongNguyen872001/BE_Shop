@@ -1,4 +1,5 @@
 ﻿using BE_Shop.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BE_Shop.Controllers
 {
@@ -7,9 +8,18 @@ namespace BE_Shop.Controllers
         public int Index { get; set; } = 0;
         public int Page { get; set; } = 0;
     }
+    public class OutputGetallRoomData1
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public System.DateTime LastDate { get; set; }
+        public string LastMessage { get; set; }
+        public System.Guid LastSender { get; set; }
+        public string LastSenderRole { get; set; }
+    }
     public class OutputGetallRoom : Output
     {
-        public object Rooms { get; set; }
+        public List<OutputGetallRoomData1> Rooms { get; set; }
         public int TotalItemCount { get; set; }
         public int TotalItemPage { get; set; }
         internal override void Query_DataInput(object? ip)
@@ -23,10 +33,10 @@ namespace BE_Shop.Controllers
                         {
                             Message = db._ChatLine.Where(a => a.CreatedDate == e.Max(y => y.CreatedDate)).FirstOrDefault(),
                         })
-                        .Select(e => new
+                        .Select(e => new OutputGetallRoomData1
                         {
                             Id = e.Message.UserId,
-                            db._User.Find(e.Message.UserId).Name,
+                            Name = db._User.Find(e.Message.UserId).Name,
                             LastDate = e.Message.CreatedDate,
                             LastMessage = e.Message.Description,
                             LastSender = e.Message.SendedUser,

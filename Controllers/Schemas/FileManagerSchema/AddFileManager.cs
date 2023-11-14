@@ -2,9 +2,14 @@
 
 namespace BE_Shop.Controllers
 {
+	public class OutputAddFileManagerData1
+	{
+		public Guid Id {get; set;}
+		public string Name {get; set;}
+	}
 	public class OutputAddFileManager : Output
 	{
-		public List<object> Data { get; set; } = new List<object>();
+		public List<OutputAddFileManagerData1> Data { get; set; } = new List<OutputAddFileManagerData1>();
 		public int TotalUpload { get; set; } = 0;
 		public int TotalSuccess { get; set; } = 0;
 		internal override void Query_DataInput(object? ip)
@@ -32,7 +37,7 @@ namespace BE_Shop.Controllers
 							});
 							db.SaveChanges();
 						}
-						Data.Add(new { Id = id, Name = file.FileName });
+						Data.Add(new OutputAddFileManagerData1{ Id = id, Name = file.FileName });
 						TotalSuccess++;
 					}
 				}

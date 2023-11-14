@@ -15,6 +15,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin,Member")]
 		[HttpPost]
+		[ProducesResponseType(typeof(OutputAddComment), 200)]
 		public async Task<IActionResult> Add([FromBody] AddComment input)
 		{
 			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(e => e.Type == ClaimTypes.Name).Value ?? throw new HttpException(string.Empty, 401));
@@ -27,6 +28,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[AllowAnonymous]
 		[HttpPost("list")]
+		[ProducesResponseType(typeof(OutputGetAllComment), 200)]
 		public async Task<IActionResult> GetAll([FromBody] GetAllComment input)
 		{
 			return await QueryCheck_NonToken<OutputGetAllComment>(input);

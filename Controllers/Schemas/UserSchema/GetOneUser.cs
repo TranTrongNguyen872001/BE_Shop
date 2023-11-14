@@ -3,9 +3,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BE_Shop.Controllers
 {
+	public class OutputGetOneUserData
+	{
+		public Guid Id { get; set; }
+		public string Name { get; set; }
+		public string Role { get; set; }
+		public string UserName { get; set; }
+		public string? Contact { get; set; }
+		public bool? Gender { get; set; }
+		public DateTime? Birthday { get; set; }
+		public List<Address> AddressList { get; set; }
+		public string Status { get; set; }
+		public int TotalOrder { get; set; }
+		public double TotalSpent  { get; set; }
+	}
 	public class OutputGetOneUser : Output
 	{
-		public object User { get; set; }
+		public OutputGetOneUserData User { get; set; }
 		internal override void Query_DataInput(object? ip)
 		{
 			Guid Id = (Guid)ip!;
@@ -13,12 +27,29 @@ namespace BE_Shop.Controllers
 			{
 				this.User = db._User
 				.Where(e => e.Id == Id)
-				.Select(e => new
+				.Select(e => new OutputGetOneUserData
 				{
-					e.Id, e.Name, e.Role, e.UserName,e.Contact,e.Gender,e.Birthday,
+					Id = e.Id, 
+					Name = e.Name, 
+					Role = e.Role, 
+					UserName = e.UserName,
+					Contact = e.Contact,
+					Gender = e.Gender,
+					Birthday = e.Birthday,
                     AddressList = db._Address.Where(y => y.UserId == Id).ToList(),
-                    OrderList = db._Order.Where(y => y.UserId == Id).ToList(),
-					Status = (e.Role == "NotValid") ? "Unactive" : "Active"
+					Status = (e.Role == "NotValid") ? "Unactive" : "Active",
+					TotalOrder = db._Order.Where(y => y.UserId == Id).Count(),
+					TotalSpent = db._Order
+							.Join(db._OrderDetail, x => x.Id, y => y.OrderId, 
+								(x,y)=> new
+								{
+									x.UserId,
+									y.ItemCount,
+									y.UnitPrice
+								})
+							.Where(y => y.UserId == Id)
+							.Select(y => y.ItemCount * y.UnitPrice)
+							.Sum()
 				}).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 			}
 		}

@@ -26,10 +26,21 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		public string Search { get; set; } = string.Empty;
 	}
-	
+	public class OutputGetAllProductData1
+	{
+		public string Code { get; set; }
+		public Guid Id { get; set; }
+		public string Name { get; set; }
+		public Guid MainFile { get; set; }
+		public double Rating { get; set; }
+		public long UnitPrice { get; set; }
+		public int TotalItem { get; set; }
+		public bool Active { get; set; }
+		public List<ProductCategory> Category{ get; set; }
+	}
 	public class OutputGetAllProduct : Output
 	{
-		public object ProductList { get; set; }
+		public List<OutputGetAllProductData1> ProductList { get; set; }
 		public int TotalItemCount { get; set; }
 		public int TotalItemPage { get; set; }
 		internal override void Query_DataInput(object? ip)
@@ -39,22 +50,23 @@ namespace BE_Shop.Controllers
 			{
 				var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
 				ProductList = temp
-					.Where(e => e.Active == true)
-					.Select(e => new
+					.Where(e => (e.Active == true) 
+						&& (input.Search == string.Empty
+						|| e.Name.Contains(input.Search)))
+					.Select(e => new OutputGetAllProductData1
 					{
-						e.Code,
-						e.Id,
-						e.Name,
+						Code = e.Code,
+						Id = e.Id,
+						Name = e.Name,
+						Active = e.Active,
 						MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
 						Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
-						e.UnitPrice,
-						e.TotalItem,
+						UnitPrice = e.UnitPrice,
+						TotalItem = e.TotalItem,
                         Category = db._ProductCategory
                             .Where(y => e.Category != null && e.Category.Contains(y.Id.ToString()))
                             .ToList(),
                     })
-					.Where(e => input.Search == string.Empty
-						|| e.Name.Contains(input.Search))
 					.Skip((input.Page - 1) * input.Index)
 					.Take(input.Index)
 					.ToList();
@@ -67,7 +79,7 @@ namespace BE_Shop.Controllers
 	}
     public class OutputGetAllAdminProduct : Output
     {
-        public object ProductList { get; set; }
+        public List<OutputGetAllProductData1> ProductList { get; set; }
         public int TotalItemCount { get; set; }
         public int TotalItemPage { get; set; }
         internal override void Query_DataInput(object? ip)
@@ -77,16 +89,16 @@ namespace BE_Shop.Controllers
             {
                 var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
                 ProductList = temp
-                    .Select(e => new
-                    {
-                        e.Code,
-                        e.Id,
-                        e.Name,
-                        Status = e.Active ? "Active" : "Unactive",
-                        MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
-                        Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
-                        e.UnitPrice,
-                        e.TotalItem,
+                    .Select(e => new OutputGetAllProductData1
+					{
+						Code = e.Code,
+						Id = e.Id,
+						Name = e.Name,
+						Active = e.Active,
+						MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+						Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
+						UnitPrice = e.UnitPrice,
+						TotalItem = e.TotalItem,
                         Category = db._ProductCategory
                             .Where(y => e.Category != null && e.Category.Contains(y.Id.ToString()))
                             .ToList(),

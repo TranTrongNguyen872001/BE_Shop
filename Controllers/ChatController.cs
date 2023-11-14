@@ -15,6 +15,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
         [HttpPost]
+		[ProducesResponseType(typeof(OutputAddChatline), 200)]
         public async Task<IActionResult> Add([FromBody] AddChatline input)
         {
             input.SendedUser = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
@@ -27,6 +28,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost("list")]
+		[ProducesResponseType(typeof(OutputGetallRoom), 200)]
         public async Task<IActionResult> GetAll([FromBody] GetallRoom input)
         {
             return await QueryCheck<OutputGetallRoom>(input);
@@ -38,6 +40,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
         [HttpPost("message")]
+		[ProducesResponseType(typeof(OutputGetallChatline), 200)]
         public async Task<IActionResult> GetAllChatline([FromBody] GetallChatline input)
         {
             return await QueryCheck<OutputGetallChatline>(input);
@@ -49,6 +52,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Member")]
         [HttpPost("mine")]
+		[ProducesResponseType(typeof(OutputGetallChatline), 200)]
         public async Task<IActionResult> GetAllChatlineMine([FromBody] GetallChatline input)
         {
             input.Id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));

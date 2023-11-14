@@ -23,7 +23,7 @@ namespace BE_Shop.Controllers
 	public class OutputLogin : Output
     {
         public string Token { get; set; } = string.Empty;
-		public OutputGetOneUser User { get; set; } = new OutputGetOneUser();
+		public OutputGetOneUserData User { get; set; }
 		internal override void Query_DataInput(object? ip)
         {
             Login input = (Login)ip!;
@@ -49,7 +49,9 @@ namespace BE_Shop.Controllers
 						SecurityAlgorithms.HmacSha256Signature)
 				});
                 Token = "Bearer " + tokenHandler.WriteToken(token);
-				User.Query_DataInput(user.Id);
+                var temp = new OutputGetOneUser();
+                temp.Query_DataInput(user.Id);
+				User = temp.User;
 			}
         }
     }

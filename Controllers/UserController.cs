@@ -26,6 +26,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[AllowAnonymous]
 		[HttpPost]
+		[ProducesResponseType(typeof(OutputAddUser), 200)]
 		public async Task<IActionResult> AddUser([FromBody] AddUser input)
 		{
 			return await QueryCheck_NonToken<OutputAddUser>(input);
@@ -37,6 +38,7 @@ namespace BE_Shop.Controllers
 		/// <returns>một Token có thời hạn, sử dụng để gọi các giao thức khác</returns>
 		[AllowAnonymous]
 		[HttpPost("lg")]
+		[ProducesResponseType(typeof(OutputLogin), 200)]
 		public async Task<IActionResult> Login([FromBody] Login input)
 		{
 			return await QueryCheck_NonToken<OutputLogin>(input);
@@ -48,6 +50,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpPost("list")]
+		[ProducesResponseType(typeof(OutputGetAllUser), 200)]
 		public async Task<IActionResult> GetAllUser([FromBody] GetAllUser input)
 		{
 			return await QueryCheck<OutputGetAllUser>(input);
@@ -89,6 +92,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin,Member")]
 		[HttpPut]
+		[ProducesResponseType(typeof(OutputUpdateUser), 200)]
 		public async Task<IActionResult> UpdateUser([FromBody] UpdateUser input)
 		{
 			input.Id = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
@@ -101,6 +105,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "NotValid")]
 		[HttpPut("{ValidCode}")]
+		[ProducesResponseType(typeof(OutputValidUser), 200)]
 		public async Task<IActionResult> ValidUser(string ValidCode)
 		{
 			return await QueryCheck<OutputValidUser>(new ValidUser()
@@ -117,6 +122,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "NotValid")]
 		[HttpGet]
+		[ProducesResponseType(typeof(OutputSendValidCode), 200)]
 		public async Task<IActionResult> SendValidCode()
 		{
 			return await QueryCheck<OutputSendValidCode>(new SendValidCode()
@@ -132,6 +138,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpGet("{Id}")]
+		[ProducesResponseType(typeof(OutputGetOneUser), 200)]
 		public async Task<IActionResult> UserOne(Guid Id)
 		{
 			return await QueryCheck<OutputGetOneUser>(Id);
@@ -143,6 +150,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin,Member")]
 		[HttpGet("pro")]
+		[ProducesResponseType(typeof(OutputGetOneUser), 200)]
 		public async Task<IActionResult> GetProfile()
 		{
 			return await QueryCheck<OutputGetOneUser>(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)));
@@ -152,6 +160,7 @@ namespace BE_Shop.Controllers
         /// </summary>
         [Authorize(Roles = "Admin")]
         [HttpGet("pro/pic/{Id}")]
+		[ProducesResponseType(typeof(Stream), 200)]
         public IActionResult GetProfilePicture(Guid Id)
         {
             try
@@ -176,6 +185,7 @@ namespace BE_Shop.Controllers
         /// </summary>
         [Authorize(Roles = "Admin,Member")]
 		[HttpGet("pro/pic")]
+		[ProducesResponseType(typeof(Stream), 200)]
 		public IActionResult GetProfilePicture()
 		{
 			try
@@ -202,6 +212,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpDelete("{Id}")]
+		[ProducesResponseType(typeof(OutputDeleteUser), 200)]
 		public async Task<IActionResult> DeleteUser(Guid Id)
 		{
 			return await QueryCheck<OutputDeleteUser>(Id);

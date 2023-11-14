@@ -34,9 +34,20 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		public string Search { get; set; } = string.Empty;
     }
+	public class OutputGetAllUserData
+    {
+		public Guid Id { get; set; }
+		public string Name { get; set; }
+		public string UserName { get; set; }
+		public string Role { get; set; }
+		public bool? Gender { get; set; }
+		public DateTime? Birthday { get; set; }
+		public int TotalOrder { get; set; }
+		public long TotalSpent { get; set; }
+	}
 	public class OutputGetAllUser : Output
     {
-        public object UserList { get; set; }
+        public List<OutputGetAllUserData> UserList { get; set; }
         public int TotalItemCount { get; set; }
 		public int TotalItemPage { get; set; }
 
@@ -47,14 +58,14 @@ namespace BE_Shop.Controllers
 			{
 				var temp = input.Desc ? db._User.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._User.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
 				UserList = temp
-					.Select(e => new
+					.Select(e => new OutputGetAllUserData
 					{
-						e.Id,
-						e.Name,
-						e.UserName,
-						e.Role,
-						e.Gender,
-						e.Birthday,
+						Id = e.Id,
+						Name = e.Name,
+						UserName = e.UserName,
+						Role = e.Role,
+						Gender = e.Gender,
+						Birthday = e.Birthday,
 						TotalOrder = db._Order.Where(y => y.UserId == e.Id).Count(),
                         TotalSpent = db._Order
 							.Join(db._OrderDetail, x => x.Id, y => y.OrderId, 

@@ -16,6 +16,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin,Member")]
 		[HttpPost]
+		[ProducesResponseType(typeof(OutputAddOrder), 200)]
 		public async Task<IActionResult> Add([FromBody] AddOrder input)
 		{
 			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
@@ -29,6 +30,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
 		[HttpPut("{Id}")]
+		[ProducesResponseType(typeof(OutputUpdateOrder), 200)]
 		public async Task<IActionResult> Update([FromBody] UpdateOrder input, Guid Id)
 		{
             input.Id = Id;
@@ -43,6 +45,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
         [HttpPut("cof/{Id}")]
+		[ProducesResponseType(typeof(OutputConfirmOrder), 200)]
         public async Task<IActionResult> ConfirmOrder([FromBody] ConfirmOrder input, Guid Id)
         {
             input.Id = Id;
@@ -50,31 +53,13 @@ namespace BE_Shop.Controllers
             return await QueryCheck<OutputConfirmOrder>(input);
         }
         /// <summary>
-        /// Thực hiện quy trình thanh toán hóa đơn
-        /// </summary>
-        /// <param name="StatusNumber"></param>
-        /// <param name="OrderId"></param>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        //     [Authorize(Roles = "Admin,Member")]
-        //     [HttpPut("wf/{StatusNumber}/{OrderId}")]
-        //     public async Task<IActionResult> Workflow(int StatusNumber, Guid OrderId)
-        //     {
-        //         return await QueryCheck<OutputWorkflowOrder>(new WorkflowOrder()
-        //{
-        //	Status = StatusNumber,
-        //             OrderId = OrderId,
-        //             UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401)),
-        //	Role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? throw new HttpException(string.Empty, 401)
-        //         });
-        //     }
-        /// <summary>
         /// Xóa hóa đơn
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
 		[HttpDelete("{Id}")]
+		[ProducesResponseType(typeof(OutputDeleteOrder), 200)]
 		public async Task<IActionResult> Delete(Guid Id)
 		{
 			return await QueryCheck<OutputDeleteOrder>(Id);
@@ -86,6 +71,7 @@ namespace BE_Shop.Controllers
 		/// <returns></returns>
 		[Authorize(Roles = "Admin")]
 		[HttpPost("list")]
+		[ProducesResponseType(typeof(OutputGetAllOrder), 200)]
 		public async Task<IActionResult> GetAll([FromBody] GetAllOrder input)
 		{
 			return await QueryCheck<OutputGetAllOrder>(input);
@@ -98,10 +84,11 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost("list/{Id}")]
+		[ProducesResponseType(typeof(OutputGetAllOrderById), 200)]
         public async Task<IActionResult> GetAllById(Guid Id, [FromBody] GetAllOrder input)
         {
 			input.UserId = Id;
-            return await QueryCheck<OutputGetAllByIdOrder>(input);
+            return await QueryCheck<OutputGetAllOrderById>(input);
         }
         /// <summary>
         /// Lấy danh sách hóa đơn của tôi
@@ -110,10 +97,11 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
 		[HttpPost("listmine")]
+		[ProducesResponseType(typeof(OutputGetAllOrderById), 200)]
 		public async Task<IActionResult> GetAllMine([FromBody] GetAllOrder input)
 		{
 			input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
-			return await QueryCheck<OutputGetAllByIdOrder>(input);
+			return await QueryCheck<OutputGetAllOrderById>(input);
 		}
         /// <summary>
         /// Lấy thông tin hóa đơn
@@ -122,6 +110,7 @@ namespace BE_Shop.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin,Member")]
 		[HttpGet("{Id}")]
+		[ProducesResponseType(typeof(OutputGetOneOrder), 200)]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{
 			return await QueryCheck<OutputGetOneOrder>(Id);

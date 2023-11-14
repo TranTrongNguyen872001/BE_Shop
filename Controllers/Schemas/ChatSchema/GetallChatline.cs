@@ -10,7 +10,7 @@ namespace BE_Shop.Controllers
     }
     public class OutputGetallChatline : Output
     {
-        public object Chatline { get; set; }
+        public List<ChatLine> Chatline { get; set; }
         public int TotalItemCount { get; set; }
         public int TotalItemPage { get; set; }
         internal override void Query_DataInput(object? ip)

@@ -4,7 +4,7 @@ namespace BE_Shop.Controllers
 {
     public class OutputGetoneProductCategory : Output
     {
-        public object ProductCategory { get; set; }
+        public ProductCategory ProductCategory { get; set; }
         internal override void Query_DataInput(object? input)
         {
             Guid id = (Guid)input!;
