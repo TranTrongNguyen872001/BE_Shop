@@ -54,7 +54,7 @@ namespace BE_Shop.Controllers
                             .ToList(),
                     })
 					.Where(e => input.Search == string.Empty
-						|| input.Search.Contains(e.Name))
+						|| e.Name.Contains(input.Search))
 					.Skip((input.Page - 1) * input.Index)
 					.Take(input.Index)
 					.ToList();
@@ -92,7 +92,7 @@ namespace BE_Shop.Controllers
                             .ToList(),
                     })
                     .Where(e => input.Search == string.Empty
-                        || input.Search.Contains(e.Name))
+                        || e.Name.Contains(input.Search))
                     .Skip((input.Page - 1) * input.Index)
                     .Take(input.Index)
                     .ToList();
