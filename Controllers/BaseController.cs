@@ -30,6 +30,7 @@ namespace BE_Shop.Controllers
                             var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value ?? throw new HttpException(string.Empty, 401)));
                             if (user.TokenKey == User.Claims.FirstOrDefault(c => c.Type == "Key")?.Value)
                             {
+                                a.Query_DataInput(input);
                                 user.TokenKey = Converter.RamdomByte(32);
                                 db.SaveChanges();
                                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -53,7 +54,10 @@ namespace BE_Shop.Controllers
                                 throw new HttpException(string.Empty, 403);
                             }
                         }
-                        a.Query_DataInput(input);
+                        else
+                        {
+                            a.Query_DataInput(input);
+                        }
                     }
                 });
                 return Ok(new { ResetToken = ResetToken, Data = a });

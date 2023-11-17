@@ -15,6 +15,7 @@ namespace BE_Shop.Controllers
 		public List<Address> AddressList { get; set; }
 		public string Status { get; set; }
 		public int TotalOrder { get; set; }
+		public Guid NewOrderId { get; set; }
 		public double TotalSpent  { get; set; }
 	}
 	public class OutputGetOneUser : Output
@@ -39,6 +40,7 @@ namespace BE_Shop.Controllers
                     AddressList = db._Address.Where(y => y.UserId == Id).ToList(),
 					Status = (e.Role == "NotValid") ? "Unactive" : "Active",
 					TotalOrder = db._Order.Where(y => y.UserId == Id).Count(),
+					NewOrderId = db._Order.Where(y => y.Status == 0 && y.UserId == Id).FirstOrDefault().Id,
 					TotalSpent = db._Order
 							.Join(db._OrderDetail, x => x.Id, y => y.OrderId, 
 								(x,y)=> new

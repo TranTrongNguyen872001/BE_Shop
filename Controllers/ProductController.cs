@@ -55,7 +55,7 @@ namespace BE_Shop.Controllers
 		[ProducesResponseType(typeof(OutputGetAllProduct), 200)]
 		public async Task<IActionResult> GetAll([FromBody] GetAllProduct input)
 		{
-			return await QueryCheck<OutputGetAllProduct>(input);
+			return await QueryCheck_NonToken<OutputGetAllProduct>(input);
 		}
         /// <summary>
         /// Lấy danh sách sản phẩm dành cho admin
@@ -79,7 +79,7 @@ namespace BE_Shop.Controllers
 		[ProducesResponseType(typeof(OutputGetOneProduct), 200)]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{
-			return await QueryCheck<OutputGetOneProduct>(Id);
+			return await QueryCheck_NonToken<OutputGetOneProduct>(Id);
 		}
 	}
 }

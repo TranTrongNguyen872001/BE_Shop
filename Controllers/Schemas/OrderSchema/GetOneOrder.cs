@@ -71,7 +71,7 @@ namespace BE_Shop.Controllers
 							.Select(y => new OutputGetOneOrderData3
 							{
 								ProductId = y.ProductId,
-								ProductName = db._Product.Find(y.ProductId) == null ? "" : db._Product.Find(y.ProductId).Name,
+								ProductName = db._Product.Where(p => p.Id == y.ProductId).FirstOrDefault().Name,
 								UnitPrice = y.UnitPrice,
 								ItemCount = y.ItemCount,
 								TotalPrice = y.UnitPrice * y.ItemCount,
