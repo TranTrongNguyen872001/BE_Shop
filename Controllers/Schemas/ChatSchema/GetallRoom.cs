@@ -1,5 +1,6 @@
 ﻿using BE_Shop.Data;
 using Microsoft.AspNetCore.Authorization;
+using MimeKit.Encodings;
 
 namespace BE_Shop.Controllers
 {
@@ -36,11 +37,11 @@ namespace BE_Shop.Controllers
                         .Select(e => new OutputGetallRoomData1
                         {
                             Id = e.Message.UserId,
-                            Name = db._User.Find(e.Message.UserId).Name,
+                            Name = db._User.Where(y => y.Id == e.Message.UserId).FirstOrDefault().Name,
                             LastDate = e.Message.CreatedDate,
                             LastMessage = e.Message.Description,
                             LastSender = e.Message.SendedUser,
-                            LastSenderRole = db._User.Find(e.Message.SendedUser).Role,
+                            LastSenderRole = db._User.Where(y => y.Id == e.Message.SendedUser).FirstOrDefault().Role,
                         })
                         .OrderByDescending(e => e.LastDate)
                         .Skip((input.Page - 1) * input.Index)
