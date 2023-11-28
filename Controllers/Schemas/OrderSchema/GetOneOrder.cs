@@ -11,6 +11,8 @@ namespace BE_Shop.Controllers
 	{
 		public Guid Id { get; set; }
 		public string Address { get; set; }
+		public string ReceiveName { get; set; }
+		public string ReceiveContact { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public string MethodPayment { get; set; }
 		public string Status { get; set; }
@@ -50,6 +52,8 @@ namespace BE_Shop.Controllers
 						Address = e.Address,
 						CreatedDate = e.CreatedDate,
 						MethodPayment = e.MethodPayment ? "Online" : "Offline",
+						ReceiveName = e.ReceiveName,
+						ReceiveContact = e.ReceiveContact,
 						Status =	(e.Status == 0) ? "Khởi tạo" :
 									(e.Status == 1) ? "Xác nhận" :
 									(e.Status == 2) ? "Thanh toán" :
@@ -67,14 +71,23 @@ namespace BE_Shop.Controllers
 							.Select(y => y.UnitPrice * y.ItemCount)
 							.Sum(),
 						Detail = db._OrderDetail
+							.Join(db._Product, x => x.ProductId, y => y.Id, (x,y) => new {
+								x.OrderId,
+								x.ProductId,
+								x.ItemCount,
+								x.UnitPrice,
+								PU = y.UnitPrice,
+								PD = y.Discount,
+								PN = y.Name,
+							})
 							.Where(y => y.OrderId == Id)
 							.Select(y => new OutputGetOneOrderData3
 							{
 								ProductId = y.ProductId,
-								ProductName = db._Product.Where(p => p.Id == y.ProductId).FirstOrDefault().Name,
-								UnitPrice = y.UnitPrice,
+								ProductName = y.PN,
+								UnitPrice = e.Status != 0 ? y.UnitPrice : y.PU - y.PD,
 								ItemCount = y.ItemCount,
-								TotalPrice = y.UnitPrice * y.ItemCount,
+								TotalPrice = (e.Status != 0 ? y.UnitPrice : y.PU - y.PD) * y.ItemCount,
 							})
 							.ToList(),
                     })

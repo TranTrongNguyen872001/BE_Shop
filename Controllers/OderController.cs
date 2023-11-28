@@ -3,12 +3,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using BE_Shop.Data.Service;
 
 namespace BE_Shop.Controllers
 {
 	[Route("/api/order")]
 	public class OrderController : BaseController
 	{
+		private readonly ISMSService smsService;
+		public OrderController(ISMSService smsService)
+		{
+			this.smsService = smsService;
+		}
 		/// <summary>
 		/// Thêm hóa đơn
 		/// </summary>
@@ -52,12 +58,36 @@ namespace BE_Shop.Controllers
             input.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
             return await QueryCheck<OutputConfirmOrder>(input);
         }
+		/// <summary>
+        /// Hoàn tất hóa đơn
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
+        [HttpPut("fin/{Id}")]
+		[ProducesResponseType(typeof(OutputFinishOrder), 200)]
+        public async Task<IActionResult> FinistOrder(Guid Id)
+        {
+        	return await QueryCheck<OutputFinishOrder>(Id);
+        }
+		/// <summary>
+        /// Hủy hóa đơn
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin,Member")]
+        [HttpPut("can/{Id}")]
+		[ProducesResponseType(typeof(OutputCancelOrder), 200)]
+        public async Task<IActionResult> CancelOrder(Guid Id)
+        {
+            return await QueryCheck<OutputCancelOrder>((Id, Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401))));
+        }
         /// <summary>
         /// Xóa hóa đơn
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [Authorize(Roles = "Admin,Member")]
+        [Authorize(Roles = "Admin")]
 		[HttpDelete("{Id}")]
 		[ProducesResponseType(typeof(OutputDeleteOrder), 200)]
 		public async Task<IActionResult> Delete(Guid Id)

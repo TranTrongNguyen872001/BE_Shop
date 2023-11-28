@@ -10,6 +10,7 @@ namespace BE_Shop.Controllers
 		public double Rating { get; set; }
 		public long UnitPrice { get; set; }
 		public int TotalItem { get; set; }
+		public int Discount {get; set;}
 		public List<ProductCategory> Category { get; set; }
 		public List<Guid> Files { get; set; }
 		public string Status { get; set; }
@@ -33,6 +34,7 @@ namespace BE_Shop.Controllers
 						Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
 						UnitPrice = e.UnitPrice,
 						TotalItem = e.TotalItem,
+						Discount = e.Discount,
 						Category = db._ProductCategory
 							.Where(y => e.Category != null && e.Category.Contains(y.Id.ToString()))
 							.ToList(),

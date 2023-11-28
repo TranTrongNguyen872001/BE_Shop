@@ -16,7 +16,7 @@ namespace BE_Shop.Data
 		public long UnitPrice { get; set; } = 0;
         public Guid MainFile { get; set; } = Guid.Empty;
 		[Required] public int TotalItem { get; set; } = 0;
-        [Required] public double Discount { get; set; } = 0;
+        [Required] public int Discount { get; set; } = 0;
         public bool Active { get; set; } = false; // 1: Active, 0: Unactive
         public string? Category { get; set; } = string.Empty;
 		public List<Comment> CommentList { get; set; }

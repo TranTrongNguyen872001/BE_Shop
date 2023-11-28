@@ -28,7 +28,7 @@ namespace BE_Shop.Controllers
                         if (User.Claims.Any())
                         {
                             var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value ?? throw new HttpException(string.Empty, 401)));
-                            if (user.TokenKey == User.Claims.FirstOrDefault(c => c.Type == "Key")?.Value)
+                            if (user.Status == 0 && user.TokenKey == User.Claims.FirstOrDefault(c => c.Type == "Key")?.Value)
                             {
                                 a.Query_DataInput(input);
                                 user.TokenKey = Converter.RamdomByte(32);
@@ -53,10 +53,6 @@ namespace BE_Shop.Controllers
                             {
                                 throw new HttpException(string.Empty, 403);
                             }
-                        }
-                        else
-                        {
-                            a.Query_DataInput(input);
                         }
                     }
                 });

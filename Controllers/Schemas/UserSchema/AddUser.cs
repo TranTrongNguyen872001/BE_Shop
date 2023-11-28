@@ -39,7 +39,7 @@ namespace BE_Shop.Controllers
 			string TokenKey = Converter.RamdomByte(32);
 			using (var db = new DatabaseConnection())
             {
-                if(db._User.Where(b => b.UserName == input.UserName).Any())
+                if(db._User.Where(b => b.UserName == input.UserName).FirstOrDefault() != null)
                 {
                     throw new HttpException(string.Empty, 409);
                 }

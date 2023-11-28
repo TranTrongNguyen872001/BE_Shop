@@ -30,7 +30,7 @@ namespace BE_Shop.Controllers
 						OrderId = input.Id,
 						ProductId = detail.ProductId,
 						ItemCount = detail.ItemCount,
-						UnitPrice = db._Product.Where(e => e.Id == detail.ProductId).Select(e => new { e.UnitPrice }).FirstOrDefault()?.UnitPrice ?? throw new HttpException(detail.ProductId.ToString(), 404),
+						UnitPrice = 0,
                     });
 				}
 				db.SaveChanges();

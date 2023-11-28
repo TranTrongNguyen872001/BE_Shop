@@ -23,19 +23,6 @@ namespace BE_Shop.Controllers
 				var user = db._User.Find(input.UserId) ?? throw new HttpException(string.Empty, 404);
 				user.ValidCode = ValidCode;
 				db.SaveChanges();
-				//var mail = new MimeMessage();
-				//mail.From.Add(MailboxAddress.Parse("shopmisaproject@gmail.com"));
-				//mail.To.Add(MailboxAddress.Parse(user.UserName));
-				//mail.Subject = "[Tin nhắn tự động] Mã xác thực";
-				//mail.Body = new TextPart(TextFormat.Html) { Text = ValidCode.ToString("000000") + " là mã xác thực của quý khách" };
-
-				//using (var smtp =  new SmtpClient())
-				//{
-				//	smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-				//	smtp.Authenticate("shopmisaproject@gmail.com", "ohtfugaymvcgsmzw");
-				//	smtp.Send(mail);
-				//	smtp.Dispose();
-				//}
 				input.EmailService.SendMail(new MailManager()
 				{
 					To = user.UserName,
@@ -65,19 +52,6 @@ namespace BE_Shop.Controllers
 				}
 				var TempPassword = Converter.RamdomByte(20);
 				var TempPasswordMD5 = Converter.MD5Convert(TempPassword);
-				//var mail = new MimeMessage();
-				//mail.From.Add(MailboxAddress.Parse("shopmisaproject@gmail.com"));
-				//mail.To.Add(MailboxAddress.Parse(user.UserName));
-				//mail.Subject = "[Tin nhắn tự động] Tạo mật khẩu mới";
-				//mail.Body = new TextPart(TextFormat.Html) { Text = TempPassword + " là mật khẩu mới của quý khách, quý khách vui lòng đổi mật khẩu trước khi sử dụng" };
-
-				//using (var smtp = new SmtpClient())
-				//{
-				//	smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-				//	smtp.Authenticate("shopmisaproject@gmail.com", "ohtfugaymvcgsmzw");
-				//	smtp.Send(mail);
-				//	smtp.Dispose();
-				//}
 				input.EmailService.SendMail(new MailManager()
 				{
 					To = user.UserName,

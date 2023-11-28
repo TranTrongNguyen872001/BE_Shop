@@ -14,15 +14,15 @@ namespace BE_Shop.Data
         [Required] public string Role { get; set; } = string.Empty;
         [Required]public string UserName { get; set; } = string.Empty;
         [Required]public string Password { get; set; } = string.Empty;
-        public string? Contact { get; set; } = null;
+        public string Contact { get; set; } = string.Empty;
         public byte[]? ProPic { get; set; } = null;
         public string? ProPicType { get; set; } = null;
         public string TokenKey { get; set; } = string.Empty;
         public int? ValidCode { get; set; } = null;
         public bool? Gender { get; set; } = null;
         public DateTime? Birthday { get; set; } = null;
+        [Required]public int Status{get; set;} = 0; // 0: Active, 1: Inactive
         public List<Address> AddressList { get; set; } = new List<Address>();
-        public List<Order> OrderList { get; set; } = new List<Order>();
     }
     /// <summary>
     /// Địa chỉ
@@ -33,6 +33,8 @@ namespace BE_Shop.Data
         [Key] public Guid Id { get; set; } = Guid.Empty;
         public Guid UserId { get; set; } = Guid.Empty;
         [Required] public string Description { get; set; } = string.Empty;
+        public string Name {get; set;} = string.Empty;
+        public string Contact {get; set;} = string.Empty;
     }
     [Table("ChatLine")]
     public class ChatLine

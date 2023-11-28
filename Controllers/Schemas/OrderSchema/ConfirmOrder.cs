@@ -10,6 +10,7 @@ namespace BE_Shop.Controllers
         public bool MethodPayment { get; set; } = false;
         public string ReceiveName { get; set; } = string.Empty;
         public string ReceiveContact { get; set; } = string.Empty;
+        public Guid DiscountId { get; set; } = Guid.Empty;
     }
     public class OutputConfirmOrder : Output
     {
@@ -28,6 +29,7 @@ namespace BE_Shop.Controllers
                 Order.ReceiveName = input.ReceiveName;
                 Order.ReceiveContact = input.ReceiveContact;
                 Order.CreatedDate = DateTime.Now;
+                Order.DiscountId = input.DiscountId;
                 if(input.MethodPayment == true)
                 {
                     Order.Status = 2;
@@ -35,6 +37,17 @@ namespace BE_Shop.Controllers
                 else
                 {
                     Order.Status = 1;
+                }
+                db.SaveChanges();
+                var od = db._OrderDetail.Where(e => e.OrderId == input.Id).ToList();
+                if(od.Any())
+                {
+                    foreach(var orderDetail in od)
+                    {
+                        var product = db._Product.Find(orderDetail.ProductId);
+                        orderDetail.UnitPrice = product == null ? 0 : product.UnitPrice - product.Discount;
+                        db.SaveChanges();
+                    }
                 }
             }
         }

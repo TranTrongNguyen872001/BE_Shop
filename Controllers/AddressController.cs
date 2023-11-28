@@ -16,14 +16,10 @@ namespace BE_Shop.Controllers
         [Authorize(Roles = "Admin,Member")]
 		[HttpPost]
 		[ProducesResponseType(typeof(OutputAddAddress), 200)]
-		public async Task<IActionResult> Add([FromBody] string Address)
+		public async Task<IActionResult> Add([FromBody] AddAddress Address)
 		{
-            return await QueryCheck<OutputAddAddress>(
-				new AddAddress()
-				{
-					Address = Address, 
-					UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401))
-				});
+			Address.UserId = Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401));
+            return await QueryCheck<OutputAddAddress>(Address);
 		}
 		/// <summary>
 		/// Sửa địa chỉ

@@ -15,6 +15,7 @@ namespace BE_Shop.Data
 		public DbSet<Comment> _Comment { get; set; }
         public DbSet<ProductCategory> _ProductCategory { get; set; }
         public DbSet<ChatLine> _ChatLine { get; set; }
+        public DbSet<Discount> _Discount { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);

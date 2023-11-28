@@ -7,8 +7,10 @@ namespace BE_Shop.Controllers
 {
 	public class AddAddress
 	{
-		internal string Address { get; set; } = string.Empty;
+		public string Address { get; set; } = string.Empty;
 		internal Guid UserId { get; set; } = Guid.Empty;
+		public string Name { get; set; } = string.Empty;
+		public string Contact { get; set; } = string.Empty;
 	}
 	public class OutputAddAddress : Output
 	{
@@ -25,6 +27,8 @@ namespace BE_Shop.Controllers
 					Id = Id,
 					UserId = input.UserId,
 					Description = input.Address,
+					Contact = input.Contact,
+					Name = input.Name,
 				});
 				db.SaveChanges();
 			}

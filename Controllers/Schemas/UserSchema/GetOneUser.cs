@@ -38,7 +38,7 @@ namespace BE_Shop.Controllers
 					Gender = e.Gender,
 					Birthday = e.Birthday,
                     AddressList = db._Address.Where(y => y.UserId == Id).ToList(),
-					Status = (e.Role == "NotValid") ? "Unactive" : "Active",
+					Status = (e.Status == 0) ? "Active" : "Inactive",
 					TotalOrder = db._Order.Where(y => y.UserId == Id).Count(),
 					NewOrderId = db._Order.Where(y => y.Status == 0 && y.UserId == Id).FirstOrDefault().Id,
 					TotalSpent = db._Order

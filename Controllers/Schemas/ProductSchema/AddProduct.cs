@@ -6,7 +6,7 @@ namespace BE_Shop.Controllers
 	{
 		public string Name { get; set; } = string.Empty;
 		public string Code { get; set; } = string.Empty;
-		public float Discount { get; set; } = 0;
+		public int Discount { get; set; } = 0;
 		public string Decription { get; set; } = string.Empty;
 		public long UnitPrice { get; set; } = 0;
 		public int TotalItem { get; set; } = 0;
