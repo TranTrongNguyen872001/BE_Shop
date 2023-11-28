@@ -32,7 +32,7 @@ namespace BE_Shop.Controllers
 	public class OutputGetAllOrderData2
 	{
 		public Guid Id { get; set; }
-		public string Name { get; set; }
+		public string? Name { get; set; }
 		public string Role { get; set; }
 		public string Email { get; set; }
 	}

@@ -37,7 +37,7 @@ namespace BE_Shop.Controllers
 	public class OutputGetAllUserData
     {
 		public Guid Id { get; set; }
-		public string Name { get; set; }
+		public string? Name { get; set; }
 		public string UserName { get; set; }
 		public string Role { get; set; }
 		public bool? Gender { get; set; }
@@ -80,14 +80,14 @@ namespace BE_Shop.Controllers
 							.Sum()
                     })
 					.Where(e => input.Search == string.Empty
-							|| input.Search.Contains(e.Name)
+							|| input.Search.Contains(e.Name ?? "")
 							|| input.Search.Contains(e.Role)
 							|| input.Search.Contains(e.UserName))
 					.Skip((input.Page - 1) * input.Index)
 					.Take(input.Index)
 					.ToList();
                 TotalItemCount = db._User
-					.Where(e => input.Search.Contains(e.Name)
+					.Where(e => input.Search.Contains(e.Name ?? "")
 						|| input.Search.Contains(e.Role)
 						|| input.Search.Contains(e.UserName)).Count();
 				TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
