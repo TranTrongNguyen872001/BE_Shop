@@ -12,7 +12,7 @@ namespace BE_Shop.Controllers
     public class OutputGetallRoomData1
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public System.DateTime LastDate { get; set; }
         public string LastMessage { get; set; }
         public System.Guid LastSender { get; set; }

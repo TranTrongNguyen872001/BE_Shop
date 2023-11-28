@@ -19,7 +19,7 @@ namespace BE_Shop.Controllers
 	public class OutputGetAllCommentData2
 	{
 		public Guid Id{ get; set; }
-		public string Name { get; set; }
+		public string? Name { get; set; }
 	}
 	public class OutputGetAllComment : Output
 	{
