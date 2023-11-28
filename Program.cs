@@ -53,8 +53,8 @@ builder.Services.AddSwaggerGen(options =>
 	});
 });
 builder.Services.AddSignalR();
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<ISMSService, SMSService>();
+// builder.Services.AddScoped<IEmailService, EmailService>();
+// builder.Services.AddScoped<ISMSService, SMSService>();
 
 // Add login token.
 builder.Services.AddAuthentication(x =>

@@ -10,11 +10,11 @@ namespace BE_Shop.Controllers
 	[Route("/api/order")]
 	public class OrderController : BaseController
 	{
-		private readonly ISMSService smsService;
-		public OrderController(ISMSService smsService)
-		{
-			this.smsService = smsService;
-		}
+		// private readonly ISMSService smsService;
+		// public OrderController(ISMSService smsService)
+		// {
+		// 	this.smsService = smsService;
+		// }
 		/// <summary>
 		/// Thêm hóa đơn
 		/// </summary>

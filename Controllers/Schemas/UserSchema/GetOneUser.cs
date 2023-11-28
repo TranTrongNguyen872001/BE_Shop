@@ -6,7 +6,7 @@ namespace BE_Shop.Controllers
 	public class OutputGetOneUserData
 	{
 		public Guid Id { get; set; }
-		public string Name { get; set; }
+		public string? Name { get; set; }
 		public string Role { get; set; }
 		public string UserName { get; set; }
 		public string? Contact { get; set; }
@@ -15,7 +15,7 @@ namespace BE_Shop.Controllers
 		public List<Address> AddressList { get; set; }
 		public string Status { get; set; }
 		public int TotalOrder { get; set; }
-		public Guid NewOrderId { get; set; }
+		public Guid? NewOrderId { get; set; }
 		public double TotalSpent  { get; set; }
 	}
 	public class OutputGetOneUser : Output

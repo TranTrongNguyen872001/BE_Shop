@@ -10,11 +10,11 @@ namespace BE_Shop.Data
     public class User
     {
         [Key] public Guid Id { get; set; } = Guid.Empty;
-        [Required][StringLength(50)] public string Name { get; set; } = string.Empty;
+        [Required][StringLength(50)] public string? Name { get; set; } = string.Empty;
         [Required] public string Role { get; set; } = string.Empty;
         [Required]public string UserName { get; set; } = string.Empty;
         [Required]public string Password { get; set; } = string.Empty;
-        public string Contact { get; set; } = string.Empty;
+        public string? Contact { get; set; } = string.Empty;
         public byte[]? ProPic { get; set; } = null;
         public string? ProPicType { get; set; } = null;
         public string TokenKey { get; set; } = string.Empty;
