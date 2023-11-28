@@ -59,7 +59,7 @@ namespace BE_Shop.Controllers
                     AddressList = addresses,
                     UserName = input.UserName,
                     //Password = Converter.MD5Convert(input.Password),
-                    Role = "NotValid",
+                    Role = "Member",
                     TokenKey = TokenKey,
                 });
                 db.SaveChanges();
