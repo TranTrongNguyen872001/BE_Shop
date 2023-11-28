@@ -15,15 +15,23 @@ namespace BE_Shop.Controllers
         /// <summary>
         /// Tên người dùng
         /// </summary>
-        [Required] public string Name { get; set; } = string.Empty;
+        //[Required] public string Name { get; set; } = string.Empty;
         /// <summary>
         /// danh sách địa chỉ
         /// </summary>
-        public List<string> AddressList { get; set; } = new List<string>();
+        //public List<string> AddressList { get; set; } = new List<string>();
         /// <summary>
         /// Tên đăng nhập
         /// </summary>
         [Required] public string UserName { get; set; } = string.Empty;
+        /// <summary>
+        /// Mật khẩu
+        /// </summary>
+        [Required] public string Password { get; set; } = string.Empty;
+        /// <summary>
+        /// Giới tính
+        /// </summary>
+        [Required] public bool? Gender { get; set; } = true;
 	}
     public class OutputAddUser : Output
     {
@@ -43,22 +51,23 @@ namespace BE_Shop.Controllers
                 {
                     throw new HttpException(string.Empty, 409);
                 }
-                List<Address> addresses = new List<Address>();
-                foreach (var address in input.AddressList)
-                {
-                    addresses.Add(new Address()
-                    {
-                        Id = Guid.NewGuid(),
-                        Description = address,
-                    });
-                }
+                //List<Address> addresses = new List<Address>();
+                //foreach (var address in input.AddressList)
+                //{
+                //    addresses.Add(new Address()
+                //    {
+                //        Id = Guid.NewGuid(),
+                //        Description = address,
+                //    });
+                //}
 				db._User.Add(new User()
                 {
                     Id = Id,
-                    Name = input.Name,
-                    AddressList = addresses,
+                    //Name = input.Name,
+                    //AddressList = addresses,
                     UserName = input.UserName,
-                    //Password = Converter.MD5Convert(input.Password),
+                    Password = Converter.MD5Convert(input.Password),
+                    Gender = input.Gender,
                     Role = "Member",
                     TokenKey = TokenKey,
                 });
