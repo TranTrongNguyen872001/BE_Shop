@@ -158,7 +158,7 @@ namespace BE_Shop.Controllers
 		/// <summary>
 		/// Lấy ảnh đại diện theo Id
 		/// </summary>
-		[Authorize(Roles = "Admin")]
+		[AllowAnonymous]
 		[HttpGet("pro/pic/{Id}")]
 		public IActionResult GetProfilePicture(Guid Id)
 		{
@@ -182,7 +182,7 @@ namespace BE_Shop.Controllers
 		/// <summary>
 		/// Lấy ảnh đại diện
 		/// </summary>
-		[Authorize(Roles = "Admin,Member")]
+		[AllowAnonymous]
 		[HttpGet("pro/pic")]
 		public IActionResult GetProfilePicture()
 		{
