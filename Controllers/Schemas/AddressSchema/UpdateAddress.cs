@@ -8,6 +8,8 @@ namespace BE_Shop.Controllers
 		public Guid Id { get; set; } = Guid.NewGuid();
 		public string Decription { get; set; } = string.Empty;
 		internal Guid UserId { get; set; } = Guid.Empty;
+		public string Name {get; set;} = string.Empty;
+		public string Contact {get; set;} = string.Empty;
 	}
 	public class OutputUpdateAddress : Output
 	{
@@ -24,6 +26,8 @@ namespace BE_Shop.Controllers
 				if (input.Decription != string.Empty)
 				{
 					Address.Description = input.Decription;
+					Address.Name = input.Name;
+					Address.Contact = input.Contact;
 					db.SaveChanges();
 				}
 			}
