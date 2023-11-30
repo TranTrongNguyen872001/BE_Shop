@@ -38,7 +38,7 @@ namespace BE_Shop.Controllers
                                 {
                                 new Claim(ClaimTypes.Name, user.Id.ToString()),
                                 new Claim(ClaimTypes.Role, user.Role),
-                                new Claim("Key", user.TokenKey),
+                                //new Claim("Key", user.TokenKey),
                                 }),
                                 Expires = DateTime.Now.AddMinutes(5),
                                 SigningCredentials = new SigningCredentials(

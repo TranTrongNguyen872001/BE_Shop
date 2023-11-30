@@ -29,9 +29,9 @@ namespace BE_Shop.Controllers
         /// </summary>
         [Required] public string Password { get; set; } = string.Empty;
         /// <summary>
-        /// Giới tính
+        /// Họ và tên
         /// </summary>
-        [Required] public bool? Gender { get; set; } = true;
+        [Required] public string Name { get; set; } = string.Empty;
 	}
     public class OutputAddUser : Output
     {
@@ -63,11 +63,11 @@ namespace BE_Shop.Controllers
 				db._User.Add(new User()
                 {
                     Id = Id,
-                    //Name = input.Name,
+                    Name = input.Name,
                     //AddressList = addresses,
                     UserName = input.UserName,
                     Password = Converter.MD5Convert(input.Password),
-                    Gender = input.Gender,
+                    Gender = true,
                     Role = "Member",
                     TokenKey = TokenKey,
                 });
@@ -80,7 +80,7 @@ namespace BE_Shop.Controllers
                 {
                     new Claim(ClaimTypes.Name, Id.ToString()),
                     new Claim(ClaimTypes.Role, "NotValid"),
-                    new Claim("Key", TokenKey),
+                    //new Claim("Key", TokenKey),
                 }),
                 Expires = DateTime.Now.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(
