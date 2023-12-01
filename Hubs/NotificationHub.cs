@@ -15,7 +15,6 @@ namespace BE_Shop.Hubs
         }
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            Clients.Caller.SendAsync("OnDisconnected");
             return base.OnDisconnectedAsync(exception);
         }
         public async Task Join(string group)
