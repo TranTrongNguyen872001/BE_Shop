@@ -99,6 +99,18 @@ namespace BE_Shop.Controllers
 			return await QueryCheck<OutputUpdateUser>(input);
 		}
 		/// <summary>
+		/// Đổi thông tin tài khoản cho admin
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		[Authorize(Roles = "Admin")]
+		[HttpPut("admin")]
+		[ProducesResponseType(typeof(OutputUpdateUserForadmin), 200)]
+		public async Task<IActionResult> UpdateUserForAdmin([FromBody] UpdateUserForadmin input)
+		{
+			return await QueryCheck<OutputUpdateUserForadmin>(input);
+		}
+		/// <summary>
 		/// Xác thực tài khoản
 		/// </summary>
 		/// <param name="ValidCode"></param>

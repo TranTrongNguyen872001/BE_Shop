@@ -25,7 +25,8 @@ namespace BE_Shop.Controllers
 		/// Nhập giá trị tìm kiếm
 		/// </summary>
 		public string Search { get; set; } = string.Empty;
-		public Guid Category { get; set; } = Guid.Empty;
+		public Guid? Category { get; set; } = null;
+		public bool? Active {get; set;} = null;
 	}
 	public class OutputGetAllProductData1
 	{
@@ -51,12 +52,12 @@ namespace BE_Shop.Controllers
 			using (var db = new DatabaseConnection())
 			{
 				var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
-				ProductList = temp
+				#pragma warning disable CS8604 // Possible null reference argument.
+                ProductList = temp
 					.Where(e => (e.Active == true) 
-						&& (input.Search == string.Empty
-						|| e.Name.Contains(input.Search))
-						&& (input.Category == Guid.Empty
-						|| e.Category.Contains(input.Category.ToString())))
+						&& (input.Search == string.Empty || e.Name.Contains(input.Search))
+						&& (input.Category == null || e.Category.Contains(input.Category.ToString()))
+						&& (input.Active == null || e.Active == input.Active))
 					.Select(e => new OutputGetAllProductData1
 					{
 						Code = e.Code,
@@ -75,6 +76,7 @@ namespace BE_Shop.Controllers
 					.Skip((input.Page - 1) * input.Index)
 					.Take(input.Index)
 					.ToList();
+#pragma warning restore CS8604 // Possible null reference argument.
                 TotalItemCount = db._Product
 						.Where(e => input.Search == string.Empty
 							|| input.Search.Contains(e.Name)).Count();
@@ -94,10 +96,10 @@ namespace BE_Shop.Controllers
             {
                 var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
                 ProductList = temp
-                    .Where(e => input.Search == string.Empty
-                        || e.Name.Contains(input.Search)
-						&& (input.Category == Guid.Empty
-						|| e.Category.Contains(input.Category.ToString())))
+					#pragma warning disable CS8604 // Possible null reference argument.
+                    .Where(e => (input.Search == string.Empty || e.Name.Contains(input.Search))
+						&& (input.Category == null || e.Category.Contains(input.Category.ToString()))
+						&& (input.Active == null || e.Active == input.Active))
                     .Select(e => new OutputGetAllProductData1
 					{
 						Code = e.Code,

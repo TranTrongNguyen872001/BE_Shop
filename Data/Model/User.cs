@@ -21,7 +21,7 @@ namespace BE_Shop.Data
         public int? ValidCode { get; set; } = null;
         public bool? Gender { get; set; } = null;
         public DateTime? Birthday { get; set; } = null;
-        [Required]public int Status{get; set;} = 0; // 0: Active, 1: Inactive
+        [Required]public bool Status{get; set;} = true; // 1: Active, 0: Inactive
         public List<Address> AddressList { get; set; } = new List<Address>();
     }
     /// <summary>

@@ -13,7 +13,7 @@ namespace BE_Shop.Controllers
 		public bool? Gender { get; set; }
 		public DateTime? Birthday { get; set; }
 		public List<Address> AddressList { get; set; }
-		public string Status { get; set; }
+		public bool Status { get; set; }
 		public int TotalOrder { get; set; }
 		public Guid? NewOrderId { get; set; }
 		public double TotalSpent  { get; set; }
@@ -38,7 +38,7 @@ namespace BE_Shop.Controllers
 					Gender = e.Gender,
 					Birthday = e.Birthday,
                     AddressList = db._Address.Where(y => y.UserId == Id).ToList(),
-					Status = (e.Status == 0) ? "Active" : "Inactive",
+					Status = e.Status,
 					TotalOrder = db._Order.Where(y => y.UserId == Id).Count(),
 					NewOrderId = db._Order.Where(y => y.Status == 0 && y.UserId == Id).FirstOrDefault().Id,
 					TotalSpent = db._Order

@@ -33,6 +33,8 @@ namespace BE_Shop.Controllers
 		/// Nhập giá trị tìm kiếm
 		/// </summary>
 		public string Search { get; set; } = string.Empty;
+		public string? Role {get; set;} = null;
+		public bool? Status{get; set;} = null;
     }
 	public class OutputGetAllUserData
     {
@@ -44,6 +46,7 @@ namespace BE_Shop.Controllers
 		public DateTime? Birthday { get; set; }
 		public int TotalOrder { get; set; }
 		public long TotalSpent { get; set; }
+		public bool Status { get; set; }
 	}
 	public class OutputGetAllUser : Output
     {
@@ -64,6 +67,7 @@ namespace BE_Shop.Controllers
 						Name = e.Name,
 						UserName = e.UserName,
 						Role = e.Role,
+						Status = e.Status,
 						Gender = e.Gender,
 						Birthday = e.Birthday,
 						TotalOrder = db._Order.Where(y => y.UserId == e.Id).Count(),
@@ -79,10 +83,12 @@ namespace BE_Shop.Controllers
 							.Select(y => y.ItemCount * y.UnitPrice)
 							.Sum()
                     })
-					.Where(e => input.Search == string.Empty
+					.Where(e => (input.Search == string.Empty
 							|| input.Search.Contains(e.Name ?? "")
 							|| input.Search.Contains(e.Role)
 							|| input.Search.Contains(e.UserName))
+							&& (input.Role == null || input.Role == e.Role)
+							&& (input.Status == null || input.Status == e.Status))
 					.Skip((input.Page - 1) * input.Index)
 					.Take(input.Index)
 					.ToList();
