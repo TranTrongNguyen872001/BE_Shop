@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,6 +15,9 @@ namespace BE_Shop.Data
 		public DbSet<Comment> _Comment { get; set; }
         public DbSet<ProductCategory> _ProductCategory { get; set; }
         public DbSet<ChatLine> _ChatLine { get; set; }
+        public DbSet<Discount> _Discount { get; set; }
+        public DbSet<Room> _Rooms { get; set; }
+        public DbSet<Message> _Messages { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			base.OnConfiguring(optionsBuilder);
