@@ -26,7 +26,7 @@ namespace BE_Shop.Controllers
 		public string Address { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public string MethodPayment { get; set; }
-		public string Status { get; set; }
+		public int Status { get; set; }
 		public OutputGetAllOrderData2? User { get; set; }
 		public long TotalPrice { get; set; }
 	}
@@ -56,11 +56,7 @@ namespace BE_Shop.Controllers
                     Address = e.Address,
                     CreatedDate = e.CreatedDate,
                     MethodPayment = e.MethodPayment ? "Online" : "Offline",
-                    Status =	(e.Status == 0) ? "Khởi tạo" :
-                                (e.Status == 1) ? "Xác nhận" :
-                                (e.Status == 2) ? "Thanh toán" :
-                                (e.Status == 3) ? "Hoàn tất" :
-                                (e.Status == 4) ? "Hủy" : e.Status.ToString(),
+                    Status = e.Status,
                     User = db._User.Where(y => y.Id == e.UserId).Select(y => new OutputGetAllOrderData2
 						{
 							Id = e.UserId,
@@ -101,11 +97,7 @@ namespace BE_Shop.Controllers
                     Address = e.Address,
                     CreatedDate = e.CreatedDate,
                     MethodPayment = e.MethodPayment ? "Online" : "Offline",
-                    Status =	(e.Status == 0) ? "Khởi tạo" :
-                                (e.Status == 1) ? "Xác nhận" :
-                                (e.Status == 2) ? "Thanh toán" :
-                                (e.Status == 3) ? "Hoàn tất" :
-                                (e.Status == 4) ? "Hủy" : e.Status.ToString(),
+                    Status = e.Status,
                     User = db._User.Where(y => y.Id == e.UserId).Select(y => new OutputGetAllOrderData2
 						{
 							Id = e.UserId,
