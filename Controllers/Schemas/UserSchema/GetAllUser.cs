@@ -93,9 +93,13 @@ namespace BE_Shop.Controllers
 					.Take(input.Index)
 					.ToList();
                 TotalItemCount = db._User
-					.Where(e => input.Search.Contains(e.Name ?? "")
-						|| input.Search.Contains(e.Role)
-						|| input.Search.Contains(e.UserName)).Count();
+					.Where(e => (input.Search == string.Empty
+							|| input.Search.Contains(e.Name ?? "")
+							|| input.Search.Contains(e.Role)
+							|| input.Search.Contains(e.UserName))
+							&& (input.Role == null || input.Role == e.Role)
+							&& (input.Status == null || input.Status == e.Status))
+					.Count();
 				TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
 			}
 		}
