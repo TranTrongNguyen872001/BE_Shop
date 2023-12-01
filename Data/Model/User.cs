@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BE_Shop.Data
@@ -32,12 +33,14 @@ namespace BE_Shop.Data
         [Required] public string Description { get; set; } = string.Empty;
     }
     [Table("ChatLine")]
-    public class ChatLine
+    public class ChatLine : IdentityUser
     {
         [Key] public Guid Id { get; set; } = Guid.Empty;
         [Required] public Guid UserId { get; set; } = Guid.Empty;
         [Required] public Guid SendedUser { get; set; } = Guid.Empty;
         [Required] public DateTime CreatedDate { get; set; } = DateTime.Now;
         [Required] public string Description { get; set; } = string.Empty;
+        public ICollection<Room> Rooms { get; set; }
+        public ICollection<Message> Messages { get; set; }
     }
 }

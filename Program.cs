@@ -98,6 +98,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<NotificationHub>("/hub");
+app.MapHub<MessageHub>("/messageHub");
 
 app.Run();
