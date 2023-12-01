@@ -15,7 +15,7 @@ namespace BE_Shop.Controllers
 		public string ReceiveContact { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public string MethodPayment { get; set; }
-		public string Status { get; set; }
+		public int Status { get; set; }
 		public OutputGetOneOrderData2? User { get; set; }
 		public long TotalPrice { get; set; }
 		public List<OutputGetOneOrderData3> Detail { get; set; }
@@ -54,11 +54,7 @@ namespace BE_Shop.Controllers
 						MethodPayment = e.MethodPayment ? "Online" : "Offline",
 						ReceiveName = e.ReceiveName,
 						ReceiveContact = e.ReceiveContact,
-						Status =	(e.Status == 0) ? "Khởi tạo" :
-									(e.Status == 1) ? "Xác nhận" :
-									(e.Status == 2) ? "Thanh toán" :
-									(e.Status == 3) ? "Hoàn tất" :
-									(e.Status == 4) ? "Hủy" : e.Status.ToString(),
+						Status = e.Status,
 						User = db._User.Where(y => y.Id == e.UserId).Select(y => new OutputGetOneOrderData2
 						{
 							Id = e.UserId,

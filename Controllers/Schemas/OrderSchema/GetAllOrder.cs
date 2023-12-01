@@ -29,6 +29,7 @@ namespace BE_Shop.Controllers
 		public int Status { get; set; }
 		public OutputGetAllOrderData2? User { get; set; }
 		public long TotalPrice { get; set; }
+		public int Discount { get; set; }
 	}
 	public class OutputGetAllOrderData2
 	{
@@ -57,6 +58,7 @@ namespace BE_Shop.Controllers
                     CreatedDate = e.CreatedDate,
                     MethodPayment = e.MethodPayment ? "Online" : "Offline",
                     Status = e.Status,
+					Discount = db._Discount.Where(y => y.Id == e.DiscountId).FirstOrDefault() != null ? db._Discount.Where(y => y.Id == e.DiscountId).FirstOrDefault().Value : 0,
                     User = db._User.Where(y => y.Id == e.UserId).Select(y => new OutputGetAllOrderData2
 						{
 							Id = e.UserId,
@@ -98,6 +100,7 @@ namespace BE_Shop.Controllers
                     CreatedDate = e.CreatedDate,
                     MethodPayment = e.MethodPayment ? "Online" : "Offline",
                     Status = e.Status,
+					Discount = db._Discount.Where(y => y.Id == e.DiscountId).FirstOrDefault() != null ? db._Discount.Where(y => y.Id == e.DiscountId).FirstOrDefault().Value : 0,
                     User = db._User.Where(y => y.Id == e.UserId).Select(y => new OutputGetAllOrderData2
 						{
 							Id = e.UserId,
