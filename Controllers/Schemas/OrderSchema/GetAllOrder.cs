@@ -18,6 +18,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		public int Page { get; set; } = 0;
 		internal Guid UserId { get; set; } = Guid.Empty;
+		public int? Status{get; set;} = null;
 	}
 	public class OutputGetAllOrderData1
 	{
@@ -49,6 +50,7 @@ namespace BE_Shop.Controllers
 			{
 				OrderList = db._Order
                 .OrderByDescending(e => e.CreatedDate)
+				.Where(e => input.Status == null || e.Status == input.Status)
                 .Select(e => new OutputGetAllOrderData1{
                     Id = e.Id,
                     Address = e.Address,
@@ -92,7 +94,8 @@ namespace BE_Shop.Controllers
 			{
 				OrderList = db._Order
                 .OrderByDescending(e => e.CreatedDate)
-				.Where(e => e.UserId == input.UserId)
+				.Where(e => e.UserId == input.UserId
+					&& (input.Status == null || e.Status == input.Status))
                 .Select(e => new OutputGetAllOrderData1{
                     Id = e.Id,
                     Address = e.Address,
