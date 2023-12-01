@@ -24,6 +24,7 @@ namespace BE_Shop.Controllers
                     CreatedDate = DateTime.Now,
                     SendedUser = input.SendedUser,
                 });
+                db.SaveChanges();
             }
         }
     }
