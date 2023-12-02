@@ -30,6 +30,7 @@ namespace BE_Shop.Controllers
 	public class OutputGetOneOrderData3
 	{
 		public Guid ProductId { get; set; }
+		public Guid MainFile { get; set; }
 		public string ProductName { get; set; }
 		public long UnitPrice { get; set; }
 		public long ItemCount { get; set; }
@@ -72,6 +73,7 @@ namespace BE_Shop.Controllers
 								x.ProductId,
 								x.ItemCount,
 								x.UnitPrice,
+								y.MainFile,
 								PU = y.UnitPrice,
 								PD = y.Discount,
 								PN = y.Name,
@@ -80,6 +82,7 @@ namespace BE_Shop.Controllers
 							.Select(y => new OutputGetOneOrderData3
 							{
 								ProductId = y.ProductId,
+								MainFile = y.MainFile != Guid.Empty ? y.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
 								ProductName = y.PN,
 								UnitPrice = e.Status != 0 ? y.UnitPrice : y.PU - y.PD,
 								ItemCount = y.ItemCount,
