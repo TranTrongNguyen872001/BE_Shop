@@ -20,7 +20,7 @@ namespace BE_Shop.Controllers
             {
                 Chatline = db._ChatLine
                         .Where(e => e.UserId == input.Id)
-                        .OrderByDescending(e => e.CreatedDate)
+                        .OrderBy(e => e.CreatedDate)
                         .Skip((input.Page - 1) * input.Index)
                         .Take(input.Index)
                         .ToList();
