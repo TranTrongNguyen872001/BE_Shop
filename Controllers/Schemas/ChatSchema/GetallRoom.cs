@@ -52,7 +52,7 @@ namespace BE_Shop.Controllers
                 //         .Take(input.Index)
                 //         .ToList();
                 Rooms = db._User
-                    .Where(e => e.Status == true)
+                    .Where(e => e.Status == true && e.Role == "Member")
                     .Select(e => new OutputGetallRoomData1{
                         Id = e.Id,
                         Name = e.Name,
