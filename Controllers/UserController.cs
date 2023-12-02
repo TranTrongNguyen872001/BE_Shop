@@ -179,7 +179,13 @@ namespace BE_Shop.Controllers
 				using (var db = new DatabaseConnection())
 				{
 					var user = db._User.Find(Id) ?? throw new HttpException(string.Empty, 404);
-					return File(user.ProPic ?? throw new HttpException(string.Empty, 404), user.ProPicType ?? "image/jpg");
+					if(user.ProPic != null){
+						return File(user.ProPic, user.ProPicType ?? "image/jpg");
+					}
+					else{
+						var file = db._FileManager.Find(Guid.Parse("00000000-0000-0000-0000-000000000000")) ?? throw new HttpException(string.Empty, 404);
+						return File(file.Source, file.Type);
+					}
 				}
 			}
 			catch (HttpException ex)
@@ -203,7 +209,13 @@ namespace BE_Shop.Controllers
 				using (var db = new DatabaseConnection())
 				{
 					var user = db._User.Find(Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new HttpException(string.Empty, 401))) ?? throw new HttpException(string.Empty, 404);
-					return File(user.ProPic ?? throw new HttpException(string.Empty, 404), user.ProPicType ?? "image/jpg");
+					if(user.ProPic != null){
+						return File(user.ProPic, user.ProPicType ?? "image/jpg");
+					}
+					else{
+						var file = db._FileManager.Find(Guid.Parse("00000000-0000-0000-0000-000000000000")) ?? throw new HttpException(string.Empty, 404);
+						return File(file.Source, file.Type);
+					}
 				}
 			}
 			catch (HttpException ex)
