@@ -14,6 +14,7 @@ namespace BE_Shop.Controllers
 		public List<ProductCategory> Category { get; set; }
 		public List<Guid> Files { get; set; }
 		public string Status { get; set; }
+		public int TotalSold { get; set; }
 	}
 	public class OutputGetOneProduct : Output
 	{
@@ -43,6 +44,10 @@ namespace BE_Shop.Controllers
 							.Select(y => y.Id)
 							.ToList(),
                         Status = e.Active ? "Active" : "Unactive",
+						TotalSold = db._OrderDetail
+							.Join(db._Order, a => a.OrderId, b => b.Id, (a,b) => new {b.Status, a.ProductId})
+							.Where(y => (y.Status == 1 || y.Status == 2 || y.Status == 3) && y.ProductId == e.Id)
+							.Count(),
                     }).FirstOrDefault() ?? throw new HttpException(string.Empty, 404);
 			}
 		}
