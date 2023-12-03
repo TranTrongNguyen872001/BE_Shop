@@ -49,10 +49,10 @@ namespace BE_Shop.Controllers
 		internal override void Query_DataInput(object? ip)
 		{
 			GetAllProduct input = (GetAllProduct)ip!;
-			using (var db = new DatabaseConnection())
+			using (DatabaseConnection db = new DatabaseConnection())
 			{
 				var temp = input.Desc ? db._Product.OrderBy(e => EF.Property<object>(e, input.SortBy ?? "Name")) : db._Product.OrderByDescending(e => EF.Property<object>(e, input.SortBy ?? "Name"));
-				#pragma warning disable CS8604 // Possible null reference argument.
+
                 ProductList = temp
 					.Where(e => (e.Active == true) 
 						&& (input.Search == string.Empty || e.Name.Contains(input.Search))
@@ -64,7 +64,7 @@ namespace BE_Shop.Controllers
 						Id = e.Id,
 						Name = e.Name,
 						Active = e.Active,
-						MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+						MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).Select(y => y.Id).FirstOrDefault(),
 						Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
 						UnitPrice = e.UnitPrice,
 						TotalItem = e.TotalItem,
@@ -106,7 +106,7 @@ namespace BE_Shop.Controllers
 						Id = e.Id,
 						Name = e.Name,
 						Active = e.Active,
-						MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+						MainFile = e.MainFile != Guid.Empty ? e.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).Select(y => y.Id).FirstOrDefault(),
 						Rating = Math.Round((db._Comment.Where(y => y.ProductId == e.Id).Average(y => (double?)y.Rating) ?? 0) * 2, 0, MidpointRounding.ToPositiveInfinity) / 2,
 						UnitPrice = e.UnitPrice,
 						TotalItem = e.TotalItem,

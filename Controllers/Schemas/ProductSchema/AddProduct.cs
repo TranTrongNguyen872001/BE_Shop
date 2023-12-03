@@ -43,7 +43,7 @@ namespace BE_Shop.Controllers
 					Code = input.Code,
 					Discount = input.Discount,
 					Active = input.Status,
-					Category = string.Join(";", input.Category),
+					Category = "" + string.Join(";", input.Category),
 				});
 				db.SaveChanges();
 			}

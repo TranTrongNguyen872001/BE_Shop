@@ -57,7 +57,7 @@ namespace BE_Shop.Controllers
 						ReceiveName = e.ReceiveName,
 						ReceiveContact = e.ReceiveContact,
 						Status = e.Status,
-					Discount = db._Discount.Where(y => y.Id == e.DiscountId).FirstOrDefault() != null ? db._Discount.Where(y => y.Id == e.DiscountId).FirstOrDefault().Value : 0,
+						Discount = db._Discount.Where(y => y.Id == e.DiscountId).Select(y => y.Value).FirstOrDefault(),
 						User = db._User.Where(y => y.Id == e.UserId).Select(y => new OutputGetOneOrderData2
 						{
 							Id = e.UserId,
@@ -84,7 +84,7 @@ namespace BE_Shop.Controllers
 							.Select(y => new OutputGetOneOrderData3
 							{
 								ProductId = y.ProductId,
-								MainFile = y.MainFile != Guid.Empty ? y.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).FirstOrDefault().Id,
+								MainFile = y.MainFile != Guid.Empty ? y.MainFile : db._FileManager.Where(y => y.OwnerId == e.Id).Select(y => y.Id).FirstOrDefault(),
 								ProductName = y.PN,
 								UnitPrice = e.Status != 0 ? y.UnitPrice : y.PU - y.PD,
 								ItemCount = y.ItemCount,
