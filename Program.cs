@@ -5,11 +5,12 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
 using System.Text;
+using BE_Shop.Data;
 using BE_Shop.Data.Service;
 using BE_Shop.Hubs;
 
 //Cập nhật CSDL
-//await DatabaseConnection.CreateDatabase();
+await DatabaseConnection.CreateDatabase();
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -23,6 +23,9 @@ namespace BE_Shop.Data
         public DateTime? Birthday { get; set; } = null;
         [Required]public bool Status{get; set;} = true; // 1: Active, 0: Inactive
         public List<Address> AddressList { get; set; } = new List<Address>();
+        
+        public List<ChatLine> ChatLineList { get; set; }
+        public List<Order> OrderList { get; set; }
     }
     /// <summary>
     /// Địa chỉ

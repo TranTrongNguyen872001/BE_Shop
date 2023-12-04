@@ -18,7 +18,7 @@ namespace BE_Shop.Data
         [Required] public string ReceiveName { get; set; } = string.Empty;
         [Required] public string ReceiveContact { get; set; } = string.Empty;
         public Guid? DiscountId {get; set;} = Guid.Empty;
-        public List<OrderDetail> OrderDetail = new List<OrderDetail>();
+        public List<OrderDetail> OrderDetail {get; set;}
 	}
     /// <summary>
     /// Chi tiết đơn hàng

@@ -14,5 +14,7 @@ namespace BE_Shop.Data
         public DateTime? StopDate { get; set; } = null;
         [Required] public bool Type {get; set;} = false; //true: %, false: VND
         [Required] public int Value {get; set;} = 0;
+        
+		public List<Order> OrderList { get; set; }
     }
 }
