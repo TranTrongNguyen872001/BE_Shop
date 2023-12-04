@@ -10,7 +10,7 @@ using BE_Shop.Data.Service;
 using BE_Shop.Hubs;
 
 //Cập nhật CSDL
-await DatabaseConnection.CreateDatabase();
+//await DatabaseConnection.CreateDatabase();
 
 var builder = WebApplication.CreateBuilder(args);
 

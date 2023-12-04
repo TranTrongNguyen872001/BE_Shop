@@ -20,8 +20,8 @@ namespace BE_Shop.Data
 		{
 			base.OnConfiguring(optionsBuilder);
 			optionsBuilder.UseSqlServer(
-				@"Data Source=KAITOKIDS872001;Initial Catalog=Shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-				//@"Data Source=112.78.2.40,1433;Initial Catalog=dre56342_Shop;User ID=dre56342_Admin;Password=Kaitokids872001");
+				//@"Data Source=KAITOKIDS872001;Initial Catalog=Shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+				@"Data Source=112.78.2.40,1433;Initial Catalog=dre56342_Shop;User ID=dre56342_Admin;Password=Kaitokids872001");
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -31,14 +31,14 @@ namespace BE_Shop.Data
 				.HasKey(nameof(Comment.TT), nameof(Comment.ProductId));
 		}
 		//xóa database và tạo lại :) đỡ tốn thời gian :( mệt quá!
-		public static async Task CreateDatabase()
-		{
-			using (var dbcontext = new DatabaseConnection())
-			{
-				await dbcontext.Database.EnsureDeletedAsync();
-				Console.WriteLine($"CSDL {dbcontext.Database.GetDbConnection().Database} : {(await dbcontext.Database.EnsureCreatedAsync() ? "Success" : "Fail")}");
-			}
-		}
+		// public static async Task CreateDatabase()
+		// {
+		// 	using (var dbcontext = new DatabaseConnection())
+		// 	{
+		// 		await dbcontext.Database.EnsureDeletedAsync();
+		// 		Console.WriteLine($"CSDL {dbcontext.Database.GetDbConnection().Database} : {(await dbcontext.Database.EnsureCreatedAsync() ? "Success" : "Fail")}");
+		// 	}
+		// }
 	}
 	internal class Converter
 	{
