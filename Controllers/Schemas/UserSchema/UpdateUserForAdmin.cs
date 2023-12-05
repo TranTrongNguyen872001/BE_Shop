@@ -7,20 +7,22 @@ namespace BE_Shop.Controllers
 {
     public class UpdateUserForadmin
     {
-		public Guid Id { get; set; } = Guid.Empty;
-		public bool Status {get; set;} = true;
+      public Guid Id { get; set; } = Guid.Empty;
+      public string Role { get; set; } = "Member";
+      public bool Status {get; set;} = true;
     }
     public class OutputUpdateUserForadmin : Output
     {
-        internal override void Query_DataInput(object? ip)
+      internal override void Query_DataInput(object? ip)
+      {
+        UpdateUserForadmin input = (UpdateUserForadmin)ip!;
+        using (var db = new DatabaseConnection())
         {
-			UpdateUserForadmin input = (UpdateUserForadmin)ip!;
-			using (var db = new DatabaseConnection())
-			{
-				var user = db._User.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
-				user.Status = input.Status;
-                db.SaveChanges();
-			}
-		}
+          var user = db._User.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
+          user.Status = input.Status;
+          user.Role = input.Role;
+          db.SaveChanges();
+        }
+      }
     }
 }
