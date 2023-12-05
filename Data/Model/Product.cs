@@ -20,8 +20,8 @@ namespace BE_Shop.Data
         public bool Active { get; set; } = false; // 1: Active, 0: Unactive
         public string? Category { get; set; } = string.Empty;
 		public List<Comment> CommentList { get; set; }
-		public List<OrderDetail> OrderDetailList { get; set; }
-		public List<ProductCategory> ProductCategoryList { get; set; }
+		//public List<OrderDetail> OrderDetailList { get; set; }
+		//public List<ProductCategory> ProductCategoryList { get; set; }
     }
 	[Table("Comment")]
 	public class Comment

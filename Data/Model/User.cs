@@ -25,7 +25,7 @@ namespace BE_Shop.Data
         public List<Address> AddressList { get; set; } = new List<Address>();
         
         public List<ChatLine> ChatLineList { get; set; }
-        public List<Order> OrderList { get; set; }
+        //public List<Order> OrderList { get; set; }
     }
     /// <summary>
     /// Địa chỉ
