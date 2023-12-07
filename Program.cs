@@ -76,18 +76,17 @@ builder.Services.AddAuthentication(x =>
 });
 
 // Add cors
-var MyAllowSpecificOrigins = "MyPolicy";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
+    options.AddPolicy(name: "MyPolicy",
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:3000",
-                                              //"http://112.78.1.194:3000",
+                                              "http://112.78.1.194:3000",
 											  "http://shop.misaproject.click")
 						  .AllowAnyHeader()
-						  .AllowAnyMethod();
-						  //.AllowCredentials();
+						  .AllowAnyMethod()
+						  .AllowCredentials();
                       });
 });
 
@@ -106,7 +105,7 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("MyPolicy");
 
 app.UseDefaultFiles();
 
