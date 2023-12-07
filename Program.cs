@@ -82,8 +82,8 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:3000",
-                                              "http://112.78.1.194:3000",
-											  "http://shop.misaproject.click")
+                                              "http://112.78.1.194",
+											  "http://misaproject.click")
 						  .AllowAnyHeader()
 						  .AllowAnyMethod()
 						  .AllowCredentials();
