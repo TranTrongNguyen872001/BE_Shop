@@ -14,7 +14,7 @@ namespace BE_Shop.Controllers
         public string? Tinh { get; set; }
         public string? Phuong { get; set; }
         public string? Xa { get; set; }
-        public Guid DiscountId { get; set; } = Guid.Empty;
+        public Guid? DiscountId { get; set; }
     }
     public class OutputConfirmOrder : Output
     {

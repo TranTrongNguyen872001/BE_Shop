@@ -18,7 +18,7 @@ namespace BE_Shop.Data
         [Required] public bool MethodPayment { get; set; } = false; // true: online; false: offline
         [Required] public string ReceiveName { get; set; } = string.Empty;
         [Required] public string ReceiveContact { get; set; } = string.Empty;
-        public Guid? DiscountId {get; set;} = Guid.Empty;
+        public Guid? DiscountId {get; set;}
         public string? Tinh { get; set; }
         public string? Phuong { get; set; }
         public string? Xa { get; set; }
