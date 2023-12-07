@@ -86,8 +86,8 @@ builder.Services.AddCors(options =>
                                               //"http://112.78.1.194:3000",
 											  "http://shop.misaproject.click")
 						  .AllowAnyHeader()
-						  .AllowAnyMethod()
-						  .AllowCredentials();
+						  .AllowAnyMethod();
+						  //.AllowCredentials();
                       });
 });
 
