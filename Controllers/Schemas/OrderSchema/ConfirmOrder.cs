@@ -10,6 +10,10 @@ namespace BE_Shop.Controllers
         public bool MethodPayment { get; set; } = false;
         public string ReceiveName { get; set; } = string.Empty;
         public string ReceiveContact { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string? Tinh { get; set; }
+        public string? Phuong { get; set; }
+        public string? Xa { get; set; }
         public Guid DiscountId { get; set; } = Guid.Empty;
     }
     public class OutputConfirmOrder : Output
@@ -30,6 +34,10 @@ namespace BE_Shop.Controllers
                 Order.ReceiveContact = input.ReceiveContact;
                 Order.CreatedDate = DateTime.Now;
                 Order.DiscountId = input.DiscountId;
+                Order.Email = input.Email;
+                Order.Tinh = input.Tinh;
+                Order.Phuong = input.Phuong;
+                Order.Xa = input.Xa;
                 if(input.MethodPayment == true)
                 {
                     Order.Status = 2;
