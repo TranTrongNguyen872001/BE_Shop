@@ -32,7 +32,7 @@ namespace BE_Shop.Data
     {
 		[Required] public Guid OrderId { get; set; } = Guid.Empty;
 		[Required] public Guid ProductId { get; set; } = Guid.Empty;
-		[Required] public long ItemCount { get; set; } = 0;
-		[Required] public long UnitPrice { get; set; } = 0;
+		[Required] public int ItemCount { get; set; } = 0;
+		[Required] public int UnitPrice { get; set; } = 0;
 	}
 }

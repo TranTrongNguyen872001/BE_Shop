@@ -13,7 +13,7 @@ namespace BE_Shop.Data
         [Required] public string Name { get; set; } = string.Empty;
 		public string Code { get; set; } = string.Empty;
 		public string Decription { get; set; } = string.Empty;
-		public long UnitPrice { get; set; } = 0;
+		public int UnitPrice { get; set; } = 0;
         public Guid MainFile { get; set; } = Guid.Empty;
 		[Required] public int TotalItem { get; set; } = 0;
         [Required] public int Discount { get; set; } = 0;

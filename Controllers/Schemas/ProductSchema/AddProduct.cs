@@ -8,7 +8,7 @@ namespace BE_Shop.Controllers
 		public string Code { get; set; } = string.Empty;
 		public int Discount { get; set; } = 0;
 		public string Decription { get; set; } = string.Empty;
-		public long UnitPrice { get; set; } = 0;
+		public int UnitPrice { get; set; } = 0;
 		public int TotalItem { get; set; } = 0;
 		public Guid MainFile { get; set; } = Guid.Empty;
 		public List<Guid> files {  get; set; } = new List<Guid>();

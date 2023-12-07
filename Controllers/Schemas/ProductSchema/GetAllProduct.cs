@@ -56,7 +56,7 @@ namespace BE_Shop.Controllers
                 ProductList = temp
 					.Where(e => (e.Active == true) 
 						&& (input.Search == string.Empty || e.Name.Contains(input.Search))
-						&& (input.Category == null || e.Category.Contains(input.Category.ToString()))
+						&& (input.Category == null || e.Category.Contains(input.Category.ToString() ?? ""))
 						&& (input.Active == null || e.Active == input.Active))
 					.Select(e => new OutputGetAllProductData1
 					{

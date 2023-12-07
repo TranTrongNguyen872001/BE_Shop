@@ -12,7 +12,7 @@ namespace BE_Shop.Controllers
 	public class AddOrderDetail
 	{
 		public Guid ProductId { get; set; } = Guid.Empty;
-		public long ItemCount { get; set; } = 0;
+		public int ItemCount { get; set; } = 0;
 	}
 	public class OutputAddOrder : Output
 	{

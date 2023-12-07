@@ -53,8 +53,18 @@ namespace BE_Shop.Controllers
                     foreach(var orderDetail in od)
                     {
                         var product = db._Product.Find(orderDetail.ProductId);
-                        orderDetail.UnitPrice = product == null ? 0 : product.UnitPrice - product.Discount;
-                        db.SaveChanges();
+                        if(product == null || product.TotalItem < orderDetail.ItemCount)
+                        {
+                            db._OrderDetail.Remove(orderDetail);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            orderDetail.UnitPrice = product.UnitPrice - product.Discount;
+                            db.SaveChanges();
+                            product.TotalItem = Math.Max(product.TotalItem - orderDetail.ItemCount, 0);
+                            db.SaveChanges();
+                        }
                     }
                 }
             }
