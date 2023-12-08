@@ -85,7 +85,7 @@ namespace BE_Shop.Data
 							y.Discount
 						})
 						.Where(e => e.OrderId == order.Id)
-						.Select(e => e.UnitPrice - e.Discount * e.ItemCount)
+						.Select(e => (e.UnitPrice - e.Discount) * e.ItemCount)
 						.Sum()
 					- db._Discount
 						.Where(y => y.Id == Discount)
