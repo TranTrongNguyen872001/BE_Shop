@@ -74,7 +74,9 @@ namespace BE_Shop.Controllers
 				.Skip((input.Page - 1) * input.Index)
 				.Take(input.Index)
 				.ToList();
-				TotalItemCount = db._Order.Count();
+				TotalItemCount = db._Order
+					.Where(e => input.Status == null || e.Status == input.Status)
+					.Count();
 				TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
 			}
 		}
@@ -116,7 +118,10 @@ namespace BE_Shop.Controllers
 				.Skip((input.Page - 1) * input.Index)
 				.Take(input.Index)
 				.ToList();
-				TotalItemCount = db._Order.Count();
+				TotalItemCount = db._Order
+					.Where(e => e.UserId == input.UserId
+						&& (input.Status == null || e.Status == input.Status))
+					.Count();
 				TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
 			}
 		}
