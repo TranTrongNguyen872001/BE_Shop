@@ -16,6 +16,14 @@ namespace BE_Shop.Controllers
                 }
                 Order.Status = 4;
                 db.SaveChanges();
+                var orderDetails = db._OrderDetail.Where(e => e.OrderId == input.OrderId).ToList();
+                foreach (var item in orderDetails){
+                    var product = db._Product.Find(item.ProductId);
+                    if (product != null){
+                        product.TotalItem += item.ItemCount;
+                        db.SaveChanges();
+                    }
+                }
             }
         }
     }
