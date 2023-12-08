@@ -72,7 +72,7 @@ namespace BE_Shop.Data
             vnpay.AddRequestData("vnp_Locale", "vn");
             vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang: " + order.Id);
             vnpay.AddRequestData("vnp_OrderType", "other"); //default value: other
-            vnpay.AddRequestData("vnp_ReturnUrl", "http://localhost:5286/api/payment/vnpay_return");
+            vnpay.AddRequestData("vnp_ReturnUrl", "http://backend.misaproject.click/api/payment/vnpay_return");
             vnpay.AddRequestData("vnp_TxnRef", order.Id.ToString());
 			using (var db = new DatabaseConnection())
 			{
