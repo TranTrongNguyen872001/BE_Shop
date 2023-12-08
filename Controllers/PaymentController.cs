@@ -18,7 +18,7 @@ namespace BE_Shop.Controllers
         }
         [Authorize]
         [HttpPost("{id}")]
-        public async Task<IActionResult> Payment(Guid id)
+        public async Task<IActionResult> Payment(Guid id, Guid Discount)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace BE_Shop.Controllers
                     {
                         throw new HttpException(string.Empty, 403);
                     }
-                    return Ok(VnPayLibrary.GetPaymentUrl(order));
+                    return Ok(VnPayLibrary.GetPaymentUrl(order, Discount));
 				}
             }
             catch (HttpException ex)

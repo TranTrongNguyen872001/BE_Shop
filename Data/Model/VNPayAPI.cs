@@ -60,7 +60,7 @@ namespace BE_Shop.Data
             return baseUrl;
         }
 
-		internal static string GetPaymentUrl(Order order){
+		internal static string GetPaymentUrl(Order order, Guid Discount){
 			VnPayLibrary vnpay = new VnPayLibrary();
             vnpay.AddRequestData("vnp_Version", VERSION);
             vnpay.AddRequestData("vnp_Command", "pay");
@@ -88,7 +88,7 @@ namespace BE_Shop.Data
 						.Select(e => e.UnitPrice - e.Discount * e.ItemCount)
 						.Sum()
 					- db._Discount
-						.Where(y => y.Id == order.DiscountId)
+						.Where(y => y.Id == Discount)
 						.Select(y => y.Value)
 						.FirstOrDefault()
 				) * 100).ToString());
