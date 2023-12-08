@@ -7,7 +7,7 @@ namespace BE_Shop.Controllers
         internal Guid Id { get; set; } = Guid.Empty;
         internal Guid UserId { get; set; } = Guid.Empty;
         public string Address { get; set; } = string.Empty;
-        public bool MethodPayment { get; set; } = false;
+        //public bool MethodPayment { get; set; } = false;
         public string ReceiveName { get; set; } = string.Empty;
         public string ReceiveContact { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -29,7 +29,7 @@ namespace BE_Shop.Controllers
                     throw new HttpException(string.Empty, 403);
                 }
                 Order.Address = input.Address;
-                Order.MethodPayment = input.MethodPayment;
+                //Order.MethodPayment = input.MethodPayment;
                 Order.ReceiveName = input.ReceiveName;
                 Order.ReceiveContact = input.ReceiveContact;
                 Order.CreatedDate = DateTime.Now;
@@ -38,13 +38,10 @@ namespace BE_Shop.Controllers
                 Order.Tinh = input.Tinh;
                 Order.Phuong = input.Phuong;
                 Order.Xa = input.Xa;
-                if(input.MethodPayment == true)
-                {
-                    Order.Status = 2;
-                }
-                else
+                if(Order.Status == 0)
                 {
                     Order.Status = 1;
+                    Order.MethodPayment = false;
                 }
                 db.SaveChanges();
                 var od = db._OrderDetail.Where(e => e.OrderId == input.Id).ToList();

@@ -43,6 +43,7 @@ namespace BE_Shop.Controllers
 		/// <summary>
 		/// Lấy file
 		/// </summary>
+		[AllowAnonymous]
 		[HttpGet("{Id}")]
 		public async Task<IActionResult> GetOne(Guid Id)
 		{

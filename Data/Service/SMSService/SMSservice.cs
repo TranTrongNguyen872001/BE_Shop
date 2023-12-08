@@ -1,6 +1,3 @@
-using System.Net;
-using System.Collections.Specialized;
- 
 namespace BE_Shop.Data.Service
 {
 	public class  SMSService : ISMSService

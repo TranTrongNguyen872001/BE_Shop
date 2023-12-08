@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using BE_Shop.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
 
 namespace BE_Shop.Hubs
 {
