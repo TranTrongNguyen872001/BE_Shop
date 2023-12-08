@@ -24,7 +24,7 @@ namespace BE_Shop.Controllers
             using (var db = new DatabaseConnection())
             {
                 var Order = db._Order.Find(input.Id) ?? throw new HttpException(string.Empty, 404);
-                if (Order.Status != 0 || Order.UserId != input.UserId)
+                if (Order.UserId != input.UserId)
                 {
                     throw new HttpException(string.Empty, 403);
                 }
