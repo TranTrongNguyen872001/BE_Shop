@@ -65,10 +65,18 @@ namespace BE_Shop.Controllers
                         	Role = y.Role,
 							Email = y.UserName
 						}).FirstOrDefault(),
-						TotalPrice = db._OrderDetail
-							.Where(y => y.OrderId == e.Id)
-							.Select(y => y.UnitPrice * y.ItemCount)
-							.Sum(),
+						TotalPrice = e.Status == 0 ? 
+							db._Product
+								.Join(db._OrderDetail, a => a.Id, b => b.ProductId, (a, b) => new {
+									a.Discount, a.UnitPrice, b.OrderId, b.ItemCount
+								})
+								.Where(y => y.OrderId == e.Id)
+								.Select(y => (y.UnitPrice - y.Discount) * y.ItemCount)
+								.Sum() : 
+							db._OrderDetail
+								.Where(y => y.OrderId == e.Id)
+								.Select(y => y.UnitPrice * y.ItemCount)
+								.Sum(),
 						Detail = db._OrderDetail
 							.Join(db._Product, x => x.ProductId, y => y.Id, (x,y) => new {
 								x.OrderId,
