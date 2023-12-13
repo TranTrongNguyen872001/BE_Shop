@@ -20,7 +20,7 @@ namespace BE_Shop.Data
         [Required] public string ReceiveContact { get; set; } = string.Empty;
         public Guid? DiscountId {get; set;}
         public string? Tinh { get; set; }
-        public string? Phuong { get; set; }
+        public string? Huyen { get; set; }
         public string? Xa { get; set; }
         public List<OrderDetail> OrderDetail {get; set;}
 	}

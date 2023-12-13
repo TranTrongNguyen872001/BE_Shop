@@ -38,6 +38,9 @@ namespace BE_Shop.Data
         [Required] public string Description { get; set; } = string.Empty;
         public string Name {get; set;} = string.Empty;
         public string Contact {get; set;} = string.Empty;
+        public string? Tinh { get; set; }
+        public string? Huyen { get; set; }
+        public string? Xa { get; set; }
     }
     [Table("ChatLine")]
     public class ChatLine

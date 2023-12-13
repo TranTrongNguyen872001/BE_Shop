@@ -36,7 +36,7 @@ namespace BE_Shop.Controllers
                 Order.DiscountId = input.DiscountId;
                 Order.Email = input.Email;
                 Order.Tinh = input.Tinh;
-                Order.Phuong = input.Phuong;
+                Order.Huyen = input.Phuong;
                 Order.Xa = input.Xa;
                 if(Order.Status == 0)
                 {

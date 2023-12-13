@@ -11,6 +11,9 @@ namespace BE_Shop.Controllers
 		internal Guid UserId { get; set; } = Guid.Empty;
 		public string Name { get; set; } = string.Empty;
 		public string Contact { get; set; } = string.Empty;
+        public string? Tinh { get; set; }
+        public string? Huyen { get; set; }
+        public string? Xa { get; set; }
 	}
 	public class OutputAddAddress : Output
 	{
@@ -29,6 +32,9 @@ namespace BE_Shop.Controllers
 					Description = input.Address,
 					Contact = input.Contact,
 					Name = input.Name,
+					Tinh = input.Tinh,
+					Huyen = input.Huyen,
+					Xa = input.Xa,
 				});
 				db.SaveChanges();
 			}

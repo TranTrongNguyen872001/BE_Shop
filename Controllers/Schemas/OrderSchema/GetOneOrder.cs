@@ -20,7 +20,10 @@ namespace BE_Shop.Controllers
 		public OutputGetOneOrderData2? User { get; set; }
 		public long TotalPrice { get; set; }
 		public List<OutputGetOneOrderData3> Detail { get; set; }
-	}
+        public string? Tinh { get; set; }
+        public string? Huyen { get; set; }
+        public string? Xa { get; set; }
+    }
 	public class OutputGetOneOrderData2
 	{
 		public Guid Id { get; set; }
@@ -52,6 +55,9 @@ namespace BE_Shop.Controllers
 					{
 						Id = e.Id,
 						Address = e.Address,
+						Tinh = e.Tinh,
+						Huyen = e.Huyen,
+						Xa = e.Xa,
 						CreatedDate = e.CreatedDate,
 						MethodPayment = e.MethodPayment ? "Online" : "Offline",
 						ReceiveName = e.ReceiveName,
