@@ -60,9 +60,6 @@ namespace BE_Shop.Controllers
                     if (vnPayResponse.vnp_ResponseCode != "00" || VnPayLibrary.HmacSHA512(VnPayLibrary.vnp_HashSecret, queryString) != vnPayResponse.vnp_SecureHash)
                     {
                         var order = db._Order.Find(Guid.Parse(vnPayResponse.vnp_TxnRef ?? throw new HttpException(string.Empty, 400))) ?? throw new HttpException(string.Empty, 404);
-                        order.Status = 2;
-                        order.MethodPayment = true;
-                        db.SaveChanges();
                         await _hubContext.Clients.Group(order.Id.ToString()).SendAsync("Fail");
                         return StatusCode(400, "Fail");
                     }
