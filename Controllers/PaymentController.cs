@@ -54,17 +54,28 @@ namespace BE_Shop.Controllers
                     + "&vnp_TransactionNo=" + WebUtility.UrlEncode(vnPayResponse.vnp_TransactionNo)
                     + "&vnp_TransactionStatus=" + WebUtility.UrlEncode(vnPayResponse.vnp_TransactionStatus)
                     + "&vnp_TxnRef=" + WebUtility.UrlEncode(vnPayResponse.vnp_TxnRef);
-                if (vnPayResponse.vnp_ResponseCode != "00" || VnPayLibrary.HmacSHA512(VnPayLibrary.vnp_HashSecret, queryString) != vnPayResponse.vnp_SecureHash){
-                    throw new HttpException(VnPayLibrary.HmacSHA512(VnPayLibrary.vnp_HashSecret, queryString), 400);
-                }
+                
                 using (var db = new DatabaseConnection())
 				{
-					var order = db._Order.Find(Guid.Parse(vnPayResponse.vnp_TxnRef ?? throw new HttpException(string.Empty, 400))) ?? throw new HttpException(string.Empty, 404);
-                    order.Status = 2;
-                    order.MethodPayment = true;
-                    db.SaveChanges();
-                    await _hubContext.Clients.Group(order.Id.ToString()).SendAsync("PaySuccess");
-                    return Ok("Success");
+                    if (vnPayResponse.vnp_ResponseCode != "00" || VnPayLibrary.HmacSHA512(VnPayLibrary.vnp_HashSecret, queryString) != vnPayResponse.vnp_SecureHash)
+                    {
+                        var order = db._Order.Find(Guid.Parse(vnPayResponse.vnp_TxnRef ?? throw new HttpException(string.Empty, 400))) ?? throw new HttpException(string.Empty, 404);
+                        order.Status = 2;
+                        order.MethodPayment = true;
+                        db.SaveChanges();
+                        await _hubContext.Clients.Group(order.Id.ToString()).SendAsync("Fail");
+                        return StatusCode(400, "Fail");
+                    }
+                    else
+                    {
+                        var order = db._Order.Find(Guid.Parse(vnPayResponse.vnp_TxnRef ?? throw new HttpException(string.Empty, 400))) ?? throw new HttpException(string.Empty, 404);
+                        order.Status = 2;
+                        order.MethodPayment = true;
+                        db.SaveChanges();
+                        await _hubContext.Clients.Group(order.Id.ToString()).SendAsync("PaySuccess");
+                        return Ok("Success");
+                    }
+					
 				}
             }
             catch (HttpException ex)
