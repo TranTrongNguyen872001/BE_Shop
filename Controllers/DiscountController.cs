@@ -49,7 +49,7 @@ namespace BE_Shop.Controllers
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		[Authorize(Roles = "Admin,Member")]
+		[Authorize(Roles = "Admin")]
 		[HttpPost("la")]
 		[ProducesResponseType(typeof(OutputGetAllDiscountAdmin), 200)]
 		public async Task<IActionResult> GetAllAdmin()
