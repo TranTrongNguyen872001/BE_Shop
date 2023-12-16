@@ -18,7 +18,7 @@ namespace BE_Shop.Controllers
         }
         [Authorize]
         [HttpPost("{id}")]
-        public async Task<IActionResult> Payment(Guid id, Guid Discount)
+        public async Task<IActionResult> Payment(Guid id, Guid? Discount)
         {
             try
             {

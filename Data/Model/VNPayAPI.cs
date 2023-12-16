@@ -60,7 +60,7 @@ namespace BE_Shop.Data
             return baseUrl;
         }
 
-		internal static string GetPaymentUrl(Order order, Guid Discount){
+		internal static string GetPaymentUrl(Order order, Guid? Discount){
 			VnPayLibrary vnpay = new VnPayLibrary();
             vnpay.AddRequestData("vnp_Version", VERSION);
             vnpay.AddRequestData("vnp_Command", "pay");
