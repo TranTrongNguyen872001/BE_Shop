@@ -38,7 +38,6 @@ namespace BE_Shop.Controllers
 			{
 				DiscountList = db._Discount
                     .OrderByDescending(e => e.StopDate)
-					.Where(e => e.StopDate > DateTime.Now)
 					.Select(e => new OutputGetAllDiscountAdminData1{
 						Id = e.Id,
 						Code = e.Code,
