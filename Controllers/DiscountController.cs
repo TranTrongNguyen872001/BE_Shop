@@ -52,9 +52,9 @@ namespace BE_Shop.Controllers
 		[Authorize(Roles = "Admin")]
 		[HttpPost("la")]
 		[ProducesResponseType(typeof(OutputGetAllDiscountAdmin), 200)]
-		public async Task<IActionResult> GetAllAdmin()
+		public async Task<IActionResult> GetAllAdmin([FromBody] GetAllDiscountAdmin input)
 		{
-			return await QueryCheck<OutputGetAllDiscountAdmin>(null);
+			return await QueryCheck<OutputGetAllDiscountAdmin>(input);
 		}
         /// <summary>
         /// Lấy thông tin mã giảm giá
