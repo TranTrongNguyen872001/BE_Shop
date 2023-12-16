@@ -22,6 +22,7 @@ namespace BE_Shop.Controllers
 					Code = this.Code,
 					StopDate = input.StopDate,
                     Value = input.Value,
+					Status = true,
 				});
 				db.SaveChanges();
 			}

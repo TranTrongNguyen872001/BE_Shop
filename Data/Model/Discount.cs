@@ -10,8 +10,9 @@ namespace BE_Shop.Data
     public class Discount
     {
         [Key] public Guid Id { get; set; } = Guid.Empty;
-        [Required] public String Code { get; set; } = string.Empty;
+        [Required] public string Code { get; set; } = string.Empty;
         public DateTime? StopDate { get; set; } = null;
         [Required] public int Value {get; set;} = 0;
+        public bool Status { get; set;} = true;
     }
 }

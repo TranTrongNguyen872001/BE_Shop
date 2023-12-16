@@ -44,6 +44,18 @@ namespace BE_Shop.Controllers
 		{
 			return await QueryCheck<OutputGetAllDiscount>(null);
 		}
+		/// <summary>
+		/// Lấy danh sách mã giảm giá dành cho damin
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		[Authorize(Roles = "Admin,Member")]
+		[HttpPost("la")]
+		[ProducesResponseType(typeof(OutputGetAllDiscountAdmin), 200)]
+		public async Task<IActionResult> GetAllAdmin()
+		{
+			return await QueryCheck<OutputGetAllDiscountAdmin>(null);
+		}
         /// <summary>
         /// Lấy thông tin mã giảm giá
         /// </summary>

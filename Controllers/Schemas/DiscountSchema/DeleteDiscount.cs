@@ -10,7 +10,7 @@ namespace BE_Shop.Controllers
 			using (var db = new DatabaseConnection())
 			{
 				var Discount = db._Discount.Find(input) ?? throw new HttpException("Id không tìm thấy", 404);
-				db._Discount.Remove(Discount);
+				Discount.Status = false;
 				db.SaveChanges();
 			}
 		}
