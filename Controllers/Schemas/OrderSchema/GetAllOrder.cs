@@ -94,7 +94,7 @@ namespace BE_Shop.Controllers
 			{
 				OrderList = db._Order
                 .OrderByDescending(e => e.CreatedDate)
-				.Where(e => e.UserId == input.UserId && input.Status != 0
+				.Where(e => e.UserId == input.UserId && e.Status != 0
 					&& (input.Status == null || e.Status == input.Status))
                 .Select(e => new OutputGetAllOrderData1{
                     Id = e.Id,
@@ -119,7 +119,7 @@ namespace BE_Shop.Controllers
 				.Take(input.Index)
 				.ToList();
 				TotalItemCount = db._Order
-					.Where(e => e.UserId == input.UserId && input.Status != 0
+					.Where(e => e.UserId == input.UserId && e.Status != 0
 						&& (input.Status == null || e.Status == input.Status))
 					.Count();
 				TotalItemPage = (int)Math.Ceiling((float)TotalItemCount / (float)input.Index);
