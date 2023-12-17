@@ -94,7 +94,7 @@ namespace BE_Shop.Controllers
 			{
 				OrderList = db._Order
                 .OrderByDescending(e => e.CreatedDate)
-				.Where(e => e.UserId == input.UserId
+				.Where(e => e.UserId == input.UserId && input.Status != 0
 					&& (input.Status == null || e.Status == input.Status))
                 .Select(e => new OutputGetAllOrderData1{
                     Id = e.Id,
